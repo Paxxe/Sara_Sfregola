@@ -2,22 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Base — tradotta da style.css
+   ========================================================================== */
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 90px;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-ivory font-sans text-ink antialiased;
+    @apply bg-paper font-sans text-[13px] text-ink;
   }
 
   [hidden] {
     display: none !important;
   }
 
-  ::selection {
-    @apply bg-ink text-ivory;
+  a,
+  button {
+    touch-action: manipulation;
+  }
+
+  a:hover,
+  button:hover {
+    opacity: 0.65;
+  }
+
+  h1,
+  h2 {
+    @apply font-sans font-normal leading-[1.17] tracking-[-1px];
+  }
+
+  h1 em,
+  h2 em {
+    @apply font-serif italic;
+    font-size: 1.35em;
+    line-height: 0.8;
+    letter-spacing: -0.8px;
   }
 
   summary {
@@ -30,13 +53,13 @@
   }
 
   dialog::backdrop {
-    background: rgb(var(--color-ink) / 0.55);
-    backdrop-filter: blur(2px);
+    background: #1d1c17a8;
   }
 
-  :focus-visible {
-    outline: 1px solid currentColor;
-    outline-offset: 4px;
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 6px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -44,126 +67,57 @@
       scroll-behavior: auto;
     }
 
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
+    * {
+      transition: none !important;
     }
   }
 }
 
+/* ==========================================================================
+   Componenti
+   ========================================================================== */
 @layer components {
+  /* Header trasparente sopra l'hero in homepage */
   .header-wrapper {
-    @apply sticky top-0 z-40;
+    @apply relative z-20;
   }
 
-  .page-width {
-    @apply mx-auto w-full max-w-page px-4 md:px-10 lg:px-16;
-  }
-
-  .section-y {
-    @apply py-20 md:py-28 lg:py-36;
+  .template-index .header-wrapper {
+    @apply absolute inset-x-0 top-0;
   }
 
   .eyebrow {
-    @apply font-sans text-[0.6875rem] font-medium uppercase tracking-eyebrow;
+    @apply text-[9px] font-medium uppercase leading-[1.8] tracking-[1.35px];
   }
 
-  .display-xl {
-    @apply font-serif font-light leading-[0.92] tracking-[-0.01em];
-    font-size: clamp(3.25rem, 9vw, 8.5rem);
-  }
-
-  .display-lg {
-    @apply font-serif font-light leading-[0.95] tracking-[-0.01em];
-    font-size: clamp(2.5rem, 6vw, 5.5rem);
-  }
-
-  .display-md {
-    @apply font-serif font-light leading-none;
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-  }
-
+  /* Pulsanti a pillola */
   .line-link {
-    @apply inline-flex items-center gap-2 border-b border-current pb-1 text-[0.72rem] font-medium uppercase tracking-[0.2em] transition-opacity duration-300 hover:opacity-60;
+    @apply inline-block rounded-full border border-pill px-[29px] py-[15px] text-center text-[10px] leading-[1.4] tracking-[0.4px];
   }
 
   .btn-solid {
-    @apply inline-flex items-center justify-center gap-2 bg-ink px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ivory transition-colors duration-300 hover:bg-ink/80;
+    @apply inline-block rounded-full border border-ink bg-ink px-[30px] py-[19px] text-center text-[11px] leading-[1.4] tracking-[0.4px] text-paper;
   }
 
-  .btn-solid--inverse {
-    @apply bg-ivory text-ink hover:bg-ivory/85;
-  }
-
-  .nav-link {
-    @apply relative py-1 text-[0.72rem] font-medium uppercase tracking-[0.18em];
-  }
-
-  .nav-link::after {
-    @apply absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-500 ease-silk content-[''];
-  }
-
-  .nav-link:hover::after,
-  .nav-link.is-active::after {
-    @apply scale-x-100;
-  }
-
-  .filter-btn {
-    @apply relative pb-1 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-stone transition-colors hover:text-ink;
-  }
-
-  .filter-btn[aria-pressed='true'] {
-    @apply text-ink;
-  }
-
-  .filter-btn[aria-pressed='true']::after {
-    @apply absolute bottom-0 left-0 h-px w-full bg-current content-[''];
-  }
-
+  /* Accordion (tecniche, FAQ) */
   .accordion {
-    border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+    @apply border-b border-rule py-[18px];
   }
 
   .accordion > summary {
-    @apply flex items-center justify-between gap-6 py-6 font-serif text-2xl font-light md:text-3xl;
+    @apply flex justify-between text-[12px];
   }
 
-  .accordion-icon {
-    @apply relative h-3 w-3 shrink-0;
+  .accordion > summary::after {
+    content: '+';
   }
 
-  .accordion-icon::before,
-  .accordion-icon::after {
-    @apply absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current transition-transform duration-300 content-[''];
-  }
-
-  .accordion-icon::after {
-    @apply rotate-90;
-  }
-
-  .accordion[open] .accordion-icon::after {
-    @apply rotate-0;
+  .accordion[open] > summary::after {
+    content: '−';
   }
 
   .accordion-body {
-    @apply pb-8 pr-10 text-sm leading-relaxed;
-    color: color-mix(in srgb, currentColor 75%, transparent);
-  }
-
-  .field {
-    @apply w-full rounded-none border-0 border-b border-ink/25 bg-transparent px-0 py-3 text-base text-ink placeholder:text-stone focus:border-ink focus:outline-none;
-  }
-
-  .field-label {
-    @apply eyebrow text-stone;
-  }
-
-  .placeholder-svg {
-    @apply h-full w-full;
-    fill: rgb(var(--color-muted) / 0.45);
-    background-color: rgb(var(--color-muted) / 0.14);
+    @apply max-w-[650px] pt-4 text-[12px] leading-[1.9] text-ink-soft;
   }
 
   .rte p + p {
@@ -173,11 +127,126 @@
   .rte a {
     @apply underline underline-offset-4;
   }
-}
 
-@layer utilities {
+  /* Modulo */
+  .field-label {
+    @apply mb-2 mt-4 block text-[11px];
+  }
+
+  .field {
+    @apply w-full rounded-none border border-field bg-transparent p-3 text-[13px] focus:border-ink focus:outline-none;
+  }
+
+  .placeholder-svg {
+    @apply block h-full w-full;
+    fill: rgb(var(--color-ink) / 0.18);
+    background-color: #e7e2d9;
+  }
+
+  /* ------------------------------------------------------------------------
+     Hero: binari orizzontali guidati dallo scroll
+     ------------------------------------------------------------------------ */
+  .hero-scroll {
+    --hero-step: 60svh;
+    height: calc(100svh + var(--hero-steps, 2) * var(--hero-step));
+  }
+
+  @media (min-width: 721px) {
+    .hero-scroll {
+      --hero-step: 70svh;
+    }
+  }
+
   .hero-rail {
-    transition: transform 1.4s cubic-bezier(0.77, 0, 0.18, 1);
     will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-rail {
+      will-change: auto;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     Creazioni: composizione editoriale asimmetrica (ripete ogni 3 prodotti)
+     ------------------------------------------------------------------------ */
+  .creations-grid {
+    @apply grid grid-cols-12 items-start gap-x-[10px] gap-y-10;
+  }
+
+  .creations-grid > .product {
+    @apply min-w-0;
+  }
+
+  .creations-grid > .product:nth-child(3n + 1) {
+    grid-column: 1 / 9;
+  }
+
+  .creations-grid > .product:nth-child(3n + 2) {
+    grid-column: 6 / 13;
+    margin-top: -5px;
+  }
+
+  .creations-grid > .product:nth-child(3n + 3) {
+    grid-column: 1 / 10;
+  }
+
+  .creations-grid > .product:nth-child(3n + 1) .product-image {
+    aspect-ratio: 4 / 5;
+  }
+
+  .creations-grid > .product:nth-child(3n + 2) .product-image {
+    aspect-ratio: 3 / 4;
+  }
+
+  .creations-grid > .product:nth-child(3n + 3) .product-image {
+    aspect-ratio: 5 / 4;
+  }
+
+  /* Filtro attivo: le card visibili si allineano */
+  .creations-grid.is-filtered > .product:not([hidden]) {
+    grid-column: 1 / 11;
+    margin-top: 0;
+  }
+
+  @media (min-width: 721px) {
+    .creations-grid {
+      @apply gap-x-6 gap-y-[65px];
+    }
+
+    .creations-grid > .product:nth-child(3n + 1) {
+      grid-column: 1 / 7;
+    }
+
+    .creations-grid > .product:nth-child(3n + 2) {
+      grid-column: 9 / 13;
+      margin-top: 210px;
+    }
+
+    .creations-grid > .product:nth-child(3n + 3) {
+      grid-column: 5 / 10;
+    }
+
+    .creations-grid.is-filtered > .product:not([hidden]) {
+      grid-column: 1 / 7;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    .creations-grid {
+      @apply gap-x-8 gap-y-[85px];
+    }
+
+    .creations-grid > .product:nth-child(3n + 2) {
+      margin-top: 260px;
+    }
+  }
+
+  .filter-btn {
+    @apply py-2 text-[11px] text-muted;
+  }
+
+  .filter-btn[aria-pressed='true'] {
+    @apply border-b border-ink text-ink;
   }
 }

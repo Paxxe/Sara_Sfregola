@@ -2,28 +2,26 @@
   Logo del brand: immagine dalle impostazioni tema o fallback testuale.
 
   Parametri:
-  - image: immagine alternativa (opzionale, es. logo chiaro sull'hero)
+  - image: immagine alternativa (opzionale)
   - class: classi per l'immagine
-  - text_class: classi per il fallback testuale
+  - text_class: classi per il fallback testuale (allineamento e dimensione)
   - sizes: attributo sizes (opzionale)
 {%- endcomment -%}
 {%- liquid
   assign logo_image = image | default: settings.logo
-  assign logo_sizes = sizes | default: '320px'
+  assign logo_sizes = sizes | default: '200px'
 -%}
 {%- if logo_image != blank -%}
   {{-
     logo_image
-    | image_url: width: 800
-    | image_tag: class: class, widths: '200,400,600,800', sizes: logo_sizes, alt: shop.name
+    | image_url: width: 600
+    | image_tag: class: class, widths: '150,300,450,600', sizes: logo_sizes, alt: shop.name
   -}}
 {%- else -%}
-  <span class="flex flex-col font-serif leading-none {{ text_class | default: 'items-center text-center' }}">
-    <span class="font-light tracking-[0.06em]">{{ shop.name }}</span>
+  <span class="flex flex-col leading-none {{ text_class | default: 'items-center text-center' }}">
+    <span class="tracking-[3px]">{{ shop.name }}</span>
     {%- if settings.logo_tagline != blank -%}
-      <span class="mt-[0.6em] font-sans text-[0.24em] font-medium uppercase tracking-eyebrow">
-        {{- settings.logo_tagline -}}
-      </span>
+      <span class="mt-[0.5em] text-[0.38em] uppercase tracking-[2.8px]">{{ settings.logo_tagline }}</span>
     {%- endif -%}
   </span>
 {%- endif -%}

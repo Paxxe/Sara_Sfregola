@@ -1,45 +1,37 @@
-<footer class="bg-ink text-ivory">
-  <div class="page-width grid gap-12 pb-10 pt-20 md:grid-cols-2 md:pt-28">
-    <div class="flex flex-col items-start gap-6">
+<footer class="bg-forest px-[5%] pb-6 pt-[75px] text-cloud">
+  <div>
+    <div class="w-[135px] md:w-[165px]">
       {%- render 'logo',
-        image: settings.logo_inverse,
-        class: 'h-auto w-[min(var(--logo-width),60vw)]',
-        text_class: 'items-start text-left text-3xl md:text-4xl'
+        image: settings.logo_footer,
+        class: 'block w-full',
+        text_class: 'items-start text-left text-[27px] tracking-[3px]',
+        sizes: '165px'
       -%}
-      {%- if section.settings.tagline != blank -%}
-        <span class="eyebrow text-ivory/60">{{ section.settings.tagline }}</span>
-      {%- endif -%}
     </div>
-
-    {%- if section.settings.menu.links.size > 0 -%}
-      <nav aria-label="{{ section.settings.menu.title | escape }}" class="md:justify-self-end">
-        <ul class="flex flex-col gap-3 md:items-end">
-          {%- for link in section.settings.menu.links -%}
-            <li>
-              <a href="{{ link.url }}" class="font-serif text-3xl font-light transition-opacity hover:opacity-60 md:text-4xl">
-                {{- link.title -}}
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </nav>
+    {%- if section.settings.tagline != blank -%}
+      <span class="mt-[35px] block text-[7px] uppercase leading-[1.8] tracking-[2.5px] md:text-[8px]">
+        {{- section.settings.tagline -}}
+      </span>
     {%- endif -%}
   </div>
 
-  <div class="page-width">
-    <div class="flex flex-col gap-4 border-t border-ivory/15 py-8 text-[0.65rem] font-medium uppercase tracking-[0.22em] text-ivory/60 md:flex-row md:items-center md:gap-10">
-      <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
-      {%- if section.settings.note != blank -%}
-        <span>{{ section.settings.note }}</span>
-      {%- endif -%}
+  {%- if section.settings.menu.links.size > 0 -%}
+    <nav aria-label="{{ section.settings.menu.title | escape }}" class="flex flex-wrap gap-[25px] py-[45px] text-[10px] md:gap-[35px]">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
 
-      <div class="flex flex-wrap items-center gap-x-8 gap-y-3 md:ml-auto">
-        {%- for link in section.settings.secondary_menu.links -%}
-          <a href="{{ link.url }}" class="transition-colors hover:text-ivory">{{ link.title }}</a>
-        {%- endfor -%}
-        <a href="#MainContent" class="transition-colors hover:text-ivory" aria-label="{{ 'general.back_to_top' | t }}">↑</a>
-      </div>
-    </div>
+  <div class="flex flex-wrap justify-between gap-5 border-t border-white/20 pt-5 text-[8px] uppercase leading-[1.8] tracking-[1px]">
+    <span>© {{ shop.name }}</span>
+    {%- if section.settings.note != blank -%}
+      <span class="max-w-[160px] md:max-w-none">{{ section.settings.note }}</span>
+    {%- endif -%}
+    {%- for link in section.settings.secondary_menu.links -%}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {%- endfor -%}
+    <a href="#MainContent" aria-label="{{ 'general.back_to_top' | t }}">↑</a>
   </div>
 </footer>
 
@@ -54,24 +46,25 @@
       "type": "text",
       "id": "tagline",
       "label": "Claim",
-      "default": "Arti tessili · Alta sartorialità · Barletta"
+      "default": "ARTI TESSILI · ALTA SARTORIALITÀ · BARLETTA"
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu principale",
+      "label": "Menu",
       "default": "footer"
     },
     {
       "type": "link_list",
       "id": "secondary_menu",
-      "label": "Menu secondario (barra inferiore)"
+      "label": "Menu barra inferiore",
+      "info": "Es. Press, Customer Care"
     },
     {
       "type": "text",
       "id": "note",
       "label": "Nota",
-      "default": "Bozza grafica · Contenuti da definire"
+      "default": "BOZZA GRAFICA · CONTENUTI DA DEFINIRE"
     }
   ]
 }

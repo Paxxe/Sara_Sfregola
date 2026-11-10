@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_bg }}">
+    <meta name="theme-color" content="{{ settings.color_paper }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -23,19 +23,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     >
 
     <style>
       :root {
-        --color-bg: {{ settings.color_bg.red }} {{ settings.color_bg.green }} {{ settings.color_bg.blue }};
+        --color-paper: {{ settings.color_paper.red }} {{ settings.color_paper.green }} {{ settings.color_paper.blue }};
         --color-ink: {{ settings.color_ink.red }} {{ settings.color_ink.green }} {{ settings.color_ink.blue }};
-        --color-muted: {{ settings.color_muted.red }} {{ settings.color_muted.green }} {{ settings.color_muted.blue }};
-        --color-accent: {{ settings.color_accent.red }} {{ settings.color_accent.green }} {{ settings.color_accent.blue }};
-        --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
-        --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-        --logo-width: {{ settings.logo_width }}px;
+        --color-line: {{ settings.color_line.red }} {{ settings.color_line.green }} {{ settings.color_line.blue }};
+        --color-sand: {{ settings.color_sand.red }} {{ settings.color_sand.green }} {{ settings.color_sand.blue }};
+        --color-footer: {{ settings.color_footer.red }} {{ settings.color_footer.green }} {{ settings.color_footer.blue }};
       }
     </style>
 
@@ -45,9 +43,9 @@
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body class="template-{{ template.name }}">
     <a
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-ivory"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
       href="#MainContent"
     >
       {{- 'accessibility.skip_to_content' | t -}}

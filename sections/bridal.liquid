@@ -2,35 +2,33 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="page-width section-y"
+  class="grid grid-cols-1 bg-linen md:min-h-[660px] md:grid-cols-2"
 >
-  <div class="grid items-end gap-10 md:grid-cols-12 md:gap-8">
-    <div class="aspect-[4/5] overflow-hidden md:col-span-7{% if section.settings.image_right %} md:order-2 md:col-start-6{% endif %}">
-      {%- render 'media',
-        image: section.settings.image,
-        placeholder: 'lifestyle-1',
-        class: 'h-full w-full object-cover',
-        sizes: '(min-width: 768px) 58vw, 100vw'
-      -%}
-    </div>
+  <div class="h-[490px] overflow-hidden md:h-[660px]">
+    {%- render 'media',
+      image: section.settings.image,
+      placeholder: 'lifestyle-1',
+      class: 'h-full w-full object-cover object-[center_25%]',
+      sizes: '(min-width: 721px) 50vw, 100vw'
+    -%}
+  </div>
 
-    <div class="md:col-span-5{% if section.settings.image_right %} md:order-1 md:col-start-1 md:pr-10{% else %} md:pl-10{% endif %} md:pb-10">
-      <p class="eyebrow mb-6 text-stone">
-        {%- if section.settings.number != blank -%}
-          {{ section.settings.number }} /
-        {% endif -%}
-        {{ section.settings.eyebrow }}
-      </p>
-      <h2 class="display-lg">{{ section.settings.heading }}</h2>
-      {%- if section.settings.text != blank -%}
-        <div class="rte mt-8 max-w-md text-base leading-relaxed text-ink/75">{{ section.settings.text }}</div>
-      {%- endif -%}
-      {%- if section.settings.link_label != blank -%}
-        <a class="line-link mt-10" href="{{ section.settings.link_url | default: routes.root_url }}">
-          {{- section.settings.link_label }} <span aria-hidden="true">↗</span>
-        </a>
-      {%- endif -%}
-    </div>
+  <div class="self-center px-[8%] py-[60px] md:px-[10%] lg:px-[14%] lg:py-[90px]">
+    <p class="eyebrow mb-[27px]">
+      {%- if section.settings.number != blank -%}
+        {{ section.settings.number }} /
+      {% endif -%}
+      {{ section.settings.eyebrow }}
+    </p>
+    <h2 class="text-[34px] md:text-[43px]">{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}
+      <div class="rte my-[30px] leading-[1.9]">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.link_label != blank -%}
+      <a class="line-link mt-[30px]" href="{{ section.settings.link_url | default: routes.root_url }}">
+        {{- section.settings.link_label }} ↗
+      </a>
+    {%- endif -%}
   </div>
 </section>
 
@@ -49,12 +47,6 @@
       "type": "image_picker",
       "id": "image",
       "label": "Immagine"
-    },
-    {
-      "type": "checkbox",
-      "id": "image_right",
-      "label": "Immagine a destra (desktop)",
-      "default": false
     },
     {
       "type": "text",
@@ -82,7 +74,7 @@
     {
       "type": "text",
       "id": "link_label",
-      "label": "Testo link",
+      "label": "Testo pulsante",
       "default": "Scopri la consulenza privata"
     },
     {
@@ -91,10 +83,6 @@
       "label": "Link"
     }
   ],
-  "presets": [
-    {
-      "name": "Sposa e Cerimonia"
-    }
-  ]
+  "presets": [{ "name": "Sposa e Cerimonia" }]
 }
 {% endschema %}

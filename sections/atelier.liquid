@@ -2,36 +2,32 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="page-width section-y border-t border-ink/10"
+  class="grid grid-cols-1 items-center gap-[15px] px-[8%] py-[85px] md:grid-cols-2 md:gap-[15%] md:px-[9%] md:py-[155px]"
 >
-  <div class="mb-12 grid gap-8 md:mb-16 md:grid-cols-2 md:items-end">
-    <div>
-      <p class="eyebrow mb-6 text-stone">
-        {%- if section.settings.number != blank -%}
-          {{ section.settings.number }} /
-        {% endif -%}
-        {{ section.settings.eyebrow }}
-      </p>
-      <h2 class="display-lg">{{ section.settings.heading }}</h2>
-    </div>
+  <div>
+    <p class="eyebrow mb-[27px]">
+      {%- if section.settings.number != blank -%}
+        {{ section.settings.number }} /
+      {% endif -%}
+      {{ section.settings.eyebrow }}
+    </p>
+    <h2 class="mb-[30px] text-[34px] md:text-[42px]">{{ section.settings.heading }}</h2>
     {%- if section.settings.text != blank -%}
-      <div class="rte max-w-md text-base leading-relaxed text-ink/75 md:justify-self-end">
-        {{ section.settings.text }}
-      </div>
+      <div class="rte max-w-[420px] leading-[1.9] text-[#6d695f]">{{ section.settings.text }}</div>
     {%- endif -%}
   </div>
 
-  <figure>
-    <div class="aspect-[4/5] overflow-hidden sm:aspect-[16/9]">
+  <figure class="m-0 pt-[25px] md:pt-[75px]">
+    <div class="h-[400px] overflow-hidden md:h-[540px]">
       {%- render 'media',
         image: section.settings.image,
         placeholder: 'lifestyle-2',
         class: 'h-full w-full object-cover',
-        sizes: '(min-width: 1600px) 1500px, 100vw'
+        sizes: '(min-width: 721px) 40vw, 100vw'
       -%}
     </div>
     {%- if section.settings.caption != blank -%}
-      <figcaption class="eyebrow mt-4 text-stone">{{ section.settings.caption }}</figcaption>
+      <figcaption class="mt-4 text-[8px] uppercase tracking-[2px]">{{ section.settings.caption }}</figcaption>
     {%- endif -%}
   </figure>
 </section>
@@ -79,13 +75,9 @@
       "type": "text",
       "id": "caption",
       "label": "Didascalia",
-      "default": "Immagine"
+      "default": "IMMAGINE"
     }
   ],
-  "presets": [
-    {
-      "name": "L’Atelier"
-    }
-  ]
+  "presets": [{ "name": "L’Atelier" }]
 }
 {% endschema %}

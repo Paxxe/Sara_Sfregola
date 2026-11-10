@@ -10,21 +10,21 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="page-width section-y border-t border-ink/10"
+  class="px-[6%] pb-20 pt-[15px] md:pb-[130px] md:pt-[30px]"
 >
   <product-filter class="block">
-    <div class="mb-12 flex flex-col gap-6 md:mb-16 md:flex-row md:items-end md:justify-between">
+    <div class="mb-[22px] md:flex md:items-end md:justify-between">
       <div>
-        <p class="eyebrow mb-6 text-stone">
+        <p class="eyebrow mb-[22px]">
           {%- if section.settings.number != blank -%}
             {{ section.settings.number }} /
           {% endif -%}
-          <span class="text-ink">{{ section.settings.eyebrow }}</span>
+          <span>{{ section.settings.eyebrow }}</span>
         </p>
-        <h2 class="display-lg">{{ section.settings.heading }}</h2>
+        <h2 class="text-[29px] md:text-[35px]">{{ section.settings.heading }}</h2>
       </div>
       {%- if section.settings.side_text != blank -%}
-        <p class="max-w-xs text-sm leading-relaxed text-stone md:text-right">{{ section.settings.side_text }}</p>
+        <span class="mt-5 block text-[9px] leading-[1.8] tracking-[1px] md:mt-0">{{ section.settings.side_text }}</span>
       {%- endif -%}
     </div>
 
@@ -32,7 +32,7 @@
       <div
         role="group"
         aria-label="{{ 'sections.featured_creations.categories' | t }}"
-        class="mb-10 flex flex-wrap gap-x-8 gap-y-3 md:mb-14"
+        class="mb-[35px] mt-[25px] flex gap-[22px] md:mb-[55px] md:gap-[25px]"
       >
         <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">
           {{- section.settings.all_label -}}
@@ -51,7 +51,7 @@
       </div>
     {%- endif -%}
 
-    <div class="grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+    <div class="creations-grid" data-grid>
       {%- if has_products -%}
         {%- for product in featured.products limit: section.settings.products_to_show -%}
           {%- capture product_tags -%}
@@ -61,31 +61,19 @@
           {%- render 'product-card', product: product, tags: product_tags -%}
         {%- endfor -%}
       {%- else -%}
-        {%- comment -%} Segnaposto: un prodotto per ogni categoria filtro {%- endcomment -%}
-        {%- for i in (1..3) -%}
+        {%- comment -%} Segnaposto come nella bozza: un pezzo per categoria {%- endcomment -%}
+        {%- assign placeholder_titles = section.settings.placeholder_titles | split: ',' -%}
+        {%- for i in (0..2) -%}
           {%- liquid
-            assign block_index = i | minus: 1
-            assign placeholder_tags = section.blocks[block_index].settings.tag | handleize
+            assign placeholder_tags = section.blocks[i].settings.tag | handleize
+            assign placeholder_title = placeholder_titles[i] | strip
           -%}
-          {%- render 'product-card', index: i, tags: placeholder_tags -%}
+          {%- render 'product-card', title: placeholder_title, tags: placeholder_tags -%}
         {%- endfor -%}
       {%- endif -%}
     </div>
 
-    <p class="mt-10 text-sm text-stone" data-empty hidden>
-      {{- 'sections.featured_creations.empty' | t -}}
-    </p>
-
-    {%- if section.settings.view_all_label != blank -%}
-      <div class="mt-16 text-center">
-        <a
-          class="line-link"
-          href="{% if has_products %}{{ featured.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}"
-        >
-          {{- section.settings.view_all_label }} <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-    {%- endif -%}
+    <p class="py-[35px] text-muted" data-empty hidden>{{ 'sections.featured_creations.empty' | t }}</p>
   </product-filter>
 </section>
 
@@ -133,10 +121,11 @@
       "type": "range",
       "id": "products_to_show",
       "label": "Prodotti da mostrare",
+      "info": "La composizione asimmetrica si ripete ogni 3 prodotti.",
       "min": 3,
-      "max": 24,
+      "max": 12,
       "step": 3,
-      "default": 6
+      "default": 3
     },
     {
       "type": "text",
@@ -146,9 +135,10 @@
     },
     {
       "type": "text",
-      "id": "view_all_label",
-      "label": "Testo link \"vedi tutte\"",
-      "default": "Vedi tutte le creazioni"
+      "id": "placeholder_titles",
+      "label": "Titoli segnaposto",
+      "default": "Creazione 01, Creazione 02, Accessorio",
+      "info": "Usati finché non scegli una collezione. Separati da virgola."
     },
     {
       "type": "paragraph",
@@ -181,8 +171,8 @@
       "name": "Creazioni in evidenza",
       "blocks": [
         { "type": "filter", "settings": { "label": "Couture", "tag": "couture" } },
-        { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "pezzi-unici" } },
-        { "type": "filter", "settings": { "label": "Accessori", "tag": "accessori" } }
+        { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "unique" } },
+        { "type": "filter", "settings": { "label": "Accessori", "tag": "accessories" } }
       ]
     }
   ]

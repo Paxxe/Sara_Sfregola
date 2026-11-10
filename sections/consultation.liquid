@@ -1,84 +1,70 @@
 {%- liquid
   assign dialog_id = 'ConsultDialog-' | append: section.id
   assign form_id = 'ConsultForm-' | append: section.id
-  if section.settings.dark
-    assign scheme_class = 'bg-ink text-ivory'
-    assign muted_class = 'text-ivory/60'
-    assign button_class = 'btn-solid btn-solid--inverse'
-  else
-    assign scheme_class = 'bg-sand/60 text-ink'
-    assign muted_class = 'text-stone'
-    assign button_class = 'btn-solid'
-  endif
 -%}
 
 <section
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="{{ scheme_class }}"
+  class="bg-oat px-[8%] py-20 text-center md:px-5 md:py-[120px]"
 >
-  <div class="page-width section-y text-center">
-    <p class="eyebrow mb-8 {{ muted_class }}">
-      {%- if section.settings.number != blank -%}
-        {{ section.settings.number }} /
-      {% endif -%}
-      {{ section.settings.eyebrow }}
-    </p>
-    <h2 class="display-xl mx-auto max-w-4xl">{{ section.settings.heading }}</h2>
-    {%- if section.settings.text != blank -%}
-      <div class="rte mx-auto mt-8 max-w-lg text-base leading-relaxed opacity-75">{{ section.settings.text }}</div>
-    {%- endif -%}
+  <p class="eyebrow mb-[27px]">
+    {%- if section.settings.number != blank -%}
+      {{ section.settings.number }} /
+    {% endif -%}
+    {{ section.settings.eyebrow }}
+  </p>
+  <h2 class="text-[32px] md:text-[42px]">{{ section.settings.heading }}</h2>
+  {%- if section.settings.text != blank -%}
+    <div class="rte mx-auto my-7 max-w-[490px] leading-[1.9]">{{ section.settings.text }}</div>
+  {%- endif -%}
 
-    <button
-      type="button"
-      class="{{ button_class }} mt-12"
-      data-dialog-open="{{ dialog_id }}"
-      aria-haspopup="dialog"
-    >
-      {{- section.settings.button_label }} <span aria-hidden="true">↗</span>
+  {%- if section.settings.button_mode == 'link' and section.settings.button_url != blank -%}
+    <a class="btn-solid mt-7" href="{{ section.settings.button_url }}">{{ section.settings.button_label }} ↗</a>
+  {%- else -%}
+    <button type="button" class="btn-solid mt-7" data-dialog-open="{{ dialog_id }}" aria-haspopup="dialog">
+      {{- section.settings.button_label }} ↗
     </button>
-  </div>
+  {%- endif -%}
 </section>
 
-{%- comment -%} Modale con modulo di contatto Shopify {%- endcomment -%}
-<dialog
-  id="{{ dialog_id }}"
-  class="m-auto max-h-[92svh] w-[min(680px,calc(100%-2rem))] overflow-y-auto bg-ivory p-0 text-ink"
-  aria-labelledby="{{ dialog_id }}-title"
->
-  <div class="relative p-8 md:p-12">
+{%- unless section.settings.button_mode == 'link' and section.settings.button_url != blank -%}
+  <dialog
+    id="{{ dialog_id }}"
+    class="m-auto max-h-[90svh] w-[min(860px,94vw)] overflow-y-auto border-0 bg-paper px-[23px] py-[45px] text-ink md:p-[55px]"
+    aria-labelledby="{{ dialog_id }}-title"
+  >
     <button
       type="button"
-      class="absolute right-3 top-3 flex h-11 w-11 items-center justify-center text-2xl font-light transition-opacity hover:opacity-60"
+      class="absolute right-[18px] top-3 text-[30px]"
       aria-label="{{ 'general.close' | t }}"
       data-dialog-close
     >
       ×
     </button>
 
-    <p class="eyebrow mb-4 text-stone">{{ section.settings.eyebrow }}</p>
-    <h3 id="{{ dialog_id }}-title" class="display-md mb-8">{{ section.settings.form_heading }}</h3>
+    <h2 id="{{ dialog_id }}-title" class="mb-6 text-[32px] md:text-[43px]">{{ section.settings.form_heading }}</h2>
 
-    {%- form 'contact', id: form_id, class: 'grid gap-6' -%}
+    {%- form 'contact', id: form_id -%}
       {%- if form.posted_successfully? -%}
-        <p class="border border-ink/15 bg-sand/50 p-4 text-sm" role="status" data-form-status>
+        <p class="mt-5 whitespace-pre-line bg-sand p-5" role="status" data-form-status>
           {{ section.settings.success_message }}
         </p>
       {%- elsif form.errors -%}
-        <div class="border border-red-700/30 bg-red-50 p-4 text-sm text-red-800" role="alert" data-form-status>
+        <div class="mt-5 bg-sand p-5 text-[#8a2a1a]" role="alert" data-form-status>
           {{ form.errors | default_errors }}
         </div>
       {%- endif -%}
 
       <input type="hidden" name="contact[Origine]" value="Consulenza privata — Home page">
 
-      <div class="grid gap-6 md:grid-cols-2">
-        <label class="block">
+      <div class="grid grid-cols-1 gap-x-8 md:grid-cols-2">
+        <label>
           <span class="field-label">{{ 'contact.name' | t }}</span>
           <input class="field" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}" required>
         </label>
-        <label class="block">
+        <label>
           <span class="field-label">{{ 'contact.email' | t }}</span>
           <input
             class="field"
@@ -91,11 +77,11 @@
             required
           >
         </label>
-        <label class="block">
+        <label>
           <span class="field-label">{{ 'contact.phone' | t }}</span>
           <input class="field" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
         </label>
-        <label class="block">
+        <label>
           <span class="field-label">{{ 'contact.event_date' | t }}</span>
           <input class="field" type="date" name="contact[Data evento]">
         </label>
@@ -103,7 +89,7 @@
 
       {%- assign request_types = section.settings.request_types | split: ',' -%}
       {%- if request_types.size > 0 -%}
-        <label class="block">
+        <label>
           <span class="field-label">{{ 'contact.request_type' | t }}</span>
           <select class="field" name="contact[Tipo di richiesta]">
             {%- for type in request_types -%}
@@ -113,17 +99,15 @@
         </label>
       {%- endif -%}
 
-      <label class="block">
+      <label>
         <span class="field-label">{{ 'contact.message' | t }}</span>
-        <textarea class="field min-h-[120px] resize-y" name="contact[body]" rows="4">{{ form.body }}</textarea>
+        <textarea class="field min-h-[90px]" name="contact[body]" rows="4">{{ form.body }}</textarea>
       </label>
 
-      <button type="submit" class="btn-solid mt-2 w-full md:w-auto md:justify-self-start">
-        {{- section.settings.submit_label }} <span aria-hidden="true">↗</span>
-      </button>
+      <button type="submit" class="btn-solid mt-5">{{ section.settings.submit_label }} ↗</button>
     {%- endform -%}
-  </div>
-</dialog>
+  </dialog>
+{%- endunless -%}
 
 {% schema %}
 {
@@ -135,12 +119,6 @@
       "id": "anchor",
       "label": "Ancora (id)",
       "default": "consulenza"
-    },
-    {
-      "type": "checkbox",
-      "id": "dark",
-      "label": "Sfondo scuro",
-      "default": true
     },
     {
       "type": "text",
@@ -172,6 +150,22 @@
       "default": "Prepara la tua richiesta"
     },
     {
+      "type": "select",
+      "id": "button_mode",
+      "label": "Azione pulsante",
+      "options": [
+        { "value": "dialog", "label": "Apri modulo in finestra" },
+        { "value": "link", "label": "Vai a una pagina" }
+      ],
+      "default": "dialog"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Pagina di destinazione",
+      "info": "Usata con \"Vai a una pagina\" (es. pagina consulenza privata)."
+    },
+    {
       "type": "header",
       "content": "Modulo"
     },
@@ -201,10 +195,6 @@
       "default": "Grazie, la tua richiesta è stata inviata. Ti ricontatteremo al più presto."
     }
   ],
-  "presets": [
-    {
-      "name": "Consulenza privata"
-    }
-  ]
+  "presets": [{ "name": "Consulenza privata" }]
 }
 {% endschema %}

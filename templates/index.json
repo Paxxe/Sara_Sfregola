@@ -9,13 +9,12 @@
       },
       "block_order": ["slide-1", "slide-2", "slide-3"],
       "settings": {
+        "show_eyebrow": false,
         "eyebrow": "SARA SFREGOLA",
         "heading": "Creazioni",
         "link_label": "Esplora le creazioni",
-        "scroll_label": "Scorri per esplorare",
-        "location": "Barletta, Italia",
-        "autoplay": true,
-        "speed": 6
+        "scroll_label": "SCORRI PER ESPLORARE",
+        "location": "BARLETTA, ITALIA"
       }
     },
     "intro": {
@@ -32,8 +31,8 @@
       "type": "featured-creations",
       "blocks": {
         "filter-couture": { "type": "filter", "settings": { "label": "Couture", "tag": "couture" } },
-        "filter-unique": { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "pezzi-unici" } },
-        "filter-accessories": { "type": "filter", "settings": { "label": "Accessori", "tag": "accessori" } }
+        "filter-unique": { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "unique" } },
+        "filter-accessories": { "type": "filter", "settings": { "label": "Accessori", "tag": "accessories" } }
       },
       "block_order": ["filter-couture", "filter-unique", "filter-accessories"],
       "settings": {
@@ -41,7 +40,8 @@
         "number": "01",
         "eyebrow": "LE CREAZIONI",
         "heading": "Creazioni",
-        "products_to_show": 6
+        "products_to_show": 3,
+        "placeholder_titles": "Creazione 01, Creazione 02, Accessorio"
       }
     },
     "savoir-faire": {
@@ -90,18 +90,18 @@
         "number": "04",
         "eyebrow": "L’ATELIER",
         "heading": "The Atelier",
-        "caption": "Immagine"
+        "caption": "IMMAGINE"
       }
     },
     "consulenza": {
       "type": "consultation",
       "settings": {
         "anchor": "consulenza",
-        "dark": true,
         "number": "05",
         "eyebrow": "PRIVATE APPOINTMENT",
         "heading": "Consulenza privata",
-        "button_label": "Prepara la tua richiesta"
+        "button_label": "Prepara la tua richiesta",
+        "button_mode": "dialog"
       }
     },
     "faq": {
@@ -116,8 +116,7 @@
       "settings": {
         "anchor": "faq",
         "eyebrow": "CUSTOMER CARE",
-        "heading": "FAQ",
-        "link_label": "Customer care"
+        "heading": "FAQ"
       }
     }
   },

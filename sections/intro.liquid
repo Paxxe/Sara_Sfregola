@@ -2,28 +2,28 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="page-width section-y text-center"
+  class="px-[7%] py-[85px] text-center md:px-[25px] md:py-[100px]"
 >
   {%- if section.settings.eyebrow != blank -%}
-    <p class="eyebrow mb-8 text-stone">{{ section.settings.eyebrow }}</p>
+    <p class="eyebrow mb-7 md:mb-[38px]">{{ section.settings.eyebrow }}</p>
   {%- endif -%}
 
-  <h2 class="display-xl mx-auto max-w-5xl">
+  <h2 class="text-[34px] leading-[1.22] md:text-[35px] md:leading-[1.17]">
     {{- section.settings.heading -}}
     {%- if section.settings.heading_italic != blank -%}
-      <br><em class="font-light italic">{{ section.settings.heading_italic }}</em>
+      <br><em>{{ section.settings.heading_italic }}</em>
     {%- endif -%}
   </h2>
 
   {%- if section.settings.text != blank -%}
-    <div class="rte mx-auto mt-10 max-w-xl text-base leading-relaxed text-ink/75">
+    <div class="rte mx-auto my-[27px] max-w-[430px] text-[12px] leading-[1.95] text-ink-soft md:my-[35px] md:text-[13px]">
       {{ section.settings.text }}
     </div>
   {%- endif -%}
 
   {%- if section.settings.link_label != blank -%}
-    <a class="line-link mt-12" href="{{ section.settings.link_url | default: routes.root_url }}">
-      {{- section.settings.link_label }} <span aria-hidden="true">↗</span>
+    <a class="line-link mt-[30px]" href="{{ section.settings.link_url | default: routes.root_url }}">
+      {{- section.settings.link_label }} ↗
     </a>
   {%- endif -%}
 </section>
@@ -37,8 +37,7 @@
       "type": "text",
       "id": "anchor",
       "label": "Ancora (id)",
-      "default": "intro",
-      "info": "Usabile nei link come #intro"
+      "default": "intro"
     },
     {
       "type": "text",
@@ -55,7 +54,7 @@
     {
       "type": "text",
       "id": "heading_italic",
-      "label": "Titolo (seconda riga, corsivo)",
+      "label": "Seconda riga (corsivo serif)",
       "default": "fatte a mano."
     },
     {
@@ -66,7 +65,7 @@
     {
       "type": "text",
       "id": "link_label",
-      "label": "Testo link",
+      "label": "Testo pulsante",
       "default": "Entra nell’atelier"
     },
     {
@@ -75,10 +74,6 @@
       "label": "Link"
     }
   ],
-  "presets": [
-    {
-      "name": "Introduzione"
-    }
-  ]
+  "presets": [{ "name": "Introduzione" }]
 }
 {% endschema %}

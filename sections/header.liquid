@@ -1,15 +1,23 @@
-<site-header class="block border-b border-ink/10 bg-ivory/90 backdrop-blur-md">
-  <div class="page-width flex h-16 items-center justify-between gap-8 md:h-20">
-    <a href="{{ routes.root_url }}" class="block shrink-0" aria-label="{{ shop.name | escape }}">
-      {%- render 'logo', class: 'h-auto w-[min(var(--logo-width),45vw)]', text_class: 'items-start text-left text-xl md:text-2xl' -%}
+<site-header class="relative block text-ink">
+  <div class="flex h-[86px] items-center justify-between px-[5%] md:h-[108px] md:px-[3%]">
+    <a href="{{ routes.root_url }}" class="flex h-16 w-[73px] items-center md:h-[78px] md:w-[88px]">
+      {%- render 'logo',
+        class: 'h-full w-full object-contain brightness-0',
+        text_class: 'items-start text-left text-[15px] lg:text-[21px] whitespace-nowrap',
+        sizes: '88px'
+      -%}
     </a>
 
     {%- if section.settings.menu.links.size > 0 -%}
-      <nav aria-label="{{ 'header.main_nav' | t }}" class="hidden items-center gap-8 lg:flex xl:gap-10">
+      <nav
+        id="SiteNav-{{ section.id }}"
+        aria-label="{{ 'header.main_nav' | t }}"
+        class="absolute inset-x-0 top-[86px] z-10 hidden flex-col gap-[25px] bg-paper p-[25px] text-[10px] uppercase tracking-[1px] shadow-[0_15px_30px_#0001] data-[open]:flex md:static md:flex md:flex-row md:gap-[21px] md:bg-transparent md:p-0 md:shadow-none lg:gap-[38px]"
+        data-nav
+      >
         {%- for link in section.settings.menu.links -%}
           <a
             href="{{ link.url }}"
-            class="nav-link{% if link.active or link.child_active %} is-active{% endif %}"
             {% if link.current %}
               aria-current="page"
             {% endif %}
@@ -19,41 +27,22 @@
         {%- endfor -%}
       </nav>
 
-      <button
-        type="button"
-        class="-mr-2 flex h-11 w-11 items-center justify-center text-xl lg:hidden"
-        aria-expanded="false"
-        aria-controls="MobileNav-{{ section.id }}"
-        aria-label="{{ 'header.open_menu' | t }}"
-        data-label-open="{{ 'header.open_menu' | t }}"
-        data-label-close="{{ 'header.close_menu' | t }}"
-        data-menu-toggle
-      >
-        <span aria-hidden="true" data-menu-icon>☰</span>
-      </button>
+      <div class="flex items-center gap-3 text-[10px] md:gap-4">
+        <button
+          type="button"
+          class="block md:hidden"
+          aria-expanded="false"
+          aria-controls="SiteNav-{{ section.id }}"
+          aria-label="{{ 'header.open_menu' | t }}"
+          data-label-open="{{ 'header.open_menu' | t }}"
+          data-label-close="{{ 'header.close_menu' | t }}"
+          data-menu-toggle
+        >
+          ☰
+        </button>
+      </div>
     {%- endif -%}
   </div>
-
-  {%- if section.settings.menu.links.size > 0 -%}
-    <nav
-      id="MobileNav-{{ section.id }}"
-      class="border-t border-ink/10 bg-ivory lg:hidden"
-      aria-label="{{ 'header.main_nav' | t }}"
-      data-mobile-nav
-      hidden
-    >
-      <ul class="page-width flex flex-col py-6">
-        {%- for link in section.settings.menu.links -%}
-          <li class="border-b border-ink/10 last:border-0">
-            <a href="{{ link.url }}" class="flex items-center justify-between py-4 font-serif text-3xl font-light">
-              {{- link.title -}}
-              <span aria-hidden="true" class="text-base">↗</span>
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
-    </nav>
-  {%- endif -%}
 </site-header>
 
 {% schema %}
@@ -69,6 +58,10 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "paragraph",
+      "content": "In homepage l'header è trasparente e sovrapposto all'hero."
     }
   ]
 }

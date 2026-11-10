@@ -2,12 +2,12 @@
   "current": "Default",
   "presets": {
     "Default": {
-      "logo_width": 170,
       "logo_tagline": "Creazione & Design",
-      "color_bg": "#F6F1EA",
-      "color_ink": "#1E1B18",
-      "color_muted": "#8C8279",
-      "color_accent": "#E8DFD2"
+      "color_paper": "#F8F5EE",
+      "color_ink": "#292820",
+      "color_line": "#DCD7CD",
+      "color_sand": "#EEE9DF",
+      "color_footer": "#252820"
     }
   }
 }

@@ -2,47 +2,46 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="bg-sand/60"
+  class="grid grid-cols-1 bg-paper px-[6%] pb-[65px] pt-[15px] md:grid-cols-[1.05fr_1fr] md:gap-[6%] md:px-[4%] md:pb-[110px] md:pt-[30px]"
 >
-  <div class="page-width section-y grid items-center gap-12 md:grid-cols-2 lg:gap-24">
-    <div class="aspect-[4/5] overflow-hidden{% if section.settings.image_right %} md:order-2{% endif %}">
-      {%- render 'media',
-        image: section.settings.image,
-        placeholder: 'detailed-apparel-1',
-        class: 'h-full w-full object-cover',
-        sizes: '(min-width: 768px) 50vw, 100vw'
-      -%}
-    </div>
+  <div class="relative min-h-[460px] md:min-h-[650px] lg:min-h-[760px]">
+    {%- render 'media',
+      image: section.settings.image,
+      placeholder: 'detailed-apparel-1',
+      class: 'absolute inset-0 h-full w-full object-cover',
+      sizes: '(min-width: 721px) 52vw, 100vw'
+    -%}
+  </div>
 
-    <div>
-      <p class="eyebrow mb-6 text-stone">
-        {%- if section.settings.number != blank -%}
-          {{ section.settings.number }} /
-        {% endif -%}
-        {{ section.settings.eyebrow }}
-      </p>
-      <h2 class="display-lg mb-10 md:mb-14">{{ section.settings.heading }}</h2>
+  <div class="pt-[55px] md:self-center md:pb-[30px] md:pr-[5%] md:pt-[90px] lg:pr-[14%]">
+    <p class="eyebrow mb-[27px]">
+      {%- if section.settings.number != blank -%}
+        {{ section.settings.number }} /
+      {% endif -%}
+      {{ section.settings.eyebrow }}
+    </p>
+    <h2 class="text-[37px] leading-[1.2] md:text-[45px]">{{ section.settings.heading }}</h2>
 
-      <div class="border-t border-ink/15">
-        {%- for block in section.blocks -%}
-          <details class="accordion" {{ block.shopify_attributes }}>
-            <summary>
-              {{ block.settings.title }}
-              <span class="accordion-icon" aria-hidden="true"></span>
-            </summary>
-            <div class="accordion-body">
-              {%- if block.settings.text != blank -%}
-                <div class="rte">{{ block.settings.text }}</div>
-              {%- endif -%}
-              {%- if block.settings.link_label != blank -%}
-                <a class="line-link mt-6 text-ink" href="{{ block.settings.link_url | default: routes.root_url }}">
-                  {{- block.settings.link_label }} <span aria-hidden="true">↗</span>
-                </a>
-              {%- endif -%}
-            </div>
-          </details>
-        {%- endfor -%}
-      </div>
+    {%- if section.settings.text != blank -%}
+      <div class="rte my-[30px] leading-[1.9] text-ink-soft">{{ section.settings.text }}</div>
+    {%- endif -%}
+
+    <div class="mt-[30px]">
+      {%- for block in section.blocks -%}
+        <details class="accordion" {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.title }}</summary>
+          <div class="accordion-body">
+            {%- if block.settings.text != blank -%}
+              <div class="rte">{{ block.settings.text }}</div>
+            {%- endif -%}
+            {%- if block.settings.link_label != blank -%}
+              <a class="line-link mt-4 text-ink" href="{{ block.settings.link_url | default: routes.root_url }}">
+                {{- block.settings.link_label }} ↗
+              </a>
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -65,12 +64,6 @@
       "label": "Immagine"
     },
     {
-      "type": "checkbox",
-      "id": "image_right",
-      "label": "Immagine a destra (desktop)",
-      "default": false
-    },
-    {
       "type": "text",
       "id": "number",
       "label": "Numero sezione",
@@ -87,6 +80,11 @@
       "id": "heading",
       "label": "Titolo",
       "default": "Le tecniche artigianali"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo"
     }
   ],
   "blocks": [
@@ -108,7 +106,7 @@
         {
           "type": "text",
           "id": "link_label",
-          "label": "Testo link",
+          "label": "Testo pulsante",
           "default": "Scopri la tecnica"
         },
         {

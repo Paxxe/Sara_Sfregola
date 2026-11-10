@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Sara Sfregola Atelier",
-    "theme_version": "1.0.0",
+    "theme_version": "1.1.0",
     "theme_author": "Sara Sfregola",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://help.shopify.com"
@@ -13,23 +13,14 @@
       {
         "type": "image_picker",
         "id": "logo",
-        "label": "Logo (scuro)"
+        "label": "Logo",
+        "info": "SVG o PNG. Nell'header e nell'hero viene reso nero."
       },
       {
         "type": "image_picker",
-        "id": "logo_inverse",
-        "label": "Logo chiaro",
-        "info": "Usato sull'hero e nel footer."
-      },
-      {
-        "type": "range",
-        "id": "logo_width",
-        "label": "Larghezza logo",
-        "min": 80,
-        "max": 320,
-        "step": 10,
-        "unit": "px",
-        "default": 170
+        "id": "logo_footer",
+        "label": "Logo footer",
+        "info": "Versione chiara per lo sfondo scuro. Se vuoto usa il logo principale."
       },
       {
         "type": "text",
@@ -50,27 +41,33 @@
     "settings": [
       {
         "type": "color",
-        "id": "color_bg",
-        "label": "Sfondo",
-        "default": "#F6F1EA"
+        "id": "color_paper",
+        "label": "Sfondo (paper)",
+        "default": "#F8F5EE"
       },
       {
         "type": "color",
         "id": "color_ink",
-        "label": "Testo",
-        "default": "#1E1B18"
+        "label": "Testo (ink)",
+        "default": "#292820"
       },
       {
         "type": "color",
-        "id": "color_muted",
-        "label": "Testo secondario",
-        "default": "#8C8279"
+        "id": "color_line",
+        "label": "Linee",
+        "default": "#DCD7CD"
       },
       {
         "type": "color",
-        "id": "color_accent",
-        "label": "Sfondo sezioni (accento)",
-        "default": "#E8DFD2"
+        "id": "color_sand",
+        "label": "Sabbia",
+        "default": "#EEE9DF"
+      },
+      {
+        "type": "color",
+        "id": "color_footer",
+        "label": "Sfondo footer",
+        "default": "#252820"
       }
     ]
   }
