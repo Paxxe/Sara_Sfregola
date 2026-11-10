@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -7,18 +16,24 @@
           "type": "editorial",
           "settings": {
             "after_products": 6,
+            "image_right": false,
             "eyebrow": "SAVOIR-FAIRE",
             "heading": "Ogni pezzo",
             "heading_italic": "racconta un tempo.",
-            "link_label": "Scopri le tecniche"
+            "text": "",
+            "link_label": "Scopri le tecniche",
+            "link_url": ""
           }
         }
       },
-      "block_order": ["editoriale"],
+      "block_order": [
+        "editoriale"
+      ],
       "settings": {
         "subtitle": "fatte a mano.",
         "show_description": true,
-        "show_image": false,
+        "show_image": true,
+        "tabs_menu": "",
         "tabs_filter_label": "Tipo di prodotto",
         "all_label": "Tutte",
         "columns": "3",
@@ -38,10 +53,19 @@
         "number": "",
         "eyebrow": "PRIVATE APPOINTMENT",
         "heading": "Consulenza privata",
+        "text": "<p>\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo \"Lorem ipsum dolor sit a consectetur adipiscing elit, sed do eiusmod tempo</p>",
         "button_label": "Prepara la tua richiesta",
-        "button_mode": "dialog"
+        "button_mode": "dialog",
+        "button_url": "",
+        "form_heading": "Prepara la tua richiesta",
+        "request_types": "Abito da sposa, Abito da cerimonia, Couture su misura, Accessori, Altro",
+        "submit_label": "Invia la richiesta",
+        "success_message": "Grazie, la tua richiesta è stata inviata. Ti ricontatteremo al più presto."
       }
     }
   },
-  "order": ["main", "consulenza"]
+  "order": [
+    "main",
+    "consulenza"
+  ]
 }
