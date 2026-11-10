@@ -1,0 +1,62 @@
+{%- comment -%}
+  Card prodotto della griglia "Creazioni".
+
+  Parametri:
+  - product: oggetto prodotto (se assente viene mostrato un segnaposto)
+  - tags: stringa di tag handleizzati separati da spazio (per i filtri)
+  - index: numero progressivo per il segnaposto
+{%- endcomment -%}
+{%- liquid
+  if product
+    assign card_url = product.url
+    assign card_title = product.title
+    assign hours = product.metafields.custom.ore_manifattura.value
+  else
+    assign card_url = routes.all_products_collection_url
+    assign card_title = 'sections.featured_creations.placeholder_title' | t: number: index
+    assign placeholder_name = 'product-apparel-' | append: index
+  endif
+-%}
+<a
+  href="{{ card_url }}"
+  class="group block"
+  data-product
+  data-tags="{{ tags | strip }}"
+>
+  <div class="aspect-[3/4] overflow-hidden bg-stone/10">
+    {%- if product.featured_media -%}
+      {{-
+        product.featured_media
+        | image_url: width: 1400
+        | image_tag:
+          class: 'h-full w-full object-cover transition-transform duration-[1200ms] ease-silk group-hover:scale-[1.04]',
+          widths: '400,600,800,1000,1400',
+          sizes: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+          loading: 'lazy'
+      -}}
+    {%- else -%}
+      {{- placeholder_name | default: 'product-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+    {%- endif -%}
+  </div>
+
+  <div class="mt-5 flex items-baseline justify-between gap-4">
+    <h3 class="font-serif text-2xl font-light leading-tight md:text-3xl">{{ card_title }}</h3>
+    <span
+      aria-hidden="true"
+      class="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+    >
+      ↗
+    </span>
+  </div>
+
+  <p class="mt-2 text-[0.7rem] uppercase tracking-[0.18em] text-stone">
+    {%- if product -%}
+      {%- if hours != blank -%}
+        {{ 'sections.featured_creations.hours' | t: count: hours }} ·
+      {% endif -%}
+      {{ product.price | money }}
+    {%- else -%}
+      {{ 'sections.featured_creations.placeholder_meta' | t }}
+    {%- endif -%}
+  </p>
+</a>

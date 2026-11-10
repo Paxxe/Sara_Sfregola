@@ -1,0 +1,75 @@
+<site-header class="block border-b border-ink/10 bg-ivory/90 backdrop-blur-md">
+  <div class="page-width flex h-16 items-center justify-between gap-8 md:h-20">
+    <a href="{{ routes.root_url }}" class="block shrink-0" aria-label="{{ shop.name | escape }}">
+      {%- render 'logo', class: 'h-auto w-[min(var(--logo-width),45vw)]', text_class: 'items-start text-left text-xl md:text-2xl' -%}
+    </a>
+
+    {%- if section.settings.menu.links.size > 0 -%}
+      <nav aria-label="{{ 'header.main_nav' | t }}" class="hidden items-center gap-8 lg:flex xl:gap-10">
+        {%- for link in section.settings.menu.links -%}
+          <a
+            href="{{ link.url }}"
+            class="nav-link{% if link.active or link.child_active %} is-active{% endif %}"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- link.title -}}
+          </a>
+        {%- endfor -%}
+      </nav>
+
+      <button
+        type="button"
+        class="-mr-2 flex h-11 w-11 items-center justify-center text-xl lg:hidden"
+        aria-expanded="false"
+        aria-controls="MobileNav-{{ section.id }}"
+        aria-label="{{ 'header.open_menu' | t }}"
+        data-label-open="{{ 'header.open_menu' | t }}"
+        data-label-close="{{ 'header.close_menu' | t }}"
+        data-menu-toggle
+      >
+        <span aria-hidden="true" data-menu-icon>☰</span>
+      </button>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.menu.links.size > 0 -%}
+    <nav
+      id="MobileNav-{{ section.id }}"
+      class="border-t border-ink/10 bg-ivory lg:hidden"
+      aria-label="{{ 'header.main_nav' | t }}"
+      data-mobile-nav
+      hidden
+    >
+      <ul class="page-width flex flex-col py-6">
+        {%- for link in section.settings.menu.links -%}
+          <li class="border-b border-ink/10 last:border-0">
+            <a href="{{ link.url }}" class="flex items-center justify-between py-4 font-serif text-3xl font-light">
+              {{- link.title -}}
+              <span aria-hidden="true" class="text-base">↗</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+</site-header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "header-wrapper",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

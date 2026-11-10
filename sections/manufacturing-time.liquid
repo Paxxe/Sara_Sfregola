@@ -1,0 +1,76 @@
+<section class="page-width section-y">
+  <div class="mb-14 max-w-3xl md:mb-20">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow mb-6 text-stone">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="display-lg">{{ section.settings.heading }}</h2>
+  </div>
+
+  <div class="grid border-t border-ink/15 md:grid-cols-3">
+    {%- for block in section.blocks -%}
+      <article
+        class="border-b border-ink/15 py-10 md:border-b-0 md:py-14 md:pr-10{% unless forloop.first %} md:border-l md:pl-10{% endunless %}"
+        {{ block.shopify_attributes }}
+      >
+        <span class="font-serif text-lg italic text-stone">
+          {{- forloop.index | prepend: '0' | slice: -2, 2 -}}
+        </span>
+        <h3 class="display-md mt-6">{{ block.settings.title }}</h3>
+        {%- if block.settings.text != blank -%}
+          <div class="rte mt-5 text-sm leading-relaxed text-ink/70">{{ block.settings.text }}</div>
+        {%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tempo di lavorazione",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "MANIFATTURA"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Il tempo di lavorazione"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Voce",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Ore di manifattura"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Testo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo di lavorazione",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Ore di manifattura" } },
+        { "type": "item", "settings": { "title": "Tempi di realizzazione" } },
+        { "type": "item", "settings": { "title": "Cura del capo" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

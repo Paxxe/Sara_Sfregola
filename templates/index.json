@@ -1,0 +1,125 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-scroll",
+      "blocks": {
+        "slide-1": { "type": "slide", "settings": {} },
+        "slide-2": { "type": "slide", "settings": {} },
+        "slide-3": { "type": "slide", "settings": {} }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3"],
+      "settings": {
+        "eyebrow": "SARA SFREGOLA",
+        "heading": "Creazioni",
+        "link_label": "Esplora le creazioni",
+        "scroll_label": "Scorri per esplorare",
+        "location": "Barletta, Italia",
+        "autoplay": true,
+        "speed": 6
+      }
+    },
+    "intro": {
+      "type": "intro",
+      "settings": {
+        "anchor": "intro",
+        "eyebrow": "THE ATELIER",
+        "heading": "Creazioni",
+        "heading_italic": "fatte a mano.",
+        "link_label": "Entra nell’atelier"
+      }
+    },
+    "creazioni": {
+      "type": "featured-creations",
+      "blocks": {
+        "filter-couture": { "type": "filter", "settings": { "label": "Couture", "tag": "couture" } },
+        "filter-unique": { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "pezzi-unici" } },
+        "filter-accessories": { "type": "filter", "settings": { "label": "Accessori", "tag": "accessori" } }
+      },
+      "block_order": ["filter-couture", "filter-unique", "filter-accessories"],
+      "settings": {
+        "anchor": "creazioni",
+        "number": "01",
+        "eyebrow": "LE CREAZIONI",
+        "heading": "Creazioni",
+        "products_to_show": 6
+      }
+    },
+    "savoir-faire": {
+      "type": "craft-techniques",
+      "blocks": {
+        "tombolo": { "type": "technique", "settings": { "title": "Tombolo" } },
+        "chiacchierino": { "type": "technique", "settings": { "title": "Chiacchierino" } },
+        "macrame": { "type": "technique", "settings": { "title": "Macramè" } },
+        "corsetteria": { "type": "technique", "settings": { "title": "Corsetteria e drappeggio" } }
+      },
+      "block_order": ["tombolo", "chiacchierino", "macrame", "corsetteria"],
+      "settings": {
+        "anchor": "savoir-faire",
+        "number": "02",
+        "eyebrow": "SAVOIR-FAIRE",
+        "heading": "Le tecniche artigianali"
+      }
+    },
+    "tempo": {
+      "type": "manufacturing-time",
+      "blocks": {
+        "ore": { "type": "item", "settings": { "title": "Ore di manifattura" } },
+        "tempi": { "type": "item", "settings": { "title": "Tempi di realizzazione" } },
+        "cura": { "type": "item", "settings": { "title": "Cura del capo" } }
+      },
+      "block_order": ["ore", "tempi", "cura"],
+      "settings": {
+        "eyebrow": "MANIFATTURA",
+        "heading": "Il tempo di lavorazione"
+      }
+    },
+    "sposa": {
+      "type": "bridal",
+      "settings": {
+        "anchor": "sposa",
+        "number": "03",
+        "eyebrow": "BRIDAL & CEREMONY",
+        "heading": "Sposa e Cerimonia",
+        "link_label": "Scopri la consulenza privata"
+      }
+    },
+    "atelier": {
+      "type": "atelier",
+      "settings": {
+        "anchor": "atelier",
+        "number": "04",
+        "eyebrow": "L’ATELIER",
+        "heading": "The Atelier",
+        "caption": "Immagine"
+      }
+    },
+    "consulenza": {
+      "type": "consultation",
+      "settings": {
+        "anchor": "consulenza",
+        "dark": true,
+        "number": "05",
+        "eyebrow": "PRIVATE APPOINTMENT",
+        "heading": "Consulenza privata",
+        "button_label": "Prepara la tua richiesta"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "ordini": { "type": "question", "settings": { "question": "Ordini e creazioni" } },
+        "taglie": { "type": "question", "settings": { "question": "Taglie e vestibilità" } },
+        "tempi": { "type": "question", "settings": { "question": "Tempi di realizzazione" } },
+        "spedizioni": { "type": "question", "settings": { "question": "Spedizioni e resi" } }
+      },
+      "block_order": ["ordini", "taglie", "tempi", "spedizioni"],
+      "settings": {
+        "anchor": "faq",
+        "eyebrow": "CUSTOMER CARE",
+        "heading": "FAQ",
+        "link_label": "Customer care"
+      }
+    }
+  },
+  "order": ["hero", "intro", "creazioni", "savoir-faire", "tempo", "sposa", "atelier", "consulenza", "faq"]
+}

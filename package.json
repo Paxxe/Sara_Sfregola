@@ -1,0 +1,15 @@
+{
+  "name": "sara-sfregola-theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tema Shopify Sara Sfregola — Atelier (Tailwind CSS)",
+  "scripts": {
+    "build": "tailwindcss -i ./src/tailwind.css -o ./assets/theme.css --minify",
+    "watch": "tailwindcss -i ./src/tailwind.css -o ./assets/theme.css --watch",
+    "dev": "shopify theme dev",
+    "check": "shopify theme check"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

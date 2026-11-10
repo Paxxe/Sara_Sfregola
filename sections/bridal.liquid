@@ -1,0 +1,100 @@
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="page-width section-y"
+>
+  <div class="grid items-end gap-10 md:grid-cols-12 md:gap-8">
+    <div class="aspect-[4/5] overflow-hidden md:col-span-7{% if section.settings.image_right %} md:order-2 md:col-start-6{% endif %}">
+      {%- render 'media',
+        image: section.settings.image,
+        placeholder: 'lifestyle-1',
+        class: 'h-full w-full object-cover',
+        sizes: '(min-width: 768px) 58vw, 100vw'
+      -%}
+    </div>
+
+    <div class="md:col-span-5{% if section.settings.image_right %} md:order-1 md:col-start-1 md:pr-10{% else %} md:pl-10{% endif %} md:pb-10">
+      <p class="eyebrow mb-6 text-stone">
+        {%- if section.settings.number != blank -%}
+          {{ section.settings.number }} /
+        {% endif -%}
+        {{ section.settings.eyebrow }}
+      </p>
+      <h2 class="display-lg">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}
+        <div class="rte mt-8 max-w-md text-base leading-relaxed text-ink/75">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.link_label != blank -%}
+        <a class="line-link mt-10" href="{{ section.settings.link_url | default: routes.root_url }}">
+          {{- section.settings.link_label }} <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sposa e Cerimonia",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "sposa"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_right",
+      "label": "Immagine a destra (desktop)",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "number",
+      "label": "Numero sezione",
+      "default": "03"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "BRIDAL & CEREMONY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Sposa e Cerimonia"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Testo link",
+      "default": "Scopri la consulenza privata"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sposa e Cerimonia"
+    }
+  ]
+}
+{% endschema %}

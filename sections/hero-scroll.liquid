@@ -1,0 +1,298 @@
+{%- comment -%}
+  Hero "racconto visivo": due colonne di immagini che scorrono in direzioni opposte,
+  logo centrale, testo editoriale e controlli (prev / next / pausa).
+  Ogni blocco "Slide" fornisce l'immagine sinistra e quella destra.
+{%- endcomment -%}
+{%- liquid
+  assign slide_count = section.blocks.size
+  assign hero_logo = section.settings.logo | default: settings.logo_inverse
+  assign progress_start = 1
+  if slide_count > 0
+    assign progress_start = 1.0 | divided_by: slide_count
+  endif
+-%}
+
+<hero-scroll
+  class="block"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.speed }}"
+>
+  <section
+    aria-label="{{ section.settings.aria_label | escape }}"
+    class="relative h-[calc(100svh-4rem)] min-h-[560px] overflow-hidden bg-ink text-ivory md:h-[calc(100svh-5rem)]"
+  >
+    {%- comment -%} Pannelli immagini {%- endcomment -%}
+    <div class="absolute inset-0 grid grid-cols-2">
+      <div class="relative h-full overflow-hidden">
+        <div class="hero-rail flex h-full flex-col" data-rail="up">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign placeholder_index = forloop.index0 | modulo: 3 | plus: 1
+              assign placeholder = 'hero-apparel-' | append: placeholder_index
+            -%}
+            <figure class="relative h-full w-full shrink-0" {{ block.shopify_attributes }}>
+              {%- render 'media',
+                image: block.settings.image_left,
+                placeholder: placeholder,
+                class: 'h-full w-full object-cover',
+                sizes: '50vw',
+                priority: forloop.first
+              -%}
+            </figure>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="relative h-full overflow-hidden">
+        <div class="hero-rail flex h-full flex-col" data-rail="down">
+          {%- for block in section.blocks reversed -%}
+            {%- liquid
+              assign placeholder_index = forloop.index0 | modulo: 4 | plus: 1
+              assign placeholder = 'product-apparel-' | append: placeholder_index
+            -%}
+            <figure class="relative h-full w-full shrink-0">
+              {%- render 'media',
+                image: block.settings.image_right,
+                placeholder: placeholder,
+                class: 'h-full w-full object-cover',
+                sizes: '50vw',
+                priority: forloop.last
+              -%}
+            </figure>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/5 to-ink/70"
+      style="opacity: {{ section.settings.overlay | divided_by: 100.0 }}"
+    ></div>
+
+    {%- comment -%} Logo centrale {%- endcomment -%}
+    <a
+      href="#"
+      class="absolute left-1/2 top-[42%] z-10 block -translate-x-1/2 -translate-y-1/2 transition-opacity duration-500 hover:opacity-80 md:top-1/2"
+      aria-label="{{ section.settings.logo_label | escape }}"
+      data-scroll-next
+    >
+      {%- render 'logo',
+        image: hero_logo,
+        class: 'h-auto w-[min(var(--hero-logo-width),60vw)]',
+        text_class: 'items-center text-center text-4xl md:text-6xl lg:text-7xl',
+        sizes: '(min-width: 768px) 420px, 60vw'
+      -%}
+    </a>
+
+    {%- comment -%} Testo editoriale {%- endcomment -%}
+    <div class="absolute bottom-24 left-4 z-10 max-w-xl md:bottom-28 md:left-10 lg:left-16">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow mb-4 text-ivory/80">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="display-xl">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.link_label != blank -%}
+        <a
+          class="line-link mt-6"
+          href="{{ section.settings.link_url | default: routes.all_products_collection_url }}"
+        >
+          {{- section.settings.link_label }} <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Barra inferiore: scroll cue, controlli, località {%- endcomment -%}
+    <div class="page-width absolute inset-x-0 bottom-0 z-10 grid grid-cols-2 items-center gap-4 pb-6 text-[0.65rem] font-medium uppercase tracking-[0.22em] md:grid-cols-3 md:pb-8">
+      <a href="#" class="hidden transition-opacity hover:opacity-60 md:block" data-scroll-next>
+        {{- section.settings.scroll_label }} <span aria-hidden="true">↓</span>
+      </a>
+
+      {%- if slide_count > 1 -%}
+        <div class="flex items-center gap-1 md:justify-center">
+          <button
+            type="button"
+            class="flex h-9 w-9 items-center justify-center transition-opacity hover:opacity-60"
+            aria-label="{{ 'sections.hero.previous' | t }}"
+            data-prev
+          >
+            ←
+          </button>
+          <span class="min-w-[4.5rem] text-center tabular-nums" data-counter aria-live="polite">
+            01 / {{ slide_count | prepend: '0' | slice: -2, 2 }}
+          </span>
+          <button
+            type="button"
+            class="flex h-9 w-9 items-center justify-center transition-opacity hover:opacity-60"
+            aria-label="{{ 'sections.hero.next' | t }}"
+            data-next
+          >
+            →
+          </button>
+          <button
+            type="button"
+            class="ml-2 flex h-9 w-9 items-center justify-center border border-ivory/40 transition-colors hover:bg-ivory hover:text-ink"
+            aria-pressed="false"
+            aria-label="{{ 'sections.hero.pause' | t }}"
+            data-label-pause="{{ 'sections.hero.pause' | t }}"
+            data-label-play="{{ 'sections.hero.play' | t }}"
+            data-motion-toggle
+          >
+            <span aria-hidden="true" data-motion-icon>Ⅱ</span>
+          </button>
+        </div>
+      {%- endif -%}
+
+      <span class="text-right">{{ section.settings.location }}</span>
+    </div>
+
+    {%- comment -%} Barra di avanzamento {%- endcomment -%}
+    <div class="absolute inset-x-0 bottom-0 z-10 h-px bg-ivory/20" aria-hidden="true">
+      <span
+        class="block h-full origin-left bg-ivory transition-transform duration-1000 ease-silk"
+        style="transform: scaleX({{ progress_start }})"
+        data-progress
+      ></span>
+    </div>
+  </section>
+</hero-scroll>
+
+<style>
+  #shopify-section-{{ section.id }} { --hero-logo-width: {{ section.settings.logo_width }}px; }
+</style>
+
+{% schema %}
+{
+  "name": "Hero racconto visivo",
+  "tag": "div",
+  "class": "section-hero-scroll",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Etichetta accessibilità",
+      "default": "Racconto visivo dell’atelier"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo centrale",
+      "info": "Se vuoto usa il logo chiaro delle impostazioni tema."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Larghezza logo",
+      "min": 160,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 380
+    },
+    {
+      "type": "text",
+      "id": "logo_label",
+      "label": "Etichetta link logo",
+      "default": "Sara Sfregola, scopri il nostro mondo"
+    },
+    {
+      "type": "header",
+      "content": "Testo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "SARA SFREGOLA"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Creazioni"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Testo link",
+      "default": "Esplora le creazioni"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "scroll_label",
+      "label": "Testo invito allo scroll",
+      "default": "Scorri per esplorare"
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "Località",
+      "default": "Barletta, Italia"
+    },
+    {
+      "type": "header",
+      "content": "Animazione"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Avanzamento automatico",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Durata di ogni slide",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Intensità velatura",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_left",
+          "label": "Immagine sinistra"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_right",
+          "label": "Immagine destra"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero racconto visivo",
+      "blocks": [{ "type": "slide" }, { "type": "slide" }, { "type": "slide" }]
+    }
+  ]
+}
+{% endschema %}

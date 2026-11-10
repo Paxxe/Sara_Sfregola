@@ -1,0 +1,15 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "tagline": "Arti tessili · Alta sartorialità · Barletta",
+        "menu": "footer",
+        "note": "Bozza grafica · Contenuti da definire"
+      }
+    }
+  },
+  "order": ["footer"]
+}

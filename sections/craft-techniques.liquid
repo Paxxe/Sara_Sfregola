@@ -1,0 +1,134 @@
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="bg-sand/60"
+>
+  <div class="page-width section-y grid items-center gap-12 md:grid-cols-2 lg:gap-24">
+    <div class="aspect-[4/5] overflow-hidden{% if section.settings.image_right %} md:order-2{% endif %}">
+      {%- render 'media',
+        image: section.settings.image,
+        placeholder: 'detailed-apparel-1',
+        class: 'h-full w-full object-cover',
+        sizes: '(min-width: 768px) 50vw, 100vw'
+      -%}
+    </div>
+
+    <div>
+      <p class="eyebrow mb-6 text-stone">
+        {%- if section.settings.number != blank -%}
+          {{ section.settings.number }} /
+        {% endif -%}
+        {{ section.settings.eyebrow }}
+      </p>
+      <h2 class="display-lg mb-10 md:mb-14">{{ section.settings.heading }}</h2>
+
+      <div class="border-t border-ink/15">
+        {%- for block in section.blocks -%}
+          <details class="accordion" {{ block.shopify_attributes }}>
+            <summary>
+              {{ block.settings.title }}
+              <span class="accordion-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-body">
+              {%- if block.settings.text != blank -%}
+                <div class="rte">{{ block.settings.text }}</div>
+              {%- endif -%}
+              {%- if block.settings.link_label != blank -%}
+                <a class="line-link mt-6 text-ink" href="{{ block.settings.link_url | default: routes.root_url }}">
+                  {{- block.settings.link_label }} <span aria-hidden="true">↗</span>
+                </a>
+              {%- endif -%}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Savoir-faire",
+  "tag": "div",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "savoir-faire"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_right",
+      "label": "Immagine a destra (desktop)",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "number",
+      "label": "Numero sezione",
+      "default": "02"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "SAVOIR-FAIRE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Le tecniche artigianali"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "technique",
+      "name": "Tecnica",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nome tecnica",
+          "default": "Tombolo"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Descrizione"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Testo link",
+          "default": "Scopri la tecnica"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Savoir-faire",
+      "blocks": [
+        { "type": "technique", "settings": { "title": "Tombolo" } },
+        { "type": "technique", "settings": { "title": "Chiacchierino" } },
+        { "type": "technique", "settings": { "title": "Macramè" } },
+        { "type": "technique", "settings": { "title": "Corsetteria e drappeggio" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="page-width section-y"
+>
+  <div class="grid gap-12 md:grid-cols-12">
+    <div class="md:col-span-4">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow mb-6 text-stone">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="display-lg">{{ section.settings.heading }}</h2>
+      {%- if section.settings.link_label != blank -%}
+        <a class="line-link mt-10" href="{{ section.settings.link_url | default: routes.root_url }}">
+          {{- section.settings.link_label }} <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="border-t border-ink/15 md:col-span-7 md:col-start-6">
+      {%- for block in section.blocks -%}
+        <details class="accordion" {{ block.shopify_attributes }}>
+          <summary>
+            {{ block.settings.question }}
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="accordion-body">
+            {%- if block.settings.answer != blank -%}
+              <div class="rte">{{ block.settings.answer }}</div>
+            {%- endif -%}
+            {%- if block.settings.link_label != blank -%}
+              <a class="line-link mt-6 text-ink" href="{{ block.settings.link_url | default: routes.root_url }}">
+                {{- block.settings.link_label }} <span aria-hidden="true">↗</span>
+              </a>
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "div",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "faq"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "CUSTOMER CARE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Testo link",
+      "default": "Customer care"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Domanda",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Domanda",
+          "default": "Ordini e creazioni"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Risposta"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Testo link",
+          "default": "Customer care"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question", "settings": { "question": "Ordini e creazioni" } },
+        { "type": "question", "settings": { "question": "Taglie e vestibilità" } },
+        { "type": "question", "settings": { "question": "Tempi di realizzazione" } },
+        { "type": "question", "settings": { "question": "Spedizioni e resi" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

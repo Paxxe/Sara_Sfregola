@@ -1,0 +1,29 @@
+{%- comment -%}
+  Logo del brand: immagine dalle impostazioni tema o fallback testuale.
+
+  Parametri:
+  - image: immagine alternativa (opzionale, es. logo chiaro sull'hero)
+  - class: classi per l'immagine
+  - text_class: classi per il fallback testuale
+  - sizes: attributo sizes (opzionale)
+{%- endcomment -%}
+{%- liquid
+  assign logo_image = image | default: settings.logo
+  assign logo_sizes = sizes | default: '320px'
+-%}
+{%- if logo_image != blank -%}
+  {{-
+    logo_image
+    | image_url: width: 800
+    | image_tag: class: class, widths: '200,400,600,800', sizes: logo_sizes, alt: shop.name
+  -}}
+{%- else -%}
+  <span class="flex flex-col font-serif leading-none {{ text_class | default: 'items-center text-center' }}">
+    <span class="font-light tracking-[0.06em]">{{ shop.name }}</span>
+    {%- if settings.logo_tagline != blank -%}
+      <span class="mt-[0.6em] font-sans text-[0.24em] font-medium uppercase tracking-eyebrow">
+        {{- settings.logo_tagline -}}
+      </span>
+    {%- endif -%}
+  </span>
+{%- endif -%}

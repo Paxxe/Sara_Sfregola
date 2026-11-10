@@ -1,0 +1,40 @@
+{
+  "general": {
+    "close": "Chiudi",
+    "back_to_top": "Torna su"
+  },
+  "accessibility": {
+    "skip_to_content": "Vai al contenuto"
+  },
+  "header": {
+    "main_nav": "Navigazione principale",
+    "open_menu": "Apri menu",
+    "close_menu": "Chiudi menu"
+  },
+  "sections": {
+    "hero": {
+      "previous": "Immagini precedenti",
+      "next": "Immagini successive",
+      "pause": "Disattiva animazione",
+      "play": "Attiva animazione"
+    },
+    "featured_creations": {
+      "categories": "Categorie",
+      "empty": "Nessuna creazione in questa categoria.",
+      "placeholder_title": "Creazione 0{{ number }}",
+      "placeholder_meta": "Ore di manifattura e prezzo da inserire",
+      "hours": {
+        "one": "{{ count }} ora di manifattura",
+        "other": "{{ count }} ore di manifattura"
+      }
+    }
+  },
+  "contact": {
+    "name": "Nome e cognome",
+    "email": "Email",
+    "phone": "Telefono",
+    "event_date": "Data dell’evento",
+    "request_type": "Tipo di richiesta",
+    "message": "Raccontaci il tuo progetto"
+  }
+}

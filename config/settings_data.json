@@ -1,0 +1,13 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "logo_width": 170,
+      "logo_tagline": "Creazione & Design",
+      "color_bg": "#F6F1EA",
+      "color_ink": "#1E1B18",
+      "color_muted": "#8C8279",
+      "color_accent": "#E8DFD2"
+    }
+  }
+}

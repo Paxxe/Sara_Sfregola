@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ivory font-sans text-ink antialiased;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  ::selection {
+    @apply bg-ink text-ivory;
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  dialog::backdrop {
+    background: rgb(var(--color-ink) / 0.55);
+    backdrop-filter: blur(2px);
+  }
+
+  :focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .header-wrapper {
+    @apply sticky top-0 z-40;
+  }
+
+  .page-width {
+    @apply mx-auto w-full max-w-page px-4 md:px-10 lg:px-16;
+  }
+
+  .section-y {
+    @apply py-20 md:py-28 lg:py-36;
+  }
+
+  .eyebrow {
+    @apply font-sans text-[0.6875rem] font-medium uppercase tracking-eyebrow;
+  }
+
+  .display-xl {
+    @apply font-serif font-light leading-[0.92] tracking-[-0.01em];
+    font-size: clamp(3.25rem, 9vw, 8.5rem);
+  }
+
+  .display-lg {
+    @apply font-serif font-light leading-[0.95] tracking-[-0.01em];
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .display-md {
+    @apply font-serif font-light leading-none;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .line-link {
+    @apply inline-flex items-center gap-2 border-b border-current pb-1 text-[0.72rem] font-medium uppercase tracking-[0.2em] transition-opacity duration-300 hover:opacity-60;
+  }
+
+  .btn-solid {
+    @apply inline-flex items-center justify-center gap-2 bg-ink px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ivory transition-colors duration-300 hover:bg-ink/80;
+  }
+
+  .btn-solid--inverse {
+    @apply bg-ivory text-ink hover:bg-ivory/85;
+  }
+
+  .nav-link {
+    @apply relative py-1 text-[0.72rem] font-medium uppercase tracking-[0.18em];
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-500 ease-silk content-[''];
+  }
+
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    @apply scale-x-100;
+  }
+
+  .filter-btn {
+    @apply relative pb-1 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-stone transition-colors hover:text-ink;
+  }
+
+  .filter-btn[aria-pressed='true'] {
+    @apply text-ink;
+  }
+
+  .filter-btn[aria-pressed='true']::after {
+    @apply absolute bottom-0 left-0 h-px w-full bg-current content-[''];
+  }
+
+  .accordion {
+    border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  }
+
+  .accordion > summary {
+    @apply flex items-center justify-between gap-6 py-6 font-serif text-2xl font-light md:text-3xl;
+  }
+
+  .accordion-icon {
+    @apply relative h-3 w-3 shrink-0;
+  }
+
+  .accordion-icon::before,
+  .accordion-icon::after {
+    @apply absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current transition-transform duration-300 content-[''];
+  }
+
+  .accordion-icon::after {
+    @apply rotate-90;
+  }
+
+  .accordion[open] .accordion-icon::after {
+    @apply rotate-0;
+  }
+
+  .accordion-body {
+    @apply pb-8 pr-10 text-sm leading-relaxed;
+    color: color-mix(in srgb, currentColor 75%, transparent);
+  }
+
+  .field {
+    @apply w-full rounded-none border-0 border-b border-ink/25 bg-transparent px-0 py-3 text-base text-ink placeholder:text-stone focus:border-ink focus:outline-none;
+  }
+
+  .field-label {
+    @apply eyebrow text-stone;
+  }
+
+  .placeholder-svg {
+    @apply h-full w-full;
+    fill: rgb(var(--color-muted) / 0.45);
+    background-color: rgb(var(--color-muted) / 0.14);
+  }
+
+  .rte p + p {
+    margin-top: 1em;
+  }
+
+  .rte a {
+    @apply underline underline-offset-4;
+  }
+}
+
+@layer utilities {
+  .hero-rail {
+    transition: transform 1.4s cubic-bezier(0.77, 0, 0.18, 1);
+    will-change: transform;
+  }
+}
