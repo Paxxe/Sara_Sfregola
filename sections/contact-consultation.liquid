@@ -111,7 +111,7 @@
 
 {% schema %}
 {
-  "name": "Consulenza privata",
+  "name": "Contatti · Consulenza privata",
   "tag": "div",
   "settings": [
     {
@@ -154,8 +154,14 @@
       "id": "button_mode",
       "label": "Azione pulsante",
       "options": [
-        { "value": "dialog", "label": "Apri modulo in finestra" },
-        { "value": "link", "label": "Vai a una pagina" }
+        {
+          "value": "dialog",
+          "label": "Apri modulo in finestra"
+        },
+        {
+          "value": "link",
+          "label": "Vai a una pagina"
+        }
       ],
       "default": "dialog"
     },
@@ -195,6 +201,11 @@
       "default": "Grazie, la tua richiesta è stata inviata. Ti ricontatteremo al più presto."
     }
   ],
-  "presets": [{ "name": "Consulenza privata" }]
+  "presets": [
+    {
+      "name": "Consulenza privata",
+      "category": "Contatti e assistenza"
+    }
+  ]
 }
 {% endschema %}

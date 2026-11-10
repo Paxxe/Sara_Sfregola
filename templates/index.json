@@ -3,11 +3,24 @@
     "hero": {
       "type": "hero-scroll",
       "blocks": {
-        "slide-1": { "type": "slide", "settings": {} },
-        "slide-2": { "type": "slide", "settings": {} },
-        "slide-3": { "type": "slide", "settings": {} }
+        "slide-1": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {}
+        }
       },
-      "block_order": ["slide-1", "slide-2", "slide-3"],
+      "block_order": [
+        "slide-1",
+        "slide-2",
+        "slide-3"
+      ],
       "settings": {
         "show_eyebrow": false,
         "eyebrow": "SARA SFREGOLA",
@@ -18,7 +31,7 @@
       }
     },
     "intro": {
-      "type": "intro",
+      "type": "editorial-intro",
       "settings": {
         "anchor": "intro",
         "eyebrow": "THE ATELIER",
@@ -28,13 +41,35 @@
       }
     },
     "creazioni": {
-      "type": "featured-creations",
+      "type": "collection-featured",
       "blocks": {
-        "filter-couture": { "type": "filter", "settings": { "label": "Couture", "tag": "couture" } },
-        "filter-unique": { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "unique" } },
-        "filter-accessories": { "type": "filter", "settings": { "label": "Accessori", "tag": "accessories" } }
+        "filter-couture": {
+          "type": "filter",
+          "settings": {
+            "label": "Couture",
+            "tag": "couture"
+          }
+        },
+        "filter-unique": {
+          "type": "filter",
+          "settings": {
+            "label": "Pezzi unici",
+            "tag": "unique"
+          }
+        },
+        "filter-accessories": {
+          "type": "filter",
+          "settings": {
+            "label": "Accessori",
+            "tag": "accessories"
+          }
+        }
       },
-      "block_order": ["filter-couture", "filter-unique", "filter-accessories"],
+      "block_order": [
+        "filter-couture",
+        "filter-unique",
+        "filter-accessories"
+      ],
       "settings": {
         "anchor": "creazioni",
         "number": "01",
@@ -45,14 +80,39 @@
       }
     },
     "savoir-faire": {
-      "type": "craft-techniques",
+      "type": "editorial-techniques",
       "blocks": {
-        "tombolo": { "type": "technique", "settings": { "title": "Tombolo" } },
-        "chiacchierino": { "type": "technique", "settings": { "title": "Chiacchierino" } },
-        "macrame": { "type": "technique", "settings": { "title": "Macramè" } },
-        "corsetteria": { "type": "technique", "settings": { "title": "Corsetteria e drappeggio" } }
+        "tombolo": {
+          "type": "technique",
+          "settings": {
+            "title": "Tombolo"
+          }
+        },
+        "chiacchierino": {
+          "type": "technique",
+          "settings": {
+            "title": "Chiacchierino"
+          }
+        },
+        "macrame": {
+          "type": "technique",
+          "settings": {
+            "title": "Macramè"
+          }
+        },
+        "corsetteria": {
+          "type": "technique",
+          "settings": {
+            "title": "Corsetteria e drappeggio"
+          }
+        }
       },
-      "block_order": ["tombolo", "chiacchierino", "macrame", "corsetteria"],
+      "block_order": [
+        "tombolo",
+        "chiacchierino",
+        "macrame",
+        "corsetteria"
+      ],
       "settings": {
         "anchor": "savoir-faire",
         "number": "02",
@@ -61,20 +121,39 @@
       }
     },
     "tempo": {
-      "type": "manufacturing-time",
+      "type": "editorial-manufacturing",
       "blocks": {
-        "ore": { "type": "item", "settings": { "title": "Ore di manifattura" } },
-        "tempi": { "type": "item", "settings": { "title": "Tempi di realizzazione" } },
-        "cura": { "type": "item", "settings": { "title": "Cura del capo" } }
+        "ore": {
+          "type": "item",
+          "settings": {
+            "title": "Ore di manifattura"
+          }
+        },
+        "tempi": {
+          "type": "item",
+          "settings": {
+            "title": "Tempi di realizzazione"
+          }
+        },
+        "cura": {
+          "type": "item",
+          "settings": {
+            "title": "Cura del capo"
+          }
+        }
       },
-      "block_order": ["ore", "tempi", "cura"],
+      "block_order": [
+        "ore",
+        "tempi",
+        "cura"
+      ],
       "settings": {
         "eyebrow": "MANIFATTURA",
         "heading": "Il tempo di lavorazione"
       }
     },
     "sposa": {
-      "type": "bridal",
+      "type": "editorial-bridal",
       "settings": {
         "anchor": "sposa",
         "number": "03",
@@ -84,7 +163,7 @@
       }
     },
     "atelier": {
-      "type": "atelier",
+      "type": "editorial-atelier",
       "settings": {
         "anchor": "atelier",
         "number": "04",
@@ -94,7 +173,7 @@
       }
     },
     "consulenza": {
-      "type": "consultation",
+      "type": "contact-consultation",
       "settings": {
         "anchor": "consulenza",
         "number": "05",
@@ -105,14 +184,39 @@
       }
     },
     "faq": {
-      "type": "faq",
+      "type": "contact-faq",
       "blocks": {
-        "ordini": { "type": "question", "settings": { "question": "Ordini e creazioni" } },
-        "taglie": { "type": "question", "settings": { "question": "Taglie e vestibilità" } },
-        "tempi": { "type": "question", "settings": { "question": "Tempi di realizzazione" } },
-        "spedizioni": { "type": "question", "settings": { "question": "Spedizioni e resi" } }
+        "ordini": {
+          "type": "question",
+          "settings": {
+            "question": "Ordini e creazioni"
+          }
+        },
+        "taglie": {
+          "type": "question",
+          "settings": {
+            "question": "Taglie e vestibilità"
+          }
+        },
+        "tempi": {
+          "type": "question",
+          "settings": {
+            "question": "Tempi di realizzazione"
+          }
+        },
+        "spedizioni": {
+          "type": "question",
+          "settings": {
+            "question": "Spedizioni e resi"
+          }
+        }
       },
-      "block_order": ["ordini", "taglie", "tempi", "spedizioni"],
+      "block_order": [
+        "ordini",
+        "taglie",
+        "tempi",
+        "spedizioni"
+      ],
       "settings": {
         "anchor": "faq",
         "eyebrow": "CUSTOMER CARE",
@@ -120,5 +224,15 @@
       }
     }
   },
-  "order": ["hero", "intro", "creazioni", "savoir-faire", "tempo", "sposa", "atelier", "consulenza", "faq"]
+  "order": [
+    "hero",
+    "intro",
+    "creazioni",
+    "savoir-faire",
+    "tempo",
+    "sposa",
+    "atelier",
+    "consulenza",
+    "faq"
+  ]
 }

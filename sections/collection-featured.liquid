@@ -79,7 +79,7 @@
 
 {% schema %}
 {
-  "name": "Creazioni in evidenza",
+  "name": "Collezione · Creazioni in evidenza",
   "tag": "div",
   "max_blocks": 8,
   "settings": [
@@ -170,10 +170,29 @@
     {
       "name": "Creazioni in evidenza",
       "blocks": [
-        { "type": "filter", "settings": { "label": "Couture", "tag": "couture" } },
-        { "type": "filter", "settings": { "label": "Pezzi unici", "tag": "unique" } },
-        { "type": "filter", "settings": { "label": "Accessori", "tag": "accessories" } }
-      ]
+        {
+          "type": "filter",
+          "settings": {
+            "label": "Couture",
+            "tag": "couture"
+          }
+        },
+        {
+          "type": "filter",
+          "settings": {
+            "label": "Pezzi unici",
+            "tag": "unique"
+          }
+        },
+        {
+          "type": "filter",
+          "settings": {
+            "label": "Accessori",
+            "tag": "accessories"
+          }
+        }
+      ],
+      "category": "Collezione"
     }
   ]
 }

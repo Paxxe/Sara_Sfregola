@@ -1,7 +1,7 @@
 {
   "sections": {
     "main": {
-      "type": "main-collection",
+      "type": "collection-main",
       "blocks": {
         "editoriale": {
           "type": "editorial",
@@ -14,7 +14,9 @@
           }
         }
       },
-      "block_order": ["editoriale"],
+      "block_order": [
+        "editoriale"
+      ],
       "settings": {
         "subtitle": "fatte a mano.",
         "show_description": true,
@@ -32,7 +34,7 @@
       }
     },
     "consulenza": {
-      "type": "consultation",
+      "type": "contact-consultation",
       "settings": {
         "anchor": "consulenza",
         "number": "",
@@ -43,5 +45,8 @@
       }
     }
   },
-  "order": ["main", "consulenza"]
+  "order": [
+    "main",
+    "consulenza"
+  ]
 }
