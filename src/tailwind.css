@@ -246,7 +246,60 @@
     @apply py-2 text-[11px] text-muted;
   }
 
-  .filter-btn[aria-pressed='true'] {
+  .filter-btn[aria-pressed='true'],
+  .filter-btn[aria-current] {
     @apply border-b border-ink text-ink;
+  }
+
+  /* ------------------------------------------------------------------------
+     PLP: griglia editoriale sfalsata
+     Le card sono <a>, i blocchi editoriali <aside>: :nth-of-type conta solo i prodotti.
+     ------------------------------------------------------------------------ */
+  .plp-grid {
+    @apply grid grid-cols-2 items-start gap-x-4 gap-y-7;
+  }
+
+  .plp-grid--staggered > a:nth-of-type(even) {
+    padding-top: 45px;
+  }
+
+  @media (min-width: 721px) {
+    .plp-grid {
+      column-gap: 4%;
+      @apply gap-y-[65px];
+    }
+
+    .plp-grid--3 {
+      @apply grid-cols-3;
+    }
+
+    .plp-grid--staggered.plp-grid--3 > a:nth-of-type(even) {
+      padding-top: 0;
+    }
+
+    .plp-grid--staggered.plp-grid--3 > a:nth-of-type(3n + 2) {
+      padding-top: 95px;
+    }
+
+    .plp-grid--staggered.plp-grid--2 > a:nth-of-type(even) {
+      padding-top: 150px;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    .plp-grid {
+      @apply gap-y-[85px];
+    }
+  }
+
+  /* Drawer filtri: pannello laterale da destra */
+  dialog.drawer[open] {
+    animation: drawer-in 0.45s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+
+  @keyframes drawer-in {
+    from {
+      transform: translateX(100%);
+    }
   }
 }

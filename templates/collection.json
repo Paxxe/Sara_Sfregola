@@ -1,0 +1,47 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "editoriale": {
+          "type": "editorial",
+          "settings": {
+            "after_products": 6,
+            "eyebrow": "SAVOIR-FAIRE",
+            "heading": "Ogni pezzo",
+            "heading_italic": "racconta un tempo.",
+            "link_label": "Scopri le tecniche"
+          }
+        }
+      },
+      "block_order": ["editoriale"],
+      "settings": {
+        "subtitle": "fatte a mano.",
+        "show_description": true,
+        "show_image": false,
+        "tabs_filter_label": "Tipo di prodotto",
+        "all_label": "Tutte",
+        "columns": "3",
+        "staggered": true,
+        "image_ratio": "aspect-[3/4]",
+        "products_per_page": 18,
+        "show_secondary_image": true,
+        "show_badges": true,
+        "enable_filters": true,
+        "enable_sort": true
+      }
+    },
+    "consulenza": {
+      "type": "consultation",
+      "settings": {
+        "anchor": "consulenza",
+        "number": "",
+        "eyebrow": "PRIVATE APPOINTMENT",
+        "heading": "Consulenza privata",
+        "button_label": "Prepara la tua richiesta",
+        "button_mode": "dialog"
+      }
+    }
+  },
+  "order": ["main", "consulenza"]
+}

@@ -29,6 +29,29 @@
       }
     }
   },
+  "products": {
+    "sold_out": "Esaurito",
+    "unique_piece": "Pezzo unico",
+    "from_price": "da {{ price }}"
+  },
+  "collections": {
+    "breadcrumb": "Percorso",
+    "home": "HOME",
+    "count": {
+      "one": "{{ count }} creazione",
+      "other": "{{ count }} creazioni"
+    },
+    "filter_and_sort": "Filtra e ordina",
+    "sort_by": "Ordina per",
+    "price_from": "Da (€)",
+    "price_to": "A (€)",
+    "apply": "Mostra risultati",
+    "clear_all": "Rimuovi filtri",
+    "empty": "Nessuna creazione corrisponde alla selezione.",
+    "pagination": "Pagine",
+    "previous": "Pagina precedente",
+    "next": "Pagina successiva"
+  },
   "contact": {
     "name": "Nome e cognome",
     "email": "Email",
