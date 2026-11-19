@@ -1,10 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "product-main",
       "blocks": {
-        "eyebrow": { "type": "eyebrow", "settings": { "source": "type", "text": "COUTURE" } },
-        "title": { "type": "title", "settings": {} },
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "source": "type",
+            "text": "COUTURE"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
         "hours": {
           "type": "hours",
           "settings": {
@@ -16,14 +34,30 @@
         },
         "fact-tecnica": {
           "type": "fact",
-          "settings": { "label": "Tecnica", "metafield": "custom.tecnica", "fallback": "Da inserire" }
+          "settings": {
+            "label": "Tecnica",
+            "metafield": "custom.tecnica",
+            "fallback": "Da inserire"
+          }
         },
         "fact-unicita": {
           "type": "fact",
-          "settings": { "label": "Unicità", "metafield": "custom.unicita", "fallback": "Da inserire" }
+          "settings": {
+            "label": "Unicità",
+            "metafield": "custom.unicita",
+            "fallback": "Da inserire"
+          }
         },
-        "price": { "type": "price", "settings": { "label": "Prezzo" } },
-        "variants": { "type": "variant_picker", "settings": {} },
+        "price": {
+          "type": "price",
+          "settings": {
+            "label": "Prezzo"
+          }
+        },
+        "variants": {
+          "type": "variant_picker",
+          "settings": {}
+        },
         "production": {
           "type": "production_time",
           "settings": {
@@ -32,71 +66,129 @@
             "fallback": "Da definire"
           }
         },
-        "buy": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": false } },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false
+          }
+        },
         "consult": {
           "type": "consult_link",
-          "settings": { "label": "Una domanda su questo capo? Parliamone" }
+          "settings": {
+            "label": "Una domanda su questo capo? Parliamone",
+            "url": ""
+          }
         },
         "descrizione": {
           "type": "collapsible",
-          "settings": { "heading": "Descrizione", "open": true, "source": "description" }
+          "settings": {
+            "heading": "Descrizione",
+            "open": true,
+            "source": "description",
+            "metafield": "",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
+          }
         },
         "tecniche": {
           "type": "collapsible",
           "settings": {
             "heading": "Tecniche e ore di manifattura",
+            "open": false,
             "source": "metafield",
             "metafield": "custom.tecniche_dettaglio",
-            "link_label": "Esplora il savoir-faire"
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "Esplora il savoir-faire",
+            "link_url": ""
           }
         },
         "materiali": {
           "type": "collapsible",
           "settings": {
             "heading": "Materiali, composizione e provenienza",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.materiali"
+            "metafield": "custom.materiali",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "vestibilita": {
           "type": "collapsible",
           "settings": {
             "heading": "Vestibilità e guida alle misure",
+            "open": false,
             "source": "metafield",
             "metafield": "custom.vestibilita",
-            "popup_label": "Come prendere le misure"
+            "content": "",
+            "popup_page": "",
+            "popup_label": "Come prendere le misure",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "personalizzazioni": {
           "type": "collapsible",
           "settings": {
             "heading": "Personalizzazioni",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.personalizzazioni"
+            "metafield": "custom.personalizzazioni",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "consegna": {
           "type": "collapsible",
           "settings": {
             "heading": "Realizzazione e consegna",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.realizzazione_consegna"
+            "metafield": "custom.realizzazione_consegna",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "cura": {
           "type": "collapsible",
           "settings": {
             "heading": "Cura e conservazione",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.cura"
+            "metafield": "custom.cura",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "spedizioni": {
           "type": "collapsible",
           "settings": {
             "heading": "Spedizioni, pagamenti e resi",
+            "open": false,
             "source": "text",
-            "link_label": "Customer Care"
+            "metafield": "",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "Customer Care",
+            "link_url": ""
           }
         }
       },
@@ -130,8 +222,12 @@
       "settings": {
         "eyebrow": "DETTAGLI",
         "heading": "La creazione",
+        "heading_italic": "",
         "metafield": "custom.racconto",
-        "link_label": "Incontra le tecniche"
+        "text": "",
+        "image_right": false,
+        "link_label": "Incontra le tecniche",
+        "link_url": ""
       }
     },
     "related": {
@@ -139,11 +235,15 @@
       "settings": {
         "eyebrow": "ABBINAMENTI",
         "heading": "Completa il look",
-        "source": "metafield",
+        "source": "complementary",
         "metafield": "custom.abbinamenti",
         "limit": "3"
       }
     }
   },
-  "order": ["main", "editorial", "related"]
+  "order": [
+    "main",
+    "editorial",
+    "related"
+  ]
 }

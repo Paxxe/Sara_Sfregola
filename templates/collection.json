@@ -37,7 +37,7 @@
         "tabs_filter_label": "Tipo di prodotto",
         "all_label": "Tutte",
         "columns": "3",
-        "staggered": true,
+        "staggered": false,
         "image_ratio": "aspect-[3/4]",
         "products_per_page": 18,
         "show_secondary_image": true,
