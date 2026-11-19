@@ -1,0 +1,74 @@
+{%- liquid
+  assign heading_eyebrow = 'customer.account' | t | upcase
+  assign heading_title = 'customer.addresses' | t
+-%}
+{%- render 'page-heading', eyebrow: heading_eyebrow, title: heading_title, align: 'left' -%}
+
+<div class="grid grid-cols-1 gap-[45px] px-[7%] pb-20 md:grid-cols-[1.6fr_1fr] md:gap-[8%] md:px-[4%] md:pb-[130px]">
+  <section>
+    {%- paginate customer.addresses by 10 -%}
+      <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {%- for address in customer.addresses -%}
+          <li class="bg-oat p-[30px]">
+            {%- if address == customer.default_address -%}
+              <p class="eyebrow mb-4">{{ 'customer.default' | t }}</p>
+            {%- endif -%}
+            <div class="text-[11px] leading-[1.8] text-ink-soft">{{ address | format_address }}</div>
+            <div class="mt-5 flex gap-5 text-[11px]">
+              <button type="button" class="underline underline-offset-4" data-dialog-open="EditAddress-{{ address.id }}">{{ 'customer.edit' | t }}</button>
+              <form method="post" action="{{ address.url }}" onsubmit="return confirm('{{ 'customer.delete_confirm' | t }}')">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="underline underline-offset-4">{{ 'customer.delete' | t }}</button>
+              </form>
+            </div>
+          </li>
+
+          <dialog id="EditAddress-{{ address.id }}" class="m-auto max-h-[90svh] w-[min(640px,94vw)] overflow-y-auto border-0 bg-paper px-[23px] py-[45px] text-ink md:p-[55px]">
+            <button type="button" class="absolute right-[18px] top-3 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+            <h2 class="mb-6 text-[32px]">{{ 'customer.edit_address' | t }}</h2>
+            {%- form 'customer_address', address -%}
+              {%- render 'form-messages', form: form -%}
+              {%- render 'address-form', form: form, id: address.id -%}
+              <button type="submit" class="btn-solid mt-6">{{ 'customer.save' | t }}</button>
+            {%- endform -%}
+          </dialog>
+        {%- endfor -%}
+      </ul>
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endpaginate -%}
+    <a href="{{ routes.account_url }}" class="line-link mt-[35px]">← {{ 'customer.back_to_account' | t }}</a>
+  </section>
+
+  <aside class="md:self-start">
+    <p class="eyebrow mb-[22px]">{{ 'customer.add_address' | t }}</p>
+    {%- form 'customer_address', customer.new_address -%}
+      {%- render 'form-messages', form: form -%}
+      {%- render 'address-form', form: form, id: 'new' -%}
+      <button type="submit" class="btn-solid mt-6 w-full">{{ 'customer.add_address' | t }}</button>
+    {%- endform -%}
+  </aside>
+</div>
+
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!window.Shopify || !Shopify.CountryProvinceSelector) return;
+    document.querySelectorAll('[data-country-select]').forEach((country) => {
+      const id = country.dataset.countrySelect;
+      const province = document.querySelector(`[data-province-select="${id}"]`);
+      const wrapper = document.querySelector(`[data-province-wrapper="${id}"]`);
+      country.id = `AddressCountry-${id}`;
+      province.id = `AddressProvince-${id}`;
+      wrapper.id = `AddressProvinceWrapper-${id}`;
+      new Shopify.CountryProvinceSelector(country.id, province.id, { hideElement: wrapper.id });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Indirizzi",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

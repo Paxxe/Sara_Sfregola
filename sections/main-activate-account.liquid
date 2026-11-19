@@ -1,0 +1,29 @@
+<section class="mx-auto max-w-[460px] px-[7%] py-[70px] md:px-0 md:py-[110px]">
+  <div class="mb-[40px] text-center">
+    <p class="eyebrow mb-7">{{ 'customer.account' | t | upcase }}</p>
+    <h1 class="text-[34px] md:text-[42px]">{{ 'customer.activate_title' | t }}</h1>
+    <p class="mt-5 leading-[1.9] text-ink-soft">{{ 'customer.activate_text' | t }}</p>
+  </div>
+
+  {%- form 'activate_customer_password' -%}
+    {%- render 'form-messages', form: form -%}
+    <label>
+      <span class="field-label">{{ 'customer.password' | t }}</span>
+      <input class="field" type="password" name="customer[password]" autocomplete="new-password" required>
+    </label>
+    <label>
+      <span class="field-label">{{ 'customer.password_confirm' | t }}</span>
+      <input class="field" type="password" name="customer[password_confirmation]" autocomplete="new-password" required>
+    </label>
+    <button type="submit" class="btn-solid mt-6 w-full">{{ 'customer.activate' | t }}</button>
+    <button type="submit" name="decline" class="mt-4 w-full text-[11px] underline underline-offset-4">{{ 'customer.decline' | t }}</button>
+  {%- endform -%}
+</section>
+
+{% schema %}
+{
+  "name": "Attivazione account",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

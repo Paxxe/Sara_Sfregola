@@ -1,0 +1,27 @@
+{%- comment -%}
+  Intestazione pagina nello stile del sito.
+
+  Parametri:
+  - eyebrow: sopratitolo (opzionale)
+  - title: titolo (h1)
+  - italic: seconda riga in corsivo serif (opzionale)
+  - text: testo sotto il titolo (opzionale, HTML)
+  - align: 'center' (default) o 'left'
+{%- endcomment -%}
+{%- liquid
+  assign heading_align = align | default: 'center'
+-%}
+<header class="px-[7%] pb-[40px] pt-[60px] md:px-[4%] md:pb-[60px] md:pt-[90px]{% if heading_align == 'center' %} text-center{% endif %}">
+  {%- if eyebrow != blank -%}
+    <p class="eyebrow mb-7 md:mb-[38px]">{{ eyebrow }}</p>
+  {%- endif -%}
+  <h1 class="text-[34px] leading-[1.22] md:text-[42px] md:leading-[1.17]">
+    {{- title -}}
+    {%- if italic != blank -%}<br><em>{{ italic }}</em>{%- endif -%}
+  </h1>
+  {%- if text != blank -%}
+    <div class="rte mt-[27px] max-w-[490px] leading-[1.9] text-ink-soft{% if heading_align == 'center' %} mx-auto{% endif %}">
+      {{ text }}
+    </div>
+  {%- endif -%}
+</header>

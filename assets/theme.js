@@ -376,6 +376,32 @@
   customElements.get('product-recommendations') ||
     customElements.define('product-recommendations', ProductRecommendations);
 
+  /* ---------- Carrello: + / − e aggiornamento automatico ---------- */
+  document.addEventListener('click', (e) => {
+    const step = e.target.closest('[data-step]');
+    if (!step) return;
+    const input = step.closest('[data-quantity]')?.querySelector('input');
+    if (!input) return;
+    input.value = Math.max(0, (parseInt(input.value, 10) || 0) + Number(step.dataset.step));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+
+  document.addEventListener('change', (e) => {
+    const input = e.target.closest('[data-autosubmit]');
+    if (!input) return;
+    const form = input.form;
+    clearTimeout(form._submitTimer);
+    // piccolo ritardo per raccogliere più click su + / −
+    form._submitTimer = setTimeout(() => {
+      const update = document.createElement('input');
+      update.type = 'hidden';
+      update.name = 'update';
+      update.value = '1';
+      form.appendChild(update);
+      form.submit();
+    }, 450);
+  });
+
   // Ferma i video quando si chiude la finestra
   document.addEventListener(
     'close',

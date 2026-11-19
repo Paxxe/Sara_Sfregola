@@ -1,0 +1,59 @@
+{%- comment -%}
+  Campi indirizzo cliente.
+
+  Parametri:
+  - form: oggetto form 'customer_address'
+  - id: suffisso univoco per gli id dei campi
+{%- endcomment -%}
+<div class="grid grid-cols-1 gap-x-6 md:grid-cols-2">
+  <label>
+    <span class="field-label">{{ 'customer.first_name' | t }}</span>
+    <input class="field" type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name">
+  </label>
+  <label>
+    <span class="field-label">{{ 'customer.last_name' | t }}</span>
+    <input class="field" type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name">
+  </label>
+</div>
+<label>
+  <span class="field-label">{{ 'customer.company' | t }}</span>
+  <input class="field" type="text" name="address[company]" value="{{ form.company }}" autocomplete="organization">
+</label>
+<label>
+  <span class="field-label">{{ 'customer.address1' | t }}</span>
+  <input class="field" type="text" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1">
+</label>
+<label>
+  <span class="field-label">{{ 'customer.address2' | t }}</span>
+  <input class="field" type="text" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2">
+</label>
+<div class="grid grid-cols-1 gap-x-6 md:grid-cols-2">
+  <label>
+    <span class="field-label">{{ 'customer.city' | t }}</span>
+    <input class="field" type="text" name="address[city]" value="{{ form.city }}" autocomplete="address-level2">
+  </label>
+  <label>
+    <span class="field-label">{{ 'customer.zip' | t }}</span>
+    <input class="field" type="text" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code" autocapitalize="characters">
+  </label>
+</div>
+<div class="grid grid-cols-1 gap-x-6 md:grid-cols-2">
+  <label>
+    <span class="field-label">{{ 'customer.country' | t }}</span>
+    <select class="field" name="address[country]" data-default="{{ form.country }}" data-country-select="{{ id }}">
+      {{ all_country_option_tags }}
+    </select>
+  </label>
+  <label data-province-wrapper="{{ id }}">
+    <span class="field-label">{{ 'customer.province' | t }}</span>
+    <select class="field" name="address[province]" data-default="{{ form.province }}" data-province-select="{{ id }}"></select>
+  </label>
+</div>
+<label>
+  <span class="field-label">{{ 'contact.phone' | t }}</span>
+  <input class="field" type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel">
+</label>
+<label class="mt-5 flex items-center gap-3 text-[11px]">
+  {{ form.set_as_default_checkbox | replace: 'type="checkbox"', 'type="checkbox" class="h-3 w-3 accent-ink"' }}
+  {{ 'customer.set_default' | t }}
+</label>

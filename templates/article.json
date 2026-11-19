@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {}
+    },
+    "consulenza": {
+      "type": "contact-consultation",
+      "settings": {
+        "number": "",
+        "button_mode": "dialog"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "consulenza"
+  ]
+}

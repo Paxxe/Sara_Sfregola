@@ -1,0 +1,60 @@
+<section class="px-[7%] py-[110px] text-center md:py-[160px]">
+  <p class="eyebrow mb-7 md:mb-[38px]">{{ section.settings.eyebrow }}</p>
+  <h1 class="text-[34px] leading-[1.22] md:text-[42px] md:leading-[1.17]">
+    {{- section.settings.heading -}}
+    {%- if section.settings.italic != blank -%}<br><em>{{ section.settings.italic }}</em>{%- endif -%}
+  </h1>
+  {%- if section.settings.text != blank -%}
+    <div class="rte mx-auto mt-[27px] max-w-[430px] leading-[1.9] text-ink-soft">{{ section.settings.text }}</div>
+  {%- endif -%}
+
+  <form action="{{ routes.search_url }}" method="get" role="search" class="mx-auto mt-[40px] flex max-w-[420px] items-center border-b border-ink">
+    <label for="NotFoundSearch" class="sr-only">{{ 'search.label' | t }}</label>
+    <input
+      id="NotFoundSearch"
+      type="search"
+      name="q"
+      placeholder="{{ 'search.placeholder' | t }}"
+      class="w-full border-0 bg-transparent px-0 py-3 text-[13px] placeholder:text-muted focus:outline-none"
+    >
+    <button type="submit" class="py-3 pl-4 text-[11px]">{{ 'search.submit' | t }} ↗</button>
+  </form>
+
+  <div class="mt-[40px] flex flex-wrap justify-center gap-3">
+    <a href="{{ routes.root_url }}" class="line-link">{{ 'general.back_home' | t }}</a>
+    <a href="{{ routes.all_products_collection_url }}" class="btn-solid">{{ 'cart.explore' | t }} ↗</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pagina 404",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "ERRORE 404"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Pagina"
+    },
+    {
+      "type": "text",
+      "id": "italic",
+      "label": "Seconda riga (corsivo)",
+      "default": "non trovata."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo",
+      "default": "<p>Il filo si è perso: la pagina che cerchi non esiste o è stata spostata.</p>"
+    }
+  ]
+}
+{% endschema %}

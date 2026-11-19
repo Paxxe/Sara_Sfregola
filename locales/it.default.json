@@ -10,7 +10,8 @@
 {
   "general": {
     "close": "Chiudi",
-    "back_to_top": "Torna su"
+    "back_to_top": "Torna su",
+    "back_home": "Torna alla home"
   },
   "accessibility": {
     "skip_to_content": "Vai al contenuto"
@@ -74,5 +75,125 @@
     "event_date": "Data dell’evento",
     "request_type": "Tipo di richiesta",
     "message": "Raccontaci il tuo progetto"
+  },
+  "cart": {
+    "product": "Creazione",
+    "quantity": "Quantità",
+    "total": "Totale",
+    "remove": "Rimuovi",
+    "decrease": "Diminuisci quantità",
+    "increase": "Aumenta quantità",
+    "continue": "Continua lo shopping",
+    "summary": "RIEPILOGO",
+    "subtotal": "Subtotale",
+    "taxes_note": "Imposte incluse. Spedizione e sconti calcolati al checkout.",
+    "checkout": "Procedi all’acquisto",
+    "update": "Aggiorna",
+    "empty": "Il carrello è vuoto. Ogni creazione nasce dalle mani dell’atelier: scopri quella pensata per te.",
+    "explore": "Esplora le creazioni"
+  },
+  "search": {
+    "label": "Cerca",
+    "placeholder": "Cerca una creazione, una tecnica…",
+    "submit": "Cerca",
+    "results_for": "Risultati per “{{ terms }}”",
+    "count": {
+      "one": "{{ count }} risultato",
+      "other": "{{ count }} risultati"
+    },
+    "no_results": "Nessun risultato. Prova con un’altra parola o esplora le creazioni.",
+    "other_results": "PAGINE E ARTICOLI",
+    "article": "ARTICOLO",
+    "page": "PAGINA"
+  },
+  "blog": {
+    "tags": "Argomenti",
+    "all": "Tutti",
+    "read": "Leggi l’articolo",
+    "by": "di {{ author }}",
+    "previous": "Precedente",
+    "next": "Successivo",
+    "back": "Torna al journal",
+    "comments": {
+      "one": "{{ count }} COMMENTO",
+      "other": "{{ count }} COMMENTI"
+    },
+    "leave_comment": "LASCIA UN COMMENTO",
+    "comment": "Commento",
+    "post": "Pubblica",
+    "comment_moderated": "Grazie, il commento sarà pubblicato dopo l’approvazione.",
+    "comment_posted": "Grazie, il commento è stato pubblicato."
+  },
+  "password": {
+    "owner": "Sei il proprietario del negozio? Accedi",
+    "label": "Password",
+    "enter": "Entra"
+  },
+  "gift_card": {
+    "title": "Carta regalo",
+    "initial_value": "Valore iniziale {{ value }}",
+    "disabled": "Questa carta regalo non è più valida.",
+    "expires_on": "Valida fino al {{ date }}",
+    "code": "Codice carta regalo",
+    "shop": "Vai all’atelier",
+    "print": "Stampa"
+  },
+  "customer": {
+    "account": "Account",
+    "login_title": "Accedi",
+    "password": "Password",
+    "forgot_password": "Password dimenticata?",
+    "sign_in": "Accedi",
+    "no_account": "Non hai un account?",
+    "create_account": "Crea un account",
+    "have_account": "Hai già un account?",
+    "recover_title": "Recupera la password",
+    "recover_text": "Ti invieremo un’email per impostare una nuova password.",
+    "recover_success": "Ti abbiamo inviato un’email con le istruzioni.",
+    "send": "Invia",
+    "back_to_login": "Torna all’accesso",
+    "guest": "Continua come ospite",
+    "register_title": "Crea un account",
+    "first_name": "Nome",
+    "last_name": "Cognome",
+    "accepts_marketing": "Desidero ricevere aggiornamenti sulle nuove creazioni dell’atelier.",
+    "welcome": "Ciao, {{ name }}",
+    "orders": "I TUOI ORDINI",
+    "order": "Ordine",
+    "date": "Data",
+    "status": "Stato",
+    "no_orders": "Non hai ancora effettuato ordini.",
+    "details": "I TUOI DATI",
+    "addresses": "Indirizzi",
+    "logout": "Esci",
+    "cancelled": "Ordine annullato il {{ date }}",
+    "shipped": "Spedito il",
+    "tracking": "Traccia la spedizione",
+    "shipping_address": "INDIRIZZO DI SPEDIZIONE",
+    "billing_address": "INDIRIZZO DI FATTURAZIONE",
+    "back_to_account": "Torna all’account",
+    "default": "PREDEFINITO",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "delete_confirm": "Vuoi eliminare questo indirizzo?",
+    "edit_address": "Modifica indirizzo",
+    "add_address": "Aggiungi un indirizzo",
+    "save": "Salva",
+    "company": "Azienda",
+    "address1": "Indirizzo",
+    "address2": "Appartamento, scala, interno",
+    "city": "Città",
+    "zip": "CAP",
+    "country": "Paese",
+    "province": "Provincia",
+    "set_default": "Imposta come indirizzo predefinito",
+    "activate_title": "Attiva il tuo account",
+    "activate_text": "Scegli una password per accedere al tuo account.",
+    "password_confirm": "Conferma password",
+    "activate": "Attiva account",
+    "decline": "Rifiuta l’invito",
+    "reset_title": "Nuova password",
+    "reset_text": "Imposta una nuova password per il tuo account.",
+    "reset": "Salva la password"
   }
 }

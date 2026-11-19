@@ -1,0 +1,123 @@
+{%- assign form_id = 'ContactForm-' | append: section.id -%}
+
+<section class="grid grid-cols-1 gap-[45px] px-[7%] pb-20 md:grid-cols-2 md:gap-[12%] md:px-[9%] md:pb-[130px]">
+  <div>
+    <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
+    <h2 class="mb-[30px] text-[32px] md:text-[42px]">{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}
+      <div class="rte max-w-[420px] leading-[1.9] text-ink-soft">{{ section.settings.text }}</div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <dl class="mt-[40px]">
+        {%- for block in section.blocks -%}
+          <div class="flex justify-between gap-6 border-t border-line py-3 text-[11px]" {{ block.shopify_attributes }}>
+            <dt class="text-muted">{{ block.settings.label }}</dt>
+            <dd class="text-right">
+              {%- if block.settings.url != blank -%}
+                <a href="{{ block.settings.url }}">{{ block.settings.value }}</a>
+              {%- else -%}
+                {{ block.settings.value }}
+              {%- endif -%}
+            </dd>
+          </div>
+        {%- endfor -%}
+      </dl>
+    {%- endif -%}
+  </div>
+
+  <div>
+    {%- form 'contact', id: form_id -%}
+      {%- render 'form-messages', form: form, success: section.settings.success_message -%}
+
+      <div class="grid grid-cols-1 gap-x-8 md:grid-cols-2">
+        <label>
+          <span class="field-label">{{ 'contact.name' | t }}</span>
+          <input class="field" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}" required>
+        </label>
+        <label>
+          <span class="field-label">{{ 'contact.email' | t }}</span>
+          <input class="field" type="email" name="contact[email]" autocomplete="email" spellcheck="false" autocapitalize="off" value="{{ form.email }}" required>
+        </label>
+      </div>
+      <label>
+        <span class="field-label">{{ 'contact.phone' | t }}</span>
+        <input class="field" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+      </label>
+      <label>
+        <span class="field-label">{{ 'contact.message' | t }}</span>
+        <textarea class="field min-h-[140px]" name="contact[body]" rows="6">{{ form.body }}</textarea>
+      </label>
+      <button type="submit" class="btn-solid mt-6">{{ section.settings.submit_label }} ↗</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Modulo contatti",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "CONTATTI & CUSTOMER CARE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Scrivici"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Testo invio",
+      "default": "Invia il messaggio"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Messaggio di conferma",
+      "default": "Grazie, il tuo messaggio è stato inviato. Ti risponderemo al più presto."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Recapito",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Atelier"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valore",
+          "default": "Barletta, Italia"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link (opzionale)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modulo contatti",
+      "category": "Contatti e assistenza"
+    }
+  ]
+}
+{% endschema %}

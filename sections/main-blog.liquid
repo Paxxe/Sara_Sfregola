@@ -1,0 +1,90 @@
+{%- render 'page-heading',
+  eyebrow: section.settings.eyebrow,
+  title: blog.title,
+  italic: section.settings.italic
+-%}
+
+{%- if blog.all_tags.size > 0 -%}
+  <nav class="mb-[45px] flex justify-center gap-[22px] overflow-x-auto whitespace-nowrap px-[6%] md:gap-[25px]" aria-label="{{ 'blog.tags' | t }}">
+    <a href="{{ blog.url }}" class="filter-btn"{% if current_tags == blank %} aria-current="true"{% endif %}>{{ 'blog.all' | t }}</a>
+    {%- for tag in blog.all_tags -%}
+      <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="filter-btn"{% if current_tags contains tag %} aria-current="true"{% endif %}>{{ tag }}</a>
+    {%- endfor -%}
+  </nav>
+{%- endif -%}
+
+<div class="px-[6%] pb-20 md:pb-[130px]">
+  {%- paginate blog.articles by section.settings.per_page -%}
+    <div class="grid grid-cols-1 gap-y-[55px] md:grid-cols-3 md:gap-x-[4%] md:gap-y-[85px]">
+      {%- for article in blog.articles -%}
+        {%- liquid
+          assign featured = false
+          if forloop.first and paginate.current_page == 1 and section.settings.feature_first
+            assign featured = true
+          endif
+        -%}
+        <article class="{% if featured %}md:col-span-3 md:grid md:grid-cols-[1.4fr_1fr] md:items-center md:gap-[6%]{% endif %}">
+          <a href="{{ article.url }}" class="block overflow-hidden bg-mist {% if featured %}aspect-[4/3]{% else %}aspect-[4/5]{% endif %}">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 1800 | image_tag: class: 'h-full w-full object-cover', widths: '400,600,900,1200,1800', sizes: '(min-width: 721px) 60vw, 100vw', loading: 'lazy' }}
+            {%- else -%}
+              {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+            {%- endif -%}
+          </a>
+          <div class="mt-4 border-t border-line pt-3{% if featured %} md:mt-0 md:border-0 md:pt-0{% endif %}">
+            <p class="eyebrow text-muted">
+              {{- article.published_at | time_tag: format: 'date' -}}
+              {%- if article.tags.size > 0 %} · {{ article.tags.first | upcase }}{% endif -%}
+            </p>
+            <h2 class="mt-2 {% if featured %}text-[32px] md:text-[42px]{% else %}text-[18px] tracking-[-0.3px]{% endif %}">
+              <a href="{{ article.url }}">{{ article.title }}</a>
+            </h2>
+            {%- if featured -%}
+              <div class="mt-[22px] max-w-[430px] leading-[1.9] text-ink-soft">
+                {{ article.excerpt_or_content | strip_html | truncatewords: 40 }}
+              </div>
+              <a href="{{ article.url }}" class="line-link mt-[30px]">{{ 'blog.read' | t }} ↗</a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "JOURNAL"
+    },
+    {
+      "type": "text",
+      "id": "italic",
+      "label": "Seconda riga titolo (corsivo)",
+      "default": "dall’atelier."
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_first",
+      "label": "Primo articolo in evidenza",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Articoli per pagina",
+      "min": 4,
+      "max": 19,
+      "step": 3,
+      "default": 10
+    }
+  ]
+}
+{% endschema %}

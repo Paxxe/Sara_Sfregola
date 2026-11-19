@@ -1,0 +1,106 @@
+<article>
+  <header class="px-[7%] pb-[40px] pt-[60px] text-center md:pb-[60px] md:pt-[90px]">
+    <p class="eyebrow mb-7 md:mb-[38px]">
+      <a href="{{ blog.url }}">{{ blog.title | upcase }}</a>
+      · {{ article.published_at | time_tag: format: 'date' }}
+    </p>
+    <h1 class="mx-auto max-w-[900px] text-[34px] leading-[1.22] md:text-[42px] md:leading-[1.17]">{{ article.title }}</h1>
+    {%- if section.settings.show_author -%}
+      <p class="mt-[22px] text-[11px] text-muted">{{ 'blog.by' | t: author: article.author }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if article.image -%}
+    <div class="h-[420px] overflow-hidden md:h-[640px]">
+      {{ article.image | image_url: width: 2400 | image_tag: class: 'h-full w-full object-cover', widths: '720,1200,1600,2000,2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high' }}
+    </div>
+  {%- endif -%}
+
+  <div class="rte mx-auto max-w-[680px] px-[7%] py-[60px] text-[14px] leading-[1.95] text-ink-soft md:px-0 md:py-[90px] [&_blockquote]:my-10 [&_blockquote]:border-l [&_blockquote]:border-ink [&_blockquote]:pl-6 [&_blockquote]:font-serif [&_blockquote]:text-[24px] [&_blockquote]:italic [&_blockquote]:leading-[1.4] [&_blockquote]:text-ink [&_h2]:mb-4 [&_h2]:mt-12 [&_h2]:text-[26px] [&_h2]:text-ink [&_h3]:mb-3 [&_h3]:mt-8 [&_h3]:text-[15px] [&_h3]:text-ink [&_img]:my-10 [&_li]:ml-5 [&_ol]:list-decimal [&_ul]:list-disc">
+    {{ article.content }}
+  </div>
+
+  <footer class="mx-auto max-w-[680px] px-[7%] pb-[60px] md:px-0">
+    {%- if article.tags.size > 0 -%}
+      <div class="flex flex-wrap gap-[10px] border-t border-line pt-6">
+        {%- for tag in article.tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="rounded-full border border-pill px-4 py-2 text-[10px]">{{ tag }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="mt-[35px] flex items-center justify-between text-[11px]">
+      {%- if blog.previous_article -%}
+        <a href="{{ blog.previous_article.url }}">← {{ 'blog.previous' | t }}</a>
+      {%- else -%}
+        <span></span>
+      {%- endif -%}
+      <a href="{{ blog.url }}" class="line-link">{{ 'blog.back' | t }}</a>
+      {%- if blog.next_article -%}
+        <a href="{{ blog.next_article.url }}">{{ 'blog.next' | t }} →</a>
+      {%- else -%}
+        <span></span>
+      {%- endif -%}
+    </div>
+  </footer>
+</article>
+
+{%- if blog.comments_enabled? -%}
+  <section class="mx-auto max-w-[680px] px-[7%] pb-20 md:px-0 md:pb-[130px]" id="Comments">
+    {%- if article.comments_count > 0 -%}
+      <p class="eyebrow mb-[22px]">{{ 'blog.comments' | t: count: article.comments_count }}</p>
+      {%- paginate article.comments by 10 -%}
+        <ul class="mb-[55px]">
+          {%- for comment in article.comments -%}
+            <li class="border-t border-line py-6">
+              <div class="rte leading-[1.9] text-ink-soft">{{ comment.content }}</div>
+              <p class="mt-3 text-[10px] uppercase tracking-[1px] text-muted">{{ comment.author }} · {{ comment.created_at | time_tag: format: 'date' }}</p>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- render 'pagination', paginate: paginate -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+
+    {%- form 'new_comment', article -%}
+      <p class="eyebrow mb-[22px]">{{ 'blog.leave_comment' | t }}</p>
+      {%- liquid
+        if blog.moderated?
+          assign comment_success = 'blog.comment_moderated' | t
+        else
+          assign comment_success = 'blog.comment_posted' | t
+        endif
+      -%}
+      {%- render 'form-messages', form: form, success: comment_success -%}
+      <div class="grid grid-cols-1 gap-x-8 md:grid-cols-2">
+        <label>
+          <span class="field-label">{{ 'contact.name' | t }}</span>
+          <input class="field" type="text" name="comment[author]" value="{{ form.author }}" autocomplete="name" required>
+        </label>
+        <label>
+          <span class="field-label">{{ 'contact.email' | t }}</span>
+          <input class="field" type="email" name="comment[email]" value="{{ form.email }}" autocomplete="email" required>
+        </label>
+      </div>
+      <label>
+        <span class="field-label">{{ 'blog.comment' | t }}</span>
+        <textarea class="field min-h-[120px]" name="comment[body]" required>{{ form.body }}</textarea>
+      </label>
+      <button type="submit" class="btn-solid mt-6">{{ 'blog.post' | t }} ↗</button>
+    {%- endform -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Articolo",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Mostra autore",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

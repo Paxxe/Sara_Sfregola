@@ -1,0 +1,46 @@
+<section class="mx-auto max-w-[460px] px-[7%] py-[70px] md:px-0 md:py-[110px]">
+  <div class="mb-[40px] text-center">
+    <p class="eyebrow mb-7">{{ 'customer.account' | t | upcase }}</p>
+    <h1 class="text-[34px] md:text-[42px]">{{ 'customer.register_title' | t }}</h1>
+  </div>
+
+  {%- form 'create_customer', novalidate: 'novalidate' -%}
+    {%- render 'form-messages', form: form -%}
+    <div class="grid grid-cols-1 gap-x-6 md:grid-cols-2">
+      <label>
+        <span class="field-label">{{ 'customer.first_name' | t }}</span>
+        <input class="field" type="text" name="customer[first_name]" autocomplete="given-name" value="{{ form.first_name }}">
+      </label>
+      <label>
+        <span class="field-label">{{ 'customer.last_name' | t }}</span>
+        <input class="field" type="text" name="customer[last_name]" autocomplete="family-name" value="{{ form.last_name }}">
+      </label>
+    </div>
+    <label>
+      <span class="field-label">{{ 'contact.email' | t }}</span>
+      <input class="field" type="email" name="customer[email]" autocomplete="email" autocapitalize="off" value="{{ form.email }}" required>
+    </label>
+    <label>
+      <span class="field-label">{{ 'customer.password' | t }}</span>
+      <input class="field" type="password" name="customer[password]" autocomplete="new-password" required>
+    </label>
+    <label class="mt-5 flex items-start gap-3 text-[11px] leading-[1.7] text-ink-soft">
+      <input type="checkbox" name="customer[accepts_marketing]" class="mt-[3px] h-3 w-3 accent-ink">
+      {{ 'customer.accepts_marketing' | t }}
+    </label>
+    <button type="submit" class="btn-solid mt-6 w-full">{{ 'customer.create_account' | t }}</button>
+  {%- endform -%}
+
+  <p class="mt-[30px] text-center text-[11px] text-muted">
+    {{ 'customer.have_account' | t }}
+    <a href="{{ routes.account_login_url }}" class="text-ink underline underline-offset-4">{{ 'customer.sign_in' | t }}</a>
+  </p>
+</section>
+
+{% schema %}
+{
+  "name": "Registrazione",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

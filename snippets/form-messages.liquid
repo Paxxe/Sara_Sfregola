@@ -1,0 +1,14 @@
+{%- comment -%}
+  Messaggi di esito per i form Shopify.
+
+  Parametri:
+  - form: oggetto form
+  - success: testo di conferma (opzionale)
+{%- endcomment -%}
+{%- if form.errors -%}
+  <div class="mb-5 bg-sand p-5 text-[#8a2a1a]" role="alert">
+    {{ form.errors | default_errors }}
+  </div>
+{%- elsif form.posted_successfully? and success != blank -%}
+  <p class="mb-5 bg-sand p-5" role="status">{{ success }}</p>
+{%- endif -%}

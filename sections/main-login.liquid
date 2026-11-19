@@ -1,0 +1,89 @@
+<section class="mx-auto max-w-[460px] px-[7%] py-[70px] md:px-0 md:py-[110px]" data-login>
+  {%- comment -%} Accedi {%- endcomment -%}
+  <div id="Login" data-login-panel>
+    <div class="mb-[40px] text-center">
+      <p class="eyebrow mb-7">{{ 'customer.account' | t | upcase }}</p>
+      <h1 class="text-[34px] md:text-[42px]">{{ 'customer.login_title' | t }}</h1>
+    </div>
+
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- render 'form-messages', form: form -%}
+      <label>
+        <span class="field-label">{{ 'contact.email' | t }}</span>
+        <input class="field" type="email" name="customer[email]" autocomplete="email" autocapitalize="off" required>
+      </label>
+      {%- if form.password_needed -%}
+        <label>
+          <span class="field-label">{{ 'customer.password' | t }}</span>
+          <input class="field" type="password" name="customer[password]" autocomplete="current-password" required>
+        </label>
+        <a href="#Recover" class="mt-3 inline-block text-[11px] underline underline-offset-4" data-show-panel="Recover">
+          {{- 'customer.forgot_password' | t -}}
+        </a>
+      {%- endif -%}
+      <button type="submit" class="btn-solid mt-6 w-full">{{ 'customer.sign_in' | t }}</button>
+    {%- endform -%}
+
+    <p class="mt-[30px] text-center text-[11px] text-muted">
+      {{ 'customer.no_account' | t }}
+      <a href="{{ routes.account_register_url }}" class="text-ink underline underline-offset-4">{{ 'customer.create_account' | t }}</a>
+    </p>
+  </div>
+
+  {%- comment -%} Recupero password {%- endcomment -%}
+  <div id="Recover" hidden data-login-panel>
+    <div class="mb-[40px] text-center">
+      <p class="eyebrow mb-7">{{ 'customer.account' | t | upcase }}</p>
+      <h1 class="text-[34px] md:text-[42px]">{{ 'customer.recover_title' | t }}</h1>
+      <p class="mt-5 leading-[1.9] text-ink-soft">{{ 'customer.recover_text' | t }}</p>
+    </div>
+
+    {%- form 'recover_customer_password' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="mb-5 bg-sand p-5" role="status" data-recover-success>{{ 'customer.recover_success' | t }}</p>
+      {%- endif -%}
+      {%- render 'form-messages', form: form -%}
+      <label>
+        <span class="field-label">{{ 'contact.email' | t }}</span>
+        <input class="field" type="email" name="email" autocomplete="email" autocapitalize="off" required>
+      </label>
+      <button type="submit" class="btn-solid mt-6 w-full">{{ 'customer.send' | t }}</button>
+    {%- endform -%}
+
+    <a href="#Login" class="mt-[30px] block text-center text-[11px] underline underline-offset-4" data-show-panel="Login">
+      ← {{ 'customer.back_to_login' | t }}
+    </a>
+  </div>
+
+  {%- comment -%} Acquisto come ospite {%- endcomment -%}
+  {%- if shop.checkout.guest_login -%}
+    <div class="mt-[45px] border-t border-line pt-[30px] text-center">
+      {%- form 'guest_login' -%}
+        <button type="submit" class="line-link">{{ 'customer.guest' | t }} ↗</button>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (() => {
+    const root = document.querySelector('[data-login]');
+    if (!root) return;
+    const show = (id) => root.querySelectorAll('[data-login-panel]').forEach((p) => (p.hidden = p.id !== id));
+    root.addEventListener('click', (e) => {
+      const link = e.target.closest('[data-show-panel]');
+      if (!link) return;
+      e.preventDefault();
+      show(link.dataset.showPanel);
+    });
+    if (location.hash === '#Recover' || root.querySelector('[data-recover-success]')) show('Recover');
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Accesso",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

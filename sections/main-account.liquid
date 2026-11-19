@@ -1,0 +1,66 @@
+{%- liquid
+  assign heading_eyebrow = 'customer.account' | t | upcase
+  assign heading_title = 'customer.welcome' | t: name: customer.first_name
+-%}
+{%- render 'page-heading', eyebrow: heading_eyebrow, title: heading_title, align: 'left' -%}
+
+<div class="grid grid-cols-1 gap-[45px] px-[7%] pb-20 md:grid-cols-[1.6fr_1fr] md:gap-[8%] md:px-[4%] md:pb-[130px]">
+  {%- comment -%} Ordini {%- endcomment -%}
+  <section>
+    <p class="eyebrow mb-[22px]">{{ 'customer.orders' | t }}</p>
+    {%- paginate customer.orders by 20 -%}
+      {%- if customer.orders.size > 0 -%}
+        <div class="hidden grid-cols-[1fr_1fr_1fr_1fr] gap-4 border-b border-line pb-3 text-[9px] uppercase tracking-[1.35px] text-muted md:grid">
+          <span>{{ 'customer.order' | t }}</span>
+          <span>{{ 'customer.date' | t }}</span>
+          <span>{{ 'customer.status' | t }}</span>
+          <span class="text-right">{{ 'cart.total' | t }}</span>
+        </div>
+        <ul>
+          {%- for order in customer.orders -%}
+            <li>
+              <a href="{{ order.customer_url }}" class="grid grid-cols-2 gap-x-4 gap-y-1 border-b border-line py-4 text-[12px] md:grid-cols-[1fr_1fr_1fr_1fr]">
+                <span>{{ order.name }} ↗</span>
+                <span class="text-right text-muted md:text-left">{{ order.created_at | time_tag: format: 'date' }}</span>
+                <span class="text-muted">{{ order.fulfillment_status_label }}</span>
+                <span class="text-right">{{ order.total_net_amount | money }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- render 'pagination', paginate: paginate -%}
+      {%- else -%}
+        <p class="leading-[1.9] text-ink-soft">{{ 'customer.no_orders' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="line-link mt-[25px]">{{ 'cart.explore' | t }} ↗</a>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </section>
+
+  {%- comment -%} Dati e indirizzo {%- endcomment -%}
+  <aside class="md:self-start">
+    <div class="bg-oat p-[30px] md:p-[40px]">
+      <p class="eyebrow mb-[22px]">{{ 'customer.details' | t }}</p>
+      <p class="text-[13px]">{{ customer.name }}</p>
+      <p class="mt-1 text-[11px] text-muted">{{ customer.email }}</p>
+      {%- if customer.default_address -%}
+        <div class="mt-5 border-t border-line pt-5 text-[11px] leading-[1.8] text-ink-soft">
+          {{ customer.default_address | format_address }}
+        </div>
+      {%- endif -%}
+      <a href="{{ routes.account_addresses_url }}" class="line-link mt-6">
+        {{- 'customer.addresses' | t }} ({{ customer.addresses_count }})
+      </a>
+    </div>
+    <a href="{{ routes.account_logout_url }}" class="mt-[18px] block text-center text-[11px] underline underline-offset-4">
+      {{- 'customer.logout' | t -}}
+    </a>
+  </aside>
+</div>
+
+{% schema %}
+{
+  "name": "Account",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

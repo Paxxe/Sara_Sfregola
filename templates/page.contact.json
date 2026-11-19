@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "CONTATTI",
+        "width": "max-w-[620px]"
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "blocks": {
+        "atelier": {
+          "type": "info",
+          "settings": {
+            "label": "Atelier",
+            "value": "Barletta, Italia"
+          }
+        },
+        "appuntamento": {
+          "type": "info",
+          "settings": {
+            "label": "Visite",
+            "value": "Su appuntamento"
+          }
+        }
+      },
+      "block_order": [
+        "atelier",
+        "appuntamento"
+      ],
+      "settings": {}
+    },
+    "faq": {
+      "type": "contact-faq",
+      "blocks": {
+        "ordini": {
+          "type": "question",
+          "settings": {
+            "question": "Ordini e creazioni",
+            "link_label": ""
+          }
+        },
+        "taglie": {
+          "type": "question",
+          "settings": {
+            "question": "Taglie e vestibilità",
+            "link_label": ""
+          }
+        },
+        "tempi": {
+          "type": "question",
+          "settings": {
+            "question": "Tempi di realizzazione",
+            "link_label": ""
+          }
+        },
+        "spedizioni": {
+          "type": "question",
+          "settings": {
+            "question": "Spedizioni e resi",
+            "link_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "ordini",
+        "taglie",
+        "tempi",
+        "spedizioni"
+      ],
+      "settings": {
+        "anchor": "faq",
+        "eyebrow": "CUSTOMER CARE",
+        "heading": "FAQ"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "form",
+    "faq"
+  ]
+}

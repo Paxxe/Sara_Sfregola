@@ -1,0 +1,27 @@
+{%- comment -%}
+  Paginazione stile hero: ← 01 / 04 →
+
+  Parametri:
+  - paginate: oggetto paginate
+{%- endcomment -%}
+{%- if paginate.pages > 1 -%}
+  <nav
+    class="mt-[80px] flex items-center justify-center gap-5 text-[8px] tracking-[1.2px] text-cue md:mt-[110px]"
+    aria-label="{{ 'collections.pagination' | t }}"
+  >
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" class="rounded-full px-2 py-1 text-[19px] text-ink" aria-label="{{ 'collections.previous' | t }}">←</a>
+    {%- else -%}
+      <span class="px-2 py-1 text-[19px] opacity-30" aria-hidden="true">←</span>
+    {%- endif -%}
+    <span>
+      {{- paginate.current_page | prepend: '0' | slice: -2, 2 }} /
+      {{ paginate.pages | prepend: '0' | slice: -2, 2 -}}
+    </span>
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" class="rounded-full px-2 py-1 text-[19px] text-ink" aria-label="{{ 'collections.next' | t }}">→</a>
+    {%- else -%}
+      <span class="px-2 py-1 text-[19px] opacity-30" aria-hidden="true">→</span>
+    {%- endif -%}
+  </nav>
+{%- endif -%}
