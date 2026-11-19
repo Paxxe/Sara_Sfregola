@@ -1,0 +1,626 @@
+{%- comment -%}
+  PDP — scheda creazione (da prodotto.html).
+  Galleria a sinistra (prima immagine piena + coppie, didascalie dall'alt),
+  colonna informazioni a destra composta da blocchi riordinabili.
+
+  Metafield usati di default (namespace "custom"):
+  ore_manifattura (intero), nota_ore, tecnica, unicita, tempo_realizzazione
+{%- endcomment -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign crumb_collection = collection | default: product.collections.first
+  assign video_media = nil
+  for media in product.media
+    if media.media_type == 'video' or media.media_type == 'external_video'
+      assign video_media = media
+      break
+    endif
+  endfor
+  assign image_count = 0
+  for media in product.media
+    if media.media_type == 'image'
+      assign image_count = image_count | plus: 1
+    endif
+  endfor
+  assign dialog_prefix = 'ProductDialog-' | append: section.id
+-%}
+
+<product-info
+  class="block"
+  data-section="{{ section.id }}"
+  data-currency="{{ cart.currency.iso_code }}"
+  data-label-add="{{ 'products.add_to_cart' | t }}"
+  data-label-sold-out="{{ 'products.sold_out' | t }}"
+  data-label-unavailable="{{ 'products.unavailable' | t }}"
+>
+  {%- comment -%} Breadcrumb {%- endcomment -%}
+  <nav
+    aria-label="{{ 'collections.breadcrumb' | t }}"
+    class="px-[6%] pb-[25px] pt-[30px] text-[9px] uppercase tracking-[1.35px] md:px-[4%] md:pt-[40px]"
+  >
+    {%- if crumb_collection -%}
+      <a href="{{ crumb_collection.url }}">{{ crumb_collection.title }}</a>
+    {%- else -%}
+      <a href="{{ routes.all_products_collection_url }}">{{ 'products.all' | t }}</a>
+    {%- endif -%}
+    <span aria-hidden="true" class="mx-1">/</span>
+    <span aria-current="page" class="text-muted">{{ product.title }}</span>
+  </nav>
+
+  <section class="grid grid-cols-1 gap-[45px] pb-20 md:grid-cols-[1.2fr_1fr] md:gap-[6%] md:px-[4%] md:pb-[130px]">
+    {%- comment -%} ===================== Galleria ===================== {%- endcomment -%}
+    <product-gallery class="block min-w-0">
+      <div
+        class="flex snap-x snap-mandatory gap-[10px] overflow-x-auto px-[6%] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
+        data-gallery-track
+      >
+        {%- assign image_index = 0 -%}
+        {%- for media in product.media -%}
+          {%- if media.media_type == 'image' -%}
+            {%- assign image_index = image_index | plus: 1 -%}
+            <figure
+              class="m-0 w-[88%] shrink-0 snap-center md:w-auto{% if image_index == 1 %} md:col-span-2{% endif %}"
+              data-media-id="{{ media.id }}"
+            >
+              <div class="{% if image_index == 1 %}aspect-[4/5]{% else %}aspect-[3/4]{% endif %} overflow-hidden bg-mist">
+                {%- liquid
+                  if image_index == 1
+                    assign gallery_sizes = '(min-width: 721px) 55vw, 88vw'
+                  else
+                    assign gallery_sizes = '(min-width: 721px) 28vw, 88vw'
+                  endif
+                -%}
+                {%- if image_index == 1 -%}
+                  {{
+                    media
+                    | image_url: width: 2000
+                    | image_tag:
+                      class: 'h-full w-full object-cover',
+                      widths: '600,900,1200,1600,2000',
+                      sizes: gallery_sizes,
+                      loading: 'eager',
+                      fetchpriority: 'high'
+                  }}
+                {%- else -%}
+                  {{
+                    media
+                    | image_url: width: 1600
+                    | image_tag:
+                      class: 'h-full w-full object-cover',
+                      widths: '600,900,1200,1600',
+                      sizes: gallery_sizes,
+                      loading: 'lazy'
+                  }}
+                {%- endif -%}
+              </div>
+              {%- if section.settings.show_captions and media.alt != blank and media.alt != product.title -%}
+                <figcaption class="mt-4 text-[8px] uppercase tracking-[2px]">{{ media.alt }}</figcaption>
+              {%- endif -%}
+            </figure>
+          {%- endif -%}
+        {%- else -%}
+          {%- for i in (1..3) -%}
+            <figure class="m-0 w-[88%] shrink-0 snap-center md:w-auto{% if forloop.first %} md:col-span-2{% endif %}">
+              <div class="{% if forloop.first %}aspect-[4/5]{% else %}aspect-[3/4]{% endif %} overflow-hidden">
+                {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+              </div>
+            </figure>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="mt-4 flex items-center justify-between px-[6%] md:px-0">
+        {%- if image_count > 1 -%}
+          <span class="text-[8px] tracking-[1.2px] text-cue md:hidden" data-gallery-counter>
+            01 / {{ image_count | prepend: '0' | slice: -2, 2 }}
+          </span>
+        {%- endif -%}
+
+        {%- if video_media -%}
+          <button
+            type="button"
+            class="line-link md:mt-[10px]"
+            data-dialog-open="{{ dialog_prefix }}-video"
+            aria-haspopup="dialog"
+          >
+            ▷ {{ section.settings.video_label }}
+          </button>
+        {%- endif -%}
+      </div>
+    </product-gallery>
+
+    {%- comment -%} ===================== Informazioni ===================== {%- endcomment -%}
+    <div class="px-[6%] md:sticky md:top-[30px] md:self-start md:px-0 md:pr-[4%] lg:pr-[8%]">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'eyebrow' -%}
+            <p class="eyebrow mb-[22px]" {{ block.shopify_attributes }}>
+              {%- case block.settings.source -%}
+                {%- when 'type' -%}
+                  {{ product.type | default: block.settings.text | upcase }}
+                {%- when 'collection' -%}
+                  {{ crumb_collection.title | default: block.settings.text | upcase }}
+                {%- when 'vendor' -%}
+                  {{ product.vendor | upcase }}
+                {%- else -%}
+                  {{ block.settings.text }}
+              {%- endcase -%}
+            </p>
+
+          {%- when 'title' -%}
+            <h1 class="text-[34px] leading-[1.17] md:text-[42px]" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+          {%- when 'hours' -%}
+            {%- capture hours_value -%}
+              {%- render 'metafield-value', product: product, key: block.settings.hours_key, fallback: '—' -%}
+            {%- endcapture -%}
+            <div class="my-[30px] border-y border-line py-[22px]" {{ block.shopify_attributes }}>
+              <span class="eyebrow block">{{ block.settings.heading }}</span>
+              <strong class="mt-2 block text-[42px] font-normal leading-none tracking-[-1px]">
+                {{ hours_value | strip }} <em class="font-serif text-[1.15em] italic">{{ 'products.hours_unit' | t }}</em>
+              </strong>
+              <p class="mt-3 text-[11px] leading-[1.8] text-muted">
+                {%- render 'metafield-value', product: product, key: block.settings.note_key, fallback: block.settings.note -%}
+              </p>
+            </div>
+
+          {%- when 'fact' -%}
+            <div class="flex justify-between gap-6 border-t border-line py-3 text-[11px]" {{ block.shopify_attributes }}>
+              <span class="text-muted">{{ block.settings.label }}</span>
+              <span class="text-right">
+                {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback -%}
+              </span>
+            </div>
+
+          {%- when 'price' -%}
+            <div class="flex justify-between gap-6 border-y border-line py-3 text-[11px]" {{ block.shopify_attributes }}>
+              <span class="text-muted">{{ block.settings.label }}</span>
+              <span class="text-right">
+                <span data-price>{{ current_variant.price | money }}</span>
+                <s class="ml-1 text-muted{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}" data-compare-price>
+                  {{- current_variant.compare_at_price | money -}}
+                </s>
+              </span>
+            </div>
+
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class="mt-[10px]" {{ block.shopify_attributes }}>
+                {%- for option in product.options_with_values -%}
+                  <label class="block">
+                    <span class="field-label">{{ option.name }}</span>
+                    <select class="field cursor-pointer" data-option-index="{{ forloop.index0 }}" name="options[{{ option.name | escape }}]">
+                      {%- for value in option.values -%}
+                        <option
+                          value="{{ value | escape }}"
+                          {% if option.selected_value == value %}
+                            selected
+                          {% endif %}
+                        >
+                          {{- value -}}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                  </label>
+                {%- endfor -%}
+              </div>
+              <script type="application/json" data-variants>
+                {{ product.variants | json }}
+              </script>
+            {%- endunless -%}
+
+          {%- when 'production_time' -%}
+            <p class="mt-[25px] flex justify-between gap-6 text-[9px] uppercase tracking-[1.35px]" {{ block.shopify_attributes }}>
+              {{ block.settings.label }}
+              <span class="text-right normal-case tracking-normal text-muted">
+                {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback -%}
+              </span>
+            </p>
+
+          {%- when 'buy_buttons' -%}
+            <div class="mt-[25px]" {{ block.shopify_attributes }}>
+              {%- form 'product', product, data-product-form: '' -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+                <button
+                  type="submit"
+                  name="add"
+                  class="btn-solid w-full disabled:cursor-not-allowed disabled:opacity-40"
+                  data-add-button
+                  {% unless current_variant.available %}
+                    disabled
+                  {% endunless %}
+                >
+                  {%- if current_variant.available -%}
+                    {{ 'products.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.sold_out' | t }}
+                  {%- endif -%}
+                </button>
+                {%- if block.settings.show_dynamic_checkout -%}
+                  <div class="mt-3">{{ form | payment_button }}</div>
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+
+          {%- when 'consult_link' -%}
+            <a
+              href="{{ block.settings.url | default: routes.root_url }}"
+              class="mt-[18px] block text-center text-[11px] underline underline-offset-4"
+              {{ block.shopify_attributes }}
+            >
+              {{- block.settings.label }} ↗
+            </a>
+
+          {%- when 'text' -%}
+            <div class="rte mt-[25px] leading-[1.9] text-ink-soft" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </div>
+
+          {%- when 'collapsible' -%}
+            {%- liquid
+              case block.settings.source
+                when 'description'
+                  assign collapsible_content = product.description
+                when 'metafield'
+                  capture collapsible_content
+                    render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.content
+                  endcapture
+                else
+                  assign collapsible_content = block.settings.content
+              endcase
+              assign popup_id = dialog_prefix | append: '-' | append: block.id
+
+              # la prima scheda di un gruppo ha spazio e linea sopra
+              assign starts_group = true
+              if forloop.index0 > 0
+                assign prev_index = forloop.index0 | minus: 1
+                if section.blocks[prev_index].type == 'collapsible'
+                  assign starts_group = false
+                endif
+              endif
+            -%}
+            <details
+              class="accordion{% if starts_group %} mt-[35px] border-t{% endif %}"
+              {% if block.settings.open %}
+                open
+              {% endif %}
+              {{ block.shopify_attributes }}
+            >
+              <summary>{{ block.settings.heading }}</summary>
+              <div class="accordion-body">
+                {%- if collapsible_content != blank -%}
+                  <div class="rte">{{ collapsible_content }}</div>
+                {%- endif -%}
+                {%- if block.settings.popup_page != blank and block.settings.popup_label != blank -%}
+                  <button
+                    type="button"
+                    class="line-link mt-4 text-ink"
+                    data-dialog-open="{{ popup_id }}"
+                    aria-haspopup="dialog"
+                  >
+                    {{- block.settings.popup_label }} ↗
+                  </button>
+                {%- endif -%}
+                {%- if block.settings.link_label != blank -%}
+                  <a class="line-link mt-4 text-ink" href="{{ block.settings.link_url | default: routes.root_url }}">
+                    {{- block.settings.link_label }} ↗
+                  </a>
+                {%- endif -%}
+              </div>
+            </details>
+
+            {%- if block.settings.popup_page != blank and block.settings.popup_label != blank -%}
+              <dialog
+                id="{{ popup_id }}"
+                class="m-auto max-h-[90svh] w-[min(860px,94vw)] overflow-y-auto border-0 bg-paper px-[23px] py-[45px] text-ink md:p-[55px]"
+                aria-labelledby="{{ popup_id }}-title"
+              >
+                <button type="button" class="absolute right-[18px] top-3 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+                <h2 id="{{ popup_id }}-title" class="mb-6 text-[32px] md:text-[43px]">{{ block.settings.popup_page.title }}</h2>
+                <div class="rte leading-[1.9] text-ink-soft">{{ block.settings.popup_page.content }}</div>
+              </dialog>
+            {%- endif -%}
+
+          {%- when '@app' -%}
+            {% render block %}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </section>
+
+  {%- comment -%} Video della lavorazione {%- endcomment -%}
+  {%- if video_media -%}
+    <dialog
+      id="{{ dialog_prefix }}-video"
+      class="m-auto w-[min(1100px,94vw)] border-0 bg-ink p-0 text-paper"
+      aria-label="{{ section.settings.video_label | escape }}"
+      data-video-dialog
+    >
+      <button type="button" class="absolute right-[18px] top-3 z-10 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+      <div class="aspect-video">
+        {%- if video_media.media_type == 'video' -%}
+          {{ video_media | video_tag: controls: true, preload: 'none', class: 'h-full w-full' }}
+        {%- else -%}
+          {{ video_media | external_video_url: rel: 0, enablejsapi: 1 | external_video_tag: class: 'h-full w-full', loading: 'lazy' }}
+        {%- endif -%}
+      </div>
+    </dialog>
+  {%- endif -%}
+</product-info>
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Scheda prodotto",
+  "tag": "div",
+  "class": "section-product-main",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_captions",
+      "label": "Didascalie immagini",
+      "default": true,
+      "info": "Usa il testo alternativo dell'immagine (es. VISTA FRONTALE, DETTAGLIO)."
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Testo pulsante video",
+      "default": "Video della lavorazione",
+      "info": "Il pulsante appare se il prodotto ha un video tra i media."
+    }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "eyebrow",
+      "name": "Sopratitolo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Contenuto",
+          "options": [
+            { "value": "type", "label": "Tipo di prodotto" },
+            { "value": "collection", "label": "Collezione" },
+            { "value": "vendor", "label": "Fornitore" },
+            { "value": "text", "label": "Testo libero" }
+          ],
+          "default": "type"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Testo (o alternativa se vuoto)",
+          "default": "COUTURE"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Titolo",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "hours",
+      "name": "Il tempo delle mani",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titolo",
+          "default": "IL TEMPO DELLE MANI"
+        },
+        {
+          "type": "text",
+          "id": "hours_key",
+          "label": "Metafield ore",
+          "default": "custom.ore_manifattura"
+        },
+        {
+          "type": "text",
+          "id": "note_key",
+          "label": "Metafield nota",
+          "default": "custom.nota_ore"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota (se il metafield è vuoto)",
+          "default": "Dato da inserire"
+        }
+      ]
+    },
+    {
+      "type": "fact",
+      "name": "Dato prodotto",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Tecnica"
+        },
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "default": "custom.tecnica",
+          "info": "Formato namespace.chiave"
+        },
+        {
+          "type": "text",
+          "id": "fallback",
+          "label": "Valore se vuoto",
+          "default": "Da inserire"
+        }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Prezzo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Prezzo"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Varianti",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Un menu a tendina per ogni opzione (es. Taglia, Colore)."
+        }
+      ]
+    },
+    {
+      "type": "production_time",
+      "name": "Tempo di realizzazione",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "TEMPO DI REALIZZAZIONE"
+        },
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "default": "custom.tempo_realizzazione"
+        },
+        {
+          "type": "text",
+          "id": "fallback",
+          "label": "Valore se vuoto",
+          "default": "Da definire"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Pulsante acquisto",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Pagamento rapido (Shop Pay, Apple Pay…)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "consult_link",
+      "name": "Link consulenza",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Testo",
+          "default": "Una domanda su questo capo? Parliamone"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Testo",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Testo"
+        }
+      ]
+    },
+    {
+      "type": "collapsible",
+      "name": "Scheda a comparsa",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titolo",
+          "default": "Descrizione"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Aperta di default",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Contenuto",
+          "options": [
+            { "value": "text", "label": "Testo qui sotto" },
+            { "value": "description", "label": "Descrizione prodotto" },
+            { "value": "metafield", "label": "Metafield prodotto" }
+          ],
+          "default": "text"
+        },
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "info": "Formato namespace.chiave (es. custom.materiali). Se vuoto usa il testo qui sotto."
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Testo"
+        },
+        {
+          "type": "header",
+          "content": "Finestra (es. guida alle misure)"
+        },
+        {
+          "type": "page",
+          "id": "popup_page",
+          "label": "Pagina da mostrare"
+        },
+        {
+          "type": "text",
+          "id": "popup_label",
+          "label": "Testo pulsante"
+        },
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Testo pulsante"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

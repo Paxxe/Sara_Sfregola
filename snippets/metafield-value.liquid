@@ -1,0 +1,23 @@
+{%- comment -%}
+  Stampa il valore di un metafield prodotto partendo da una chiave "namespace.chiave".
+
+  Parametri:
+  - product: prodotto
+  - key: es. 'custom.tecnica'
+  - fallback: testo se il metafield è vuoto
+{%- endcomment -%}
+{%- liquid
+  assign mf = blank
+  if key != blank
+    assign key_parts = key | strip | split: '.'
+    if key_parts.size == 2
+      assign mf = product.metafields[key_parts[0]][key_parts[1]]
+    endif
+  endif
+
+  if mf != blank
+    echo mf | metafield_text
+  else
+    echo fallback
+  endif
+-%}

@@ -1,0 +1,149 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-main",
+      "blocks": {
+        "eyebrow": { "type": "eyebrow", "settings": { "source": "type", "text": "COUTURE" } },
+        "title": { "type": "title", "settings": {} },
+        "hours": {
+          "type": "hours",
+          "settings": {
+            "heading": "IL TEMPO DELLE MANI",
+            "hours_key": "custom.ore_manifattura",
+            "note_key": "custom.nota_ore",
+            "note": "Dato da inserire"
+          }
+        },
+        "fact-tecnica": {
+          "type": "fact",
+          "settings": { "label": "Tecnica", "metafield": "custom.tecnica", "fallback": "Da inserire" }
+        },
+        "fact-unicita": {
+          "type": "fact",
+          "settings": { "label": "Unicità", "metafield": "custom.unicita", "fallback": "Da inserire" }
+        },
+        "price": { "type": "price", "settings": { "label": "Prezzo" } },
+        "variants": { "type": "variant_picker", "settings": {} },
+        "production": {
+          "type": "production_time",
+          "settings": {
+            "label": "TEMPO DI REALIZZAZIONE",
+            "metafield": "custom.tempo_realizzazione",
+            "fallback": "Da definire"
+          }
+        },
+        "buy": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": false } },
+        "consult": {
+          "type": "consult_link",
+          "settings": { "label": "Una domanda su questo capo? Parliamone" }
+        },
+        "descrizione": {
+          "type": "collapsible",
+          "settings": { "heading": "Descrizione", "open": true, "source": "description" }
+        },
+        "tecniche": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Tecniche e ore di manifattura",
+            "source": "metafield",
+            "metafield": "custom.tecniche_dettaglio",
+            "link_label": "Esplora il savoir-faire"
+          }
+        },
+        "materiali": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Materiali, composizione e provenienza",
+            "source": "metafield",
+            "metafield": "custom.materiali"
+          }
+        },
+        "vestibilita": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Vestibilità e guida alle misure",
+            "source": "metafield",
+            "metafield": "custom.vestibilita",
+            "popup_label": "Come prendere le misure"
+          }
+        },
+        "personalizzazioni": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Personalizzazioni",
+            "source": "metafield",
+            "metafield": "custom.personalizzazioni"
+          }
+        },
+        "consegna": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Realizzazione e consegna",
+            "source": "metafield",
+            "metafield": "custom.realizzazione_consegna"
+          }
+        },
+        "cura": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Cura e conservazione",
+            "source": "metafield",
+            "metafield": "custom.cura"
+          }
+        },
+        "spedizioni": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Spedizioni, pagamenti e resi",
+            "source": "text",
+            "link_label": "Customer Care"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "title",
+        "hours",
+        "fact-tecnica",
+        "fact-unicita",
+        "price",
+        "variants",
+        "production",
+        "buy",
+        "consult",
+        "descrizione",
+        "tecniche",
+        "materiali",
+        "vestibilita",
+        "personalizzazioni",
+        "consegna",
+        "cura",
+        "spedizioni"
+      ],
+      "settings": {
+        "show_captions": true,
+        "video_label": "Video della lavorazione"
+      }
+    },
+    "editorial": {
+      "type": "product-editorial",
+      "settings": {
+        "eyebrow": "DETTAGLI",
+        "heading": "La creazione",
+        "metafield": "custom.racconto",
+        "link_label": "Incontra le tecniche"
+      }
+    },
+    "related": {
+      "type": "product-related",
+      "settings": {
+        "eyebrow": "ABBINAMENTI",
+        "heading": "Completa il look",
+        "source": "metafield",
+        "metafield": "custom.abbinamenti",
+        "limit": 3
+      }
+    }
+  },
+  "order": ["main", "editorial", "related"]
+}

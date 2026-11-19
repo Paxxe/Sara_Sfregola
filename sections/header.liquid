@@ -1,4 +1,15 @@
-<site-header class="relative block text-ink">
+{%- comment -%}
+  Header con megamenu.
+  - Link: menu Shopify a 3 livelli (voce → colonne → link).
+  - Immagini: blocchi "Megamenu" collegati alla voce di primo livello tramite il titolo.
+  - Desktop: pannello a tutta larghezza su hover / focus / tap.
+  - Mobile: pannello a tutta altezza con voci a fisarmonica.
+{%- endcomment -%}
+{%- assign menu = section.settings.menu -%}
+
+<site-header
+  class="relative block text-ink transition-colors duration-300 data-[mega]:bg-paper data-[mobile]:bg-paper"
+>
   <div class="flex h-[86px] items-center justify-between px-[5%] md:h-[108px] md:px-[3%]">
     <a href="{{ routes.root_url }}" class="flex h-16 w-[73px] items-center md:h-[78px] md:w-[88px]">
       {%- render 'logo',
@@ -8,41 +19,153 @@
       -%}
     </a>
 
-    {%- if section.settings.menu.links.size > 0 -%}
-      <nav
-        id="SiteNav-{{ section.id }}"
-        aria-label="{{ 'header.main_nav' | t }}"
-        class="absolute inset-x-0 top-[86px] z-10 hidden flex-col gap-[25px] bg-paper p-[25px] text-[10px] uppercase tracking-[1px] shadow-[0_15px_30px_#0001] data-[open]:flex md:static md:flex md:flex-row md:gap-[21px] md:bg-transparent md:p-0 md:shadow-none lg:gap-[38px]"
-        data-nav
-      >
-        {%- for link in section.settings.menu.links -%}
-          <a
-            href="{{ link.url }}"
-            {% if link.current %}
-              aria-current="page"
-            {% endif %}
-          >
-            {{- link.title -}}
-          </a>
-        {%- endfor -%}
+    {%- if menu.links.size > 0 -%}
+      {%- comment -%} ===================== Desktop ===================== {%- endcomment -%}
+      <nav aria-label="{{ 'header.main_nav' | t }}" class="hidden h-full md:block">
+        <ul class="flex h-full items-center gap-[21px] text-[10px] uppercase tracking-[1px] lg:gap-[38px]">
+          {%- for link in menu.links -%}
+            {%- liquid
+              assign mega = nil
+              for block in section.blocks
+                assign block_handle = block.settings.title | handleize
+                if block_handle == link.handle
+                  assign mega = block
+                  break
+                endif
+              endfor
+
+              assign has_panel = false
+              if link.links.size > 0 or mega
+                assign has_panel = true
+              endif
+              assign panel_id = 'Mega-' | append: section.id | append: '-' | append: forloop.index
+            -%}
+            <li class="flex h-full items-center" data-mega-item>
+              <a
+                href="{{ link.url }}"
+                class="relative py-2{% if link.active or link.child_active %} border-b border-current{% endif %}"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+                {% if has_panel %}
+                  aria-expanded="false" aria-controls="{{ panel_id }}" data-mega-trigger
+                {% endif %}
+              >
+                {{- link.title -}}
+              </a>
+
+              {%- if has_panel -%}
+                {%- render 'mega-panel', link: link, mega: mega, panel_id: panel_id -%}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
       </nav>
 
-      <div class="flex items-center gap-3 text-[10px] md:gap-4">
-        <button
-          type="button"
-          class="block md:hidden"
-          aria-expanded="false"
-          aria-controls="SiteNav-{{ section.id }}"
-          aria-label="{{ 'header.open_menu' | t }}"
-          data-label-open="{{ 'header.open_menu' | t }}"
-          data-label-close="{{ 'header.close_menu' | t }}"
-          data-menu-toggle
+      {%- if section.settings.secondary_label != blank -%}
+        <a
+          href="{{ section.settings.secondary_url | default: routes.root_url }}"
+          class="hidden text-[10px] uppercase tracking-[1px] lg:block"
         >
-          ☰
-        </button>
-      </div>
+          {{- section.settings.secondary_label }} ↗
+        </a>
+      {%- endif -%}
+
+      <button
+        type="button"
+        class="block text-[18px] md:hidden"
+        aria-expanded="false"
+        aria-controls="MobileNav-{{ section.id }}"
+        aria-label="{{ 'header.open_menu' | t }}"
+        data-label-open="{{ 'header.open_menu' | t }}"
+        data-label-close="{{ 'header.close_menu' | t }}"
+        data-menu-toggle
+      >
+        <span aria-hidden="true" data-menu-icon>☰</span>
+      </button>
     {%- endif -%}
   </div>
+
+  {%- comment -%} Velatura sotto il pannello desktop {%- endcomment -%}
+  <div
+    class="pointer-events-none absolute inset-x-0 top-full z-20 hidden h-[100svh] bg-ink/20 opacity-0 transition-opacity duration-300 data-[open]:opacity-100 md:block"
+    aria-hidden="true"
+    data-mega-backdrop
+  ></div>
+
+  {%- comment -%} ===================== Mobile ===================== {%- endcomment -%}
+  {%- if menu.links.size > 0 -%}
+    <nav
+      id="MobileNav-{{ section.id }}"
+      aria-label="{{ 'header.main_nav' | t }}"
+      class="absolute inset-x-0 top-full z-30 hidden h-[calc(100svh-86px)] overflow-y-auto border-t border-line bg-paper px-[5%] pb-10 data-[open]:block md:!hidden"
+      data-mobile-nav
+    >
+      <ul>
+        {%- for link in menu.links -%}
+          {%- liquid
+            assign mega = nil
+            for block in section.blocks
+              assign block_handle = block.settings.title | handleize
+              if block_handle == link.handle
+                assign mega = block
+                break
+              endif
+            endfor
+          -%}
+          <li>
+            {%- if link.links.size > 0 or mega -%}
+              <details class="accordion accordion--lg">
+                <summary>{{ link.title }}</summary>
+                <div class="pb-6 pt-2">
+                  {%- for child in link.links -%}
+                    <div class="mb-6">
+                      <a href="{{ child.url }}" class="eyebrow mb-3 block">{{ child.title }}</a>
+                      {%- if child.links.size > 0 -%}
+                        <ul class="space-y-[10px] text-[13px]">
+                          {%- for grandchild in child.links -%}
+                            <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+
+                  {%- if mega and mega.settings.image_1 != blank -%}
+                    <a href="{{ mega.settings.link_1 | default: link.url }}" class="mb-6 block">
+                      <div class="aspect-[5/4] overflow-hidden bg-mist">
+                        {%- render 'media',
+                          image: mega.settings.image_1,
+                          class: 'h-full w-full object-cover',
+                          sizes: '90vw'
+                        -%}
+                      </div>
+                      {%- if mega.settings.title_1 != blank -%}
+                        <p class="mt-3 text-[12px]">{{ mega.settings.title_1 }} ↗</p>
+                      {%- endif -%}
+                    </a>
+                  {%- endif -%}
+
+                  <a href="{{ link.url }}" class="line-link">{{ 'header.discover_all' | t }} ↗</a>
+                </div>
+              </details>
+            {%- else -%}
+              <a
+                href="{{ link.url }}"
+                class="flex items-center justify-between border-b border-rule py-[18px] text-[20px] tracking-[-0.5px]"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{- link.title -}}
+                <span aria-hidden="true" class="text-[13px]">↗</span>
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
 </site-header>
 
 {% schema %}
@@ -50,20 +173,94 @@
   "name": "Header",
   "class": "header-wrapper",
   "enabled_on": {
-    "groups": [
-      "header"
-    ]
+    "groups": ["header"]
   },
+  "max_blocks": 8,
   "settings": [
     {
       "type": "link_list",
       "id": "menu",
       "label": "Menu",
-      "default": "main-menu"
+      "default": "main-menu",
+      "info": "Usa i 3 livelli del menu: voce principale → colonne → link."
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Link secondario",
+      "default": "Customer care",
+      "info": "Mostrato a destra su desktop (es. Customer care)."
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Link secondario — destinazione"
     },
     {
       "type": "paragraph",
-      "content": "In homepage l'header è trasparente e sovrapposto all'hero."
+      "content": "In homepage l'header è trasparente e sovrapposto all'hero. Aggiungi un blocco \"Megamenu\" per inserire immagini nel pannello di una voce."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "megamenu",
+      "name": "Megamenu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Voce di menu",
+          "info": "Titolo della voce di primo livello a cui collegare le immagini (es. Creazioni)."
+        },
+        {
+          "type": "header",
+          "content": "Immagine 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Immagine"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow_1",
+          "label": "Sopratitolo"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Titolo"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Immagine 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Immagine"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow_2",
+          "label": "Sopratitolo"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Titolo"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link"
+        }
+      ]
     }
   ]
 }

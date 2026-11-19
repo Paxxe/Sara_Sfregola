@@ -1,0 +1,124 @@
+{%- comment -%}
+  "La creazione" — sezione editoriale della PDP (product-editorial).
+  Testo libero o metafield del prodotto; con immagine diventa un layout a due colonne.
+{%- endcomment -%}
+{%- liquid
+  capture editorial_text
+    if product and section.settings.metafield != blank
+      render 'metafield-value', product: product, key: section.settings.metafield, fallback: section.settings.text
+    else
+      echo section.settings.text
+    endif
+  endcapture
+  assign editorial_text = editorial_text | strip
+-%}
+
+{%- if section.settings.image != blank -%}
+  <section class="grid grid-cols-1 bg-linen md:min-h-[660px] md:grid-cols-2">
+    <div class="h-[490px] overflow-hidden md:h-auto{% if section.settings.image_right %} md:order-2{% endif %}">
+      {%- render 'media',
+        image: section.settings.image,
+        class: 'h-full w-full object-cover',
+        sizes: '(min-width: 721px) 50vw, 100vw'
+      -%}
+    </div>
+    <div class="self-center px-[8%] py-[60px] md:px-[14%] md:py-[90px]">
+      <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
+      <h2 class="text-[34px] md:text-[43px]">
+        {{- section.settings.heading -}}
+        {%- if section.settings.heading_italic != blank -%}<br><em>{{ section.settings.heading_italic }}</em>{%- endif -%}
+      </h2>
+      {%- if editorial_text != blank -%}
+        <div class="rte my-[30px] max-w-[430px] leading-[1.9] text-ink-soft">{{ editorial_text }}</div>
+      {%- endif -%}
+      {%- if section.settings.link_label != blank -%}
+        <a class="line-link mt-[10px]" href="{{ section.settings.link_url | default: routes.root_url }}">
+          {{- section.settings.link_label }} ↗
+        </a>
+      {%- endif -%}
+    </div>
+  </section>
+{%- else -%}
+  <section class="bg-oat px-[7%] py-[85px] text-center md:px-[25px] md:py-[120px]">
+    <p class="eyebrow mb-7 md:mb-[38px]">{{ section.settings.eyebrow }}</p>
+    <h2 class="text-[34px] leading-[1.22] md:text-[42px] md:leading-[1.17]">
+      {{- section.settings.heading -}}
+      {%- if section.settings.heading_italic != blank -%}<br><em>{{ section.settings.heading_italic }}</em>{%- endif -%}
+    </h2>
+    {%- if editorial_text != blank -%}
+      <div class="rte mx-auto my-[30px] max-w-[490px] leading-[1.9] text-ink-soft">{{ editorial_text }}</div>
+    {%- endif -%}
+    {%- if section.settings.link_label != blank -%}
+      <a class="line-link mt-[30px]" href="{{ section.settings.link_url | default: routes.root_url }}">
+        {{- section.settings.link_label }} ↗
+      </a>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "La creazione",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "DETTAGLI"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "La creazione"
+    },
+    {
+      "type": "text",
+      "id": "heading_italic",
+      "label": "Seconda riga (corsivo)"
+    },
+    {
+      "type": "text",
+      "id": "metafield",
+      "label": "Metafield testo",
+      "default": "custom.racconto",
+      "info": "Testo diverso per ogni creazione (namespace.chiave). Se vuoto usa il testo qui sotto."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine",
+      "info": "Con l'immagine la sezione diventa a due colonne."
+    },
+    {
+      "type": "checkbox",
+      "id": "image_right",
+      "label": "Immagine a destra",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Testo pulsante",
+      "default": "Incontra le tecniche"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "La creazione",
+      "category": "Prodotto"
+    }
+  ]
+}
+{% endschema %}

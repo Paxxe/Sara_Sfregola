@@ -4,30 +4,134 @@
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
   /* ---------- Header: menu mobile ---------- */
+  /* ---------- Header: megamenu desktop + menu mobile ---------- */
   class SiteHeader extends HTMLElement {
     connectedCallback() {
       this.toggle = this.querySelector('[data-menu-toggle]');
-      this.nav = this.querySelector('[data-nav]');
-      if (!this.toggle || !this.nav) return;
+      this.mobileNav = this.querySelector('[data-mobile-nav]');
+      this.backdrop = this.querySelector('[data-mega-backdrop]');
+      this.current = null;
+      this.canHover = window.matchMedia('(hover: hover)').matches;
 
-      this.toggle.addEventListener('click', () => this.setOpen(!this.nav.hasAttribute('data-open')));
-      this.nav.addEventListener('click', (e) => {
-        if (e.target.closest('a')) this.setOpen(false);
+      // Megamenu desktop
+      this.querySelectorAll('[data-mega-item]').forEach((item) => {
+        const trigger = item.querySelector('[data-mega-trigger]');
+
+        item.addEventListener('mouseenter', () => {
+          if (!this.canHover) return;
+          clearTimeout(this.closeTimer);
+          clearTimeout(this.openTimer);
+          if (!trigger) return this.closeMega();
+          // piccolo ritardo per non aprire il pannello passando col mouse
+          this.openTimer = setTimeout(() => this.openMega(item), this.current ? 0 : 90);
+        });
+
+        item.addEventListener('mouseleave', () => {
+          if (!this.canHover) return;
+          clearTimeout(this.openTimer);
+          this.closeTimer = setTimeout(() => this.closeMega(), 180);
+        });
+
+        if (!trigger) return;
+
+        // Touch / primo click: apre il pannello; secondo click segue il link
+        trigger.addEventListener('click', (e) => {
+          if (this.current !== item) {
+            e.preventDefault();
+            this.openMega(item);
+          }
+        });
+
+        // Tastiera: freccia giù apre e porta il focus nel pannello
+        trigger.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            this.openMega(item);
+            item.querySelector('[data-mega-panel] a')?.focus();
+          }
+        });
+
+        item.addEventListener('focusout', (e) => {
+          if (this.current === item && !item.contains(e.relatedTarget)) this.closeMega();
+        });
       });
+
+      // Menu mobile
+      this.toggle?.addEventListener('click', () => this.setMobile(!this.mobileNav?.hasAttribute('data-open')));
+      this.mobileNav?.addEventListener('click', (e) => {
+        if (e.target.closest('a')) this.setMobile(false);
+      });
+
       this.onKey = (e) => {
-        if (e.key === 'Escape') this.setOpen(false);
+        if (e.key !== 'Escape') return;
+        if (this.current) {
+          const trigger = this.current.querySelector('[data-mega-trigger]');
+          this.closeMega();
+          trigger?.focus();
+        }
+        this.setMobile(false);
+      };
+      this.onDocClick = (e) => {
+        if (this.current && !this.contains(e.target)) this.closeMega();
+      };
+      this.onResize = () => {
+        if (window.innerWidth >= 721) this.setMobile(false);
+        else this.closeMega();
       };
       document.addEventListener('keydown', this.onKey);
+      document.addEventListener('click', this.onDocClick);
+      window.addEventListener('resize', this.onResize);
+
+      // Theme editor: selezionando un blocco Megamenu si apre il pannello
+      this.onBlockSelect = (e) => {
+        const item = this.contains(e.target) ? e.target.closest('[data-mega-item]') : null;
+        if (item) this.openMega(item);
+      };
+      this.onBlockDeselect = () => this.closeMega();
+      document.addEventListener('shopify:block:select', this.onBlockSelect);
+      document.addEventListener('shopify:block:deselect', this.onBlockDeselect);
     }
 
     disconnectedCallback() {
       document.removeEventListener('keydown', this.onKey);
+      document.removeEventListener('click', this.onDocClick);
+      window.removeEventListener('resize', this.onResize);
+      document.removeEventListener('shopify:block:select', this.onBlockSelect);
+      document.removeEventListener('shopify:block:deselect', this.onBlockDeselect);
+      document.documentElement.classList.remove('overflow-hidden');
     }
 
-    setOpen(open) {
-      this.nav.toggleAttribute('data-open', open);
+    openMega(item) {
+      if (this.current === item) return;
+      this.closeMega();
+      const panel = item.querySelector('[data-mega-panel]');
+      const trigger = item.querySelector('[data-mega-trigger]');
+      if (!panel) return;
+      this.current = item;
+      panel.setAttribute('data-open', '');
+      trigger?.setAttribute('aria-expanded', 'true');
+      this.setAttribute('data-mega', '');
+      this.backdrop?.setAttribute('data-open', '');
+    }
+
+    closeMega() {
+      if (!this.current) return;
+      this.current.querySelector('[data-mega-panel]')?.removeAttribute('data-open');
+      this.current.querySelector('[data-mega-trigger]')?.setAttribute('aria-expanded', 'false');
+      this.current = null;
+      this.removeAttribute('data-mega');
+      this.backdrop?.removeAttribute('data-open');
+    }
+
+    setMobile(open) {
+      if (!this.mobileNav || !this.toggle) return;
+      this.mobileNav.toggleAttribute('data-open', open);
+      this.toggleAttribute('data-mobile', open);
+      document.documentElement.classList.toggle('overflow-hidden', open);
       this.toggle.setAttribute('aria-expanded', String(open));
       this.toggle.setAttribute('aria-label', open ? this.toggle.dataset.labelClose : this.toggle.dataset.labelOpen);
+      const icon = this.toggle.querySelector('[data-menu-icon]');
+      if (icon) icon.textContent = open ? '×' : '☰';
     }
   }
 
@@ -155,6 +259,136 @@
       if (this.empty) this.empty.hidden = shown > 0;
     }
   }
+
+  /* ---------- PDP: varianti, prezzo, pulsante ---------- */
+  class ProductInfo extends HTMLElement {
+    connectedCallback() {
+      const json = this.querySelector('[data-variants]');
+      this.variants = json ? JSON.parse(json.textContent) : [];
+      this.selects = [...this.querySelectorAll('[data-option-index]')];
+      this.idInput = this.querySelector('[data-variant-id]');
+      this.button = this.querySelector('[data-add-button]');
+      this.price = this.querySelector('[data-price]');
+      this.compare = this.querySelector('[data-compare-price]');
+      this.money = new Intl.NumberFormat(document.documentElement.lang || 'it', {
+        style: 'currency',
+        currency: this.dataset.currency || 'EUR',
+      });
+      this.selects.forEach((select) => select.addEventListener('change', () => this.onChange()));
+    }
+
+    onChange() {
+      const values = this.selects.map((s) => s.value);
+      const variant = this.variants.find((v) => v.options.every((opt, i) => opt === values[i]));
+
+      if (!variant) {
+        this.setButton(false, this.dataset.labelUnavailable);
+        return;
+      }
+
+      if (this.idInput) this.idInput.value = variant.id;
+      if (this.price) this.price.textContent = this.money.format(variant.price / 100);
+      if (this.compare) {
+        const onSale = variant.compare_at_price && variant.compare_at_price > variant.price;
+        this.compare.classList.toggle('hidden', !onSale);
+        if (onSale) this.compare.textContent = this.money.format(variant.compare_at_price / 100);
+      }
+      this.setButton(variant.available, variant.available ? this.dataset.labelAdd : this.dataset.labelSoldOut);
+
+      const url = new URL(window.location.href);
+      url.searchParams.set('variant', variant.id);
+      window.history.replaceState({}, '', url);
+
+      if (variant.featured_media) {
+        this.querySelector('product-gallery')?.showMedia(variant.featured_media.id);
+      }
+    }
+
+    setButton(enabled, label) {
+      if (!this.button) return;
+      this.button.disabled = !enabled;
+      this.button.textContent = label;
+    }
+  }
+
+  /* ---------- PDP: galleria (carosello su mobile) ---------- */
+  class ProductGallery extends HTMLElement {
+    connectedCallback() {
+      this.track = this.querySelector('[data-gallery-track]');
+      this.counter = this.querySelector('[data-gallery-counter]');
+      this.slides = [...this.querySelectorAll('[data-media-id]')];
+      if (!this.track || !this.counter) return;
+      this.track.addEventListener(
+        'scroll',
+        () => {
+          const i = Math.round(this.track.scrollLeft / (this.slides[0]?.offsetWidth || 1));
+          this.counter.textContent = `${pad(clamp(i, 0, this.slides.length - 1) + 1)} / ${pad(this.slides.length)}`;
+        },
+        { passive: true }
+      );
+    }
+
+    showMedia(id) {
+      const slide = this.slides.find((s) => s.dataset.mediaId === String(id));
+      if (!slide) return;
+      if (this.track.scrollWidth > this.track.clientWidth) {
+        // mobile: scorre il carosello
+        this.track.scrollTo({ left: slide.offsetLeft - this.track.offsetLeft, behavior: 'smooth' });
+      } else if (slide.getBoundingClientRect().top < 0 || slide.getBoundingClientRect().bottom > window.innerHeight) {
+        slide.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+
+  /* ---------- PDP: raccomandazioni Shopify ---------- */
+  class ProductRecommendations extends HTMLElement {
+    connectedCallback() {
+      if (!this.dataset.url || this.children.length) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          this.load();
+        },
+        { rootMargin: '0px 0px 400px 0px' }
+      );
+      observer.observe(this);
+    }
+
+    async load() {
+      try {
+        const res = await fetch(this.dataset.url);
+        const html = await res.text();
+        const fresh = new DOMParser().parseFromString(html, 'text/html').querySelector('product-recommendations');
+        if (fresh && fresh.innerHTML.trim()) {
+          this.innerHTML = fresh.innerHTML;
+        } else {
+          this.closest('.shopify-section')?.setAttribute('hidden', '');
+        }
+      } catch (e) {
+        this.closest('.shopify-section')?.setAttribute('hidden', '');
+      }
+    }
+  }
+
+  customElements.get('product-info') || customElements.define('product-info', ProductInfo);
+  customElements.get('product-gallery') || customElements.define('product-gallery', ProductGallery);
+  customElements.get('product-recommendations') ||
+    customElements.define('product-recommendations', ProductRecommendations);
+
+  // Ferma i video quando si chiude la finestra
+  document.addEventListener(
+    'close',
+    (e) => {
+      if (!(e.target instanceof HTMLDialogElement)) return;
+      e.target.querySelectorAll('video').forEach((v) => v.pause());
+      e.target.querySelectorAll('iframe').forEach((f) => {
+        f.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        f.contentWindow?.postMessage('{"method":"pause"}', '*');
+      });
+    },
+    true
+  );
 
   customElements.get('site-header') || customElements.define('site-header', SiteHeader);
   customElements.get('hero-scroll') || customElements.define('hero-scroll', HeroScroll);

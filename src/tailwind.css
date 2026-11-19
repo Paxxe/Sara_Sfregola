@@ -116,6 +116,26 @@
     content: '−';
   }
 
+  .accordion--lg > summary {
+    @apply py-[2px] text-[20px] tracking-[-0.5px];
+  }
+
+  .accordion--lg > summary::after {
+    @apply text-[16px];
+  }
+
+  /* Megamenu: comparsa morbida */
+  .mega[data-open] {
+    animation: mega-in 0.35s ease-out;
+  }
+
+  @keyframes mega-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
   .accordion-body {
     @apply max-w-[650px] pt-4 text-[12px] leading-[1.9] text-ink-soft;
   }
