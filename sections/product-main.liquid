@@ -51,7 +51,7 @@
     {%- comment -%} ===================== Galleria ===================== {%- endcomment -%}
     <product-gallery class="block min-w-0">
       <div
-        class="flex snap-x snap-mandatory gap-[10px] overflow-x-auto px-[6%] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
+        class="flex items-start snap-x snap-mandatory gap-[10px] overflow-x-auto px-[6%] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
         data-gallery-track
       >
         {%- assign image_index = 0 -%}
@@ -65,12 +65,13 @@
               {%- if section.settings.enable_zoom -%}
                 <button
                   type="button"
-                  class="group relative block w-full cursor-zoom-in{% if image_index == 1 %} aspect-[4/5]{% else %} aspect-[3/4]{% endif %} overflow-hidden bg-mist"
+                  class="group relative block w-full cursor-zoom-in overflow-hidden bg-mist"
+                  style="aspect-ratio: {{ media.aspect_ratio | default: 0.8 }}"
                   aria-label="{{ 'products.zoom_open' | t }}{% if media.alt != blank %} — {{ media.alt | escape }}{% endif %}"
                   data-zoom-open="{{ image_index | minus: 1 }}"
                 >
               {%- else -%}
-                <div class="{% if image_index == 1 %}aspect-[4/5]{% else %}aspect-[3/4]{% endif %} overflow-hidden bg-mist">
+                <div class="overflow-hidden bg-mist" style="aspect-ratio: {{ media.aspect_ratio | default: 0.8 }}">
               {%- endif -%}
                 {%- liquid
                   if image_index == 1
@@ -84,7 +85,7 @@
                     media
                     | image_url: width: 2000
                     | image_tag:
-                      class: 'h-full w-full object-cover',
+                      class: 'h-full w-full object-contain',
                       widths: '600,900,1200,1600,2000',
                       sizes: gallery_sizes,
                       loading: 'eager',
@@ -95,7 +96,7 @@
                     media
                     | image_url: width: 1600
                     | image_tag:
-                      class: 'h-full w-full object-cover',
+                      class: 'h-full w-full object-contain',
                       widths: '600,900,1200,1600',
                       sizes: gallery_sizes,
                       loading: 'lazy'
