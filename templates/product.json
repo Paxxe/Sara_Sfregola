@@ -99,11 +99,11 @@
             "heading": "Tecniche e ore di manifattura",
             "open": false,
             "source": "metafield",
-            "metafield": "custom.tecniche_dettaglio",
+            "metafield": "custom.details2",
             "content": "",
             "popup_page": "",
             "popup_label": "",
-            "link_label": "Esplora il savoir-faire",
+            "link_label": "",
             "link_url": ""
           }
         },
@@ -214,6 +214,7 @@
       ],
       "settings": {
         "show_captions": true,
+        "enable_zoom": true,
         "video_label": "Video della lavorazione"
       }
     },
