@@ -52,7 +52,8 @@
     </product-recommendations>
   {%- else -%}
     <div class="creations-grid">
-      {%- for rel in related_products limit: section.settings.limit -%}
+      {%- assign related_limit = section.settings.limit | plus: 0 -%}
+      {%- for rel in related_products limit: related_limit -%}
         {%- render 'product-card', product: rel, show_badges: true -%}
       {%- endfor -%}
     </div>
@@ -97,13 +98,14 @@
       "info": "Metafield di tipo \"Lista di prodotti\"."
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "limit",
       "label": "Numero di prodotti",
-      "min": 3,
-      "max": 6,
-      "step": 3,
-      "default": 3
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "6", "label": "6" }
+      ],
+      "default": "3"
     }
   ],
   "presets": [

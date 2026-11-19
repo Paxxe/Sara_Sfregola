@@ -170,7 +170,7 @@
         "heading": "Completa il look",
         "source": "metafield",
         "metafield": "custom.abbinamenti",
-        "limit": 3
+        "limit": "3"
       }
     },
     "consulenza": {
