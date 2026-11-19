@@ -1,5 +1,7 @@
 {%- comment -%}
   Stampa il valore di un metafield prodotto partendo da una chiave "namespace.chiave".
+  Testo formattato (rich text) e testo su più righe mantengono la formattazione
+  (grassetti, elenchi puntati, paragrafi); gli altri tipi vengono stampati come testo.
 
   Parametri:
   - product: prodotto
@@ -16,7 +18,12 @@
   endif
 
   if mf != blank
-    echo mf | metafield_text
+    case mf.type
+      when 'rich_text_field', 'multi_line_text_field'
+        echo mf | metafield_tag
+      else
+        echo mf | metafield_text
+    endcase
   else
     echo fallback
   endif

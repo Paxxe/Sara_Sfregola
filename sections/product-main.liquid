@@ -321,16 +321,16 @@
 
           {%- when 'collapsible' -%}
             {%- liquid
-              case block.settings.source
-                when 'description'
-                  assign collapsible_content = product.description
-                when 'metafield'
-                  capture collapsible_content
-                    render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.content
-                  endcapture
-                else
-                  assign collapsible_content = block.settings.content
-              endcase
+              # Descrizione prodotto, altrimenti il metafield (se compilato) ha la priorità sul testo
+              if block.settings.source == 'description'
+                assign collapsible_content = product.description
+              elsif block.settings.metafield != blank
+                capture collapsible_content
+                  render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.content
+                endcapture
+              else
+                assign collapsible_content = block.settings.content
+              endif
               assign popup_id = dialog_prefix | append: '-' | append: block.id
 
               # la prima scheda di un gruppo ha spazio e linea sopra
@@ -654,7 +654,7 @@
           "type": "text",
           "id": "metafield",
           "label": "Metafield",
-          "info": "Formato namespace.chiave (es. custom.materiali). Se vuoto usa il testo qui sotto."
+          "info": "Formato namespace.chiave (es. custom.materiali). Se compilato e il prodotto ha un valore, ha la priorità sul testo qui sotto."
         },
         {
           "type": "richtext",
