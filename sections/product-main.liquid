@@ -62,7 +62,16 @@
               class="m-0 w-[88%] shrink-0 snap-center md:w-auto{% if image_index == 1 %} md:col-span-2{% endif %}"
               data-media-id="{{ media.id }}"
             >
-              <div class="{% if image_index == 1 %}aspect-[4/5]{% else %}aspect-[3/4]{% endif %} overflow-hidden bg-mist">
+              {%- if section.settings.enable_zoom -%}
+                <button
+                  type="button"
+                  class="group relative block w-full cursor-zoom-in{% if image_index == 1 %} aspect-[4/5]{% else %} aspect-[3/4]{% endif %} overflow-hidden bg-mist"
+                  aria-label="{{ 'products.zoom_open' | t }}{% if media.alt != blank %} — {{ media.alt | escape }}{% endif %}"
+                  data-zoom-open="{{ image_index | minus: 1 }}"
+                >
+              {%- else -%}
+                <div class="{% if image_index == 1 %}aspect-[4/5]{% else %}aspect-[3/4]{% endif %} overflow-hidden bg-mist">
+              {%- endif -%}
                 {%- liquid
                   if image_index == 1
                     assign gallery_sizes = '(min-width: 721px) 55vw, 88vw'
@@ -92,7 +101,15 @@
                       loading: 'lazy'
                   }}
                 {%- endif -%}
-              </div>
+              {%- if section.settings.enable_zoom -%}
+                  <span
+                    class="pointer-events-none absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-paper/90 text-[15px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+                    aria-hidden="true"
+                  >+</span>
+                </button>
+              {%- else -%}
+                </div>
+              {%- endif -%}
               {%- if section.settings.show_captions and media.alt != blank and media.alt != product.title -%}
                 <figcaption class="mt-4 text-[8px] uppercase tracking-[2px]">{{ media.alt }}</figcaption>
               {%- endif -%}
@@ -127,6 +144,51 @@
           </button>
         {%- endif -%}
       </div>
+
+      {%- if section.settings.enable_zoom and image_count > 0 -%}
+        <dialog
+          id="{{ dialog_prefix }}-zoom"
+          class="m-0 h-[100svh] max-h-none w-screen max-w-none border-0 bg-paper p-0 text-ink"
+          aria-label="{{ 'products.zoom_title' | t }}"
+          data-zoom-dialog
+        >
+          <div class="flex h-full flex-col">
+            <div class="flex items-center justify-between px-[5%] py-3 text-[8px] tracking-[1.2px] text-cue md:px-[3%]">
+              <span data-zoom-counter>01 / {{ image_count | prepend: '0' | slice: -2, 2 }}</span>
+              <span class="hidden uppercase md:block">{{ 'products.zoom_hint' | t }}</span>
+              <button type="button" class="text-[30px] leading-none text-ink" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+            </div>
+
+            <div
+              class="zoom-track flex min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              data-zoom-track
+            >
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  <div class="zoom-slide relative flex h-full w-full shrink-0 snap-center items-center justify-center" data-zoom-slide>
+                    <img
+                      src="{{ media | image_url: width: 3000 }}"
+                      alt="{{ media.alt | escape }}"
+                      width="{{ media.width }}"
+                      height="{{ media.height }}"
+                      loading="lazy"
+                      class="zoom-img block h-full w-full cursor-zoom-in select-none object-contain"
+                      draggable="false"
+                    >
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            {%- if image_count > 1 -%}
+              <div class="flex items-center justify-center gap-5 py-3">
+                <button type="button" class="rounded-full px-2 py-1 text-[19px]" aria-label="{{ 'products.zoom_previous' | t }}" data-zoom-prev>←</button>
+                <button type="button" class="rounded-full px-2 py-1 text-[19px]" aria-label="{{ 'products.zoom_next' | t }}" data-zoom-next>→</button>
+              </div>
+            {%- endif -%}
+          </div>
+        </dialog>
+      {%- endif -%}
     </product-gallery>
 
     {%- comment -%} ===================== Informazioni ===================== {%- endcomment -%}
@@ -364,6 +426,13 @@
       "label": "Didascalie immagini",
       "default": true,
       "info": "Usa il testo alternativo dell'immagine (es. VISTA FRONTALE, DETTAGLIO)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Zoom immagini",
+      "default": true,
+      "info": "Clic sull'immagine: visualizzatore a schermo intero con ingrandimento."
     },
     {
       "type": "text",

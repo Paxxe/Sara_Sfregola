@@ -148,6 +148,38 @@
     @apply underline underline-offset-4;
   }
 
+  /* Elenchi nei testi formattati (descrizione prodotto, accordion, pagine) */
+  .rte ul,
+  .rte ol {
+    margin: 0.9em 0;
+    padding-left: 1.2em;
+  }
+
+  .rte ul {
+    list-style: disc;
+  }
+
+  .rte ol {
+    list-style: decimal;
+  }
+
+  .rte ul ul {
+    list-style: circle;
+    margin: 0.4em 0;
+  }
+
+  .rte li + li {
+    margin-top: 0.35em;
+  }
+
+  .rte li::marker {
+    color: rgb(var(--color-ink) / 0.45);
+  }
+
+  .rte > :first-child {
+    margin-top: 0;
+  }
+
   /* Modulo */
   .field-label {
     @apply mb-2 mt-4 block text-[11px];
@@ -310,6 +342,29 @@
     .plp-grid {
       @apply gap-y-[85px];
     }
+  }
+
+  /* PDP: zoom immagini */
+  .zoom-track.is-locked {
+    overflow: hidden;
+  }
+
+  .zoom-slide.is-zoomed {
+    display: block;
+    overflow: auto;
+    cursor: zoom-out;
+    scrollbar-width: none;
+  }
+
+  .zoom-slide.is-zoomed::-webkit-scrollbar {
+    display: none;
+  }
+
+  .zoom-slide.is-zoomed .zoom-img {
+    max-width: none;
+    height: auto;
+    margin: 0 auto;
+    cursor: zoom-out;
   }
 
   /* Drawer filtri: pannello laterale da destra */

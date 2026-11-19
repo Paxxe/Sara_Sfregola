@@ -317,6 +317,8 @@
       this.track = this.querySelector('[data-gallery-track]');
       this.counter = this.querySelector('[data-gallery-counter]');
       this.slides = [...this.querySelectorAll('[data-media-id]')];
+      this.zoom = this.querySelector('[data-zoom-dialog]');
+      if (this.zoom) this.initZoom();
       if (!this.track || !this.counter) return;
       this.track.addEventListener(
         'scroll',
@@ -326,6 +328,114 @@
         },
         { passive: true }
       );
+    }
+
+    /* --- Zoom: visualizzatore a schermo intero --- */
+    initZoom() {
+      const zoom = this.zoom;
+      this.zTrack = zoom.querySelector('[data-zoom-track]');
+      this.zSlides = [...zoom.querySelectorAll('[data-zoom-slide]')];
+      this.zCounter = zoom.querySelector('[data-zoom-counter]');
+      this.zIndex = 0;
+      this.canHover = window.matchMedia('(hover: hover)').matches;
+
+      this.querySelectorAll('[data-zoom-open]').forEach((btn) =>
+        btn.addEventListener('click', () => this.openZoom(Number(btn.dataset.zoomOpen)))
+      );
+      zoom.querySelector('[data-zoom-prev]')?.addEventListener('click', () => this.zoomGo(this.zIndex - 1));
+      zoom.querySelector('[data-zoom-next]')?.addEventListener('click', () => this.zoomGo(this.zIndex + 1));
+
+      this.zTrack.addEventListener(
+        'scroll',
+        () => {
+          const i = Math.round(this.zTrack.scrollLeft / (this.zTrack.clientWidth || 1));
+          if (i !== this.zIndex) {
+            this.zIndex = clamp(i, 0, this.zSlides.length - 1);
+            this.updateZoomCounter();
+          }
+        },
+        { passive: true }
+      );
+
+      this.zSlides.forEach((slide) => {
+        const img = slide.querySelector('img');
+        img.addEventListener('click', (e) => this.toggleZoom(slide, e));
+        slide.addEventListener('mousemove', (e) => {
+          if (this.canHover && slide.classList.contains('is-zoomed')) this.panTo(slide, e);
+        });
+      });
+
+      zoom.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') this.zoomGo(this.zIndex + 1);
+        if (e.key === 'ArrowLeft') this.zoomGo(this.zIndex - 1);
+      });
+      zoom.addEventListener('close', () => {
+        this.resetZoom();
+        document.documentElement.classList.remove('overflow-hidden');
+      });
+    }
+
+    openZoom(index) {
+      this.zIndex = clamp(index, 0, this.zSlides.length - 1);
+      document.documentElement.classList.add('overflow-hidden');
+      this.zoom.showModal();
+      // carica subito l'immagine scelta
+      this.zSlides[this.zIndex].querySelector('img').loading = 'eager';
+      requestAnimationFrame(() => {
+        this.zTrack.scrollTo({ left: this.zIndex * this.zTrack.clientWidth, behavior: 'instant' });
+        this.updateZoomCounter();
+      });
+    }
+
+    zoomGo(index) {
+      const i = clamp(index, 0, this.zSlides.length - 1);
+      this.resetZoom();
+      this.zTrack.scrollTo({ left: i * this.zTrack.clientWidth, behavior: 'smooth' });
+    }
+
+    updateZoomCounter() {
+      if (this.zCounter) this.zCounter.textContent = `${pad(this.zIndex + 1)} / ${pad(this.zSlides.length)}`;
+    }
+
+    toggleZoom(slide, e) {
+      if (slide.classList.contains('is-zoomed')) {
+        this.resetZoom();
+        return;
+      }
+      const img = slide.querySelector('img');
+      const rect = img.getBoundingClientRect();
+      const ratio = (img.naturalWidth || 1) / (img.naturalHeight || 1);
+      // larghezza dell'immagine "contenuta" a schermo, poi ingrandita 2,5x
+      const fitted = Math.min(slide.clientWidth, slide.clientHeight * ratio);
+      const rx = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+      const ry = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+
+      this.resetZoom();
+      img.style.width = `${Math.round(fitted * 2.5)}px`;
+      slide.classList.add('is-zoomed');
+      this.zTrack.classList.add('is-locked');
+      requestAnimationFrame(() => {
+        slide.scrollLeft = rx * (slide.scrollWidth - slide.clientWidth);
+        slide.scrollTop = ry * (slide.scrollHeight - slide.clientHeight);
+      });
+    }
+
+    panTo(slide, e) {
+      const rect = slide.getBoundingClientRect();
+      const rx = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+      const ry = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+      slide.scrollLeft = rx * (slide.scrollWidth - slide.clientWidth);
+      slide.scrollTop = ry * (slide.scrollHeight - slide.clientHeight);
+    }
+
+    resetZoom() {
+      this.zSlides?.forEach((slide) => {
+        slide.classList.remove('is-zoomed');
+        slide.scrollTo(0, 0);
+        const img = slide.querySelector('img');
+        if (img) img.style.width = '';
+      });
+      this.zTrack?.classList.remove('is-locked');
     }
 
     showMedia(id) {

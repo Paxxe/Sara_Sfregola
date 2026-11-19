@@ -48,7 +48,12 @@
     "hours_unit": "ore",
     "add_to_cart": "Acquista",
     "unavailable": "Non disponibile",
-    "related_empty": "Abbinamenti in arrivo."
+    "related_empty": "Abbinamenti in arrivo.",
+    "zoom_open": "Ingrandisci immagine",
+    "zoom_title": "Immagini della creazione",
+    "zoom_hint": "Clicca sull’immagine per ingrandire",
+    "zoom_previous": "Immagine precedente",
+    "zoom_next": "Immagine successiva"
   },
   "collections": {
     "breadcrumb": "Percorso",
