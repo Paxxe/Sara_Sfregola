@@ -26,6 +26,13 @@
             "italic_split": true
           }
         },
+        "subtitle_haxTQi": {
+          "type": "subtitle",
+          "settings": {
+            "metafield": "",
+            "fallback": ""
+          }
+        },
         "hours": {
           "type": "hours",
           "settings": {
@@ -126,7 +133,7 @@
             "heading": "Materiali e savoir-faire",
             "open": false,
             "source": "metafield",
-            "metafield": "custom.materiali",
+            "metafield": "",
             "content": "{{ product.metafields.custom.materiali | metafield_tag }}",
             "popup_page": "",
             "popup_label": "",
@@ -194,6 +201,7 @@
       "block_order": [
         "eyebrow",
         "title",
+        "subtitle_haxTQi",
         "hours",
         "fact-tecnica",
         "fact-unicita",
