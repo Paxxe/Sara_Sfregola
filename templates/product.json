@@ -30,7 +30,7 @@
           "type": "subtitle",
           "settings": {
             "metafield": "",
-            "fallback": ""
+            "fallback": "{{ product.metafields.custom.descrizione_breve | metafield_tag }}"
           }
         },
         "hours": {
@@ -121,6 +121,7 @@
             "source": "description",
             "metafield": "",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -135,6 +136,7 @@
             "source": "metafield",
             "metafield": "",
             "content": "{{ product.metafields.custom.materiali | metafield_tag }}",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -149,6 +151,7 @@
             "source": "metafield",
             "metafield": "custom.vestibilita",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "Come prendere le misure",
             "link_label": "",
@@ -163,6 +166,7 @@
             "source": "metafield",
             "metafield": "",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -177,6 +181,7 @@
             "source": "metafield",
             "metafield": "",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -191,6 +196,7 @@
             "source": "text",
             "metafield": "",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "Customer Care",
