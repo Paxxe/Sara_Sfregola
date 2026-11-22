@@ -15,7 +15,7 @@
         "eyebrow": {
           "type": "eyebrow",
           "settings": {
-            "source": "metafield",
+            "source": "type",
             "metafield": "custom.linea",
             "text": "COUTURE"
           }
@@ -26,38 +26,38 @@
             "italic_split": true
           }
         },
-        "subtitle": {
+        "subtitle_haxTQi": {
           "type": "subtitle",
           "settings": {
-            "metafield": "custom.sottotitolo",
+            "metafield": "",
             "fallback": ""
-          }
-        },
-        "opening": {
-          "type": "opening",
-          "settings": {
-            "metafield": "custom.incipit",
-            "text": ""
           }
         },
         "hours": {
           "type": "hours",
           "settings": {
-            "heading": "ORE DI LAVORAZIONE A MANO",
-            "hours_key": "custom.ore_manifattura",
+            "heading": "IL TEMPO DELLE MANI",
+            "hours_key": "{{ product.metafields.custom.ore_di_lavoro.value }}",
             "note_key": "custom.nota_ore",
-            "note": "Monte ore in attesa di conferma",
+            "note": "Dato da inserire",
             "text_key": "custom.testo_ore",
             "text": "Il disegno prende forma sul tombolo, nell’intreccio paziente dei fuselli. È questo tempo a rendere ogni creazione irripetibile."
           }
         },
-        "variants-color": {
-          "type": "variant_picker",
+        "fact-tecnica": {
+          "type": "fact",
           "settings": {
-            "options": "color",
-            "color_names": "colore,color,colour",
-            "color_map": "Rame:#ac6946, Cioccolato:#4a3027",
-            "size_guide_label": "Guida alle misure"
+            "label": "Tecnica",
+            "metafield": "custom.tecnica",
+            "fallback": "Da inserire"
+          }
+        },
+        "fact-unicita": {
+          "type": "fact",
+          "settings": {
+            "label": "Unicità",
+            "metafield": "custom.unicita",
+            "fallback": "Da inserire"
           }
         },
         "price": {
@@ -69,21 +69,22 @@
             "note": "Realizzato su ordinazione"
           }
         },
-        "variants-size": {
+        "variants": {
           "type": "variant_picker",
           "settings": {
-            "options": "other",
+            "options": "all",
             "color_names": "colore,color,colour",
             "color_map": "Rame:#ac6946, Cioccolato:#4a3027",
+            "size_guide_page": "",
             "size_guide_label": "Guida alle misure"
           }
         },
-        "included": {
-          "type": "included",
+        "production": {
+          "type": "production_time",
           "settings": {
-            "metafield": "custom.incluso",
-            "fallback": "",
-            "show_sku": true
+            "label": "TEMPO DI REALIZZAZIONE",
+            "metafield": "custom.tempo_realizzazione",
+            "fallback": "Da definire"
           }
         },
         "buy": {
@@ -93,23 +94,33 @@
             "note": ""
           }
         },
-        "service": {
-          "type": "personal_service",
-          "settings": {}
+        "consult": {
+          "type": "consult_link",
+          "settings": {
+            "label": "Una domanda su questo capo? Parliamone",
+            "url": ""
+          }
         },
-        "look": {
+        "look_6KtzV8": {
           "type": "look",
-          "settings": {}
+          "settings": {
+            "eyebrow": "GLI ELEMENTI DEL TUO ENSEMBLE",
+            "heading": "Completa",
+            "italic": "il look.",
+            "text": "Ogni elemento è venduto anche singolarmente.",
+            "metafield": "custom.abbinamenti",
+            "note": "Venduto singolarmente",
+            "limit": "4"
+          }
         },
-        "creazione": {
+        "descrizione": {
           "type": "collapsible",
           "settings": {
-            "heading": "La creazione",
+            "heading": "La Creazione",
             "open": true,
-            "source": "metafield",
-            "metafield": "custom.details2",
+            "source": "description",
+            "metafield": "",
             "content": "",
-            "description_fallback": true,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -122,9 +133,8 @@
             "heading": "Materiali e savoir-faire",
             "open": false,
             "source": "metafield",
-            "metafield": "custom.materiali",
-            "content": "",
-            "description_fallback": false,
+            "metafield": "",
+            "content": "{{ product.metafields.custom.materiali | metafield_tag }}",
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -139,24 +149,8 @@
             "source": "metafield",
             "metafield": "custom.vestibilita",
             "content": "",
-            "description_fallback": false,
             "popup_page": "",
             "popup_label": "Come prendere le misure",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "cura": {
-          "type": "collapsible",
-          "settings": {
-            "heading": "Cura del capo",
-            "open": false,
-            "source": "metafield",
-            "metafield": "custom.cura",
-            "content": "",
-            "description_fallback": false,
-            "popup_page": "",
-            "popup_label": "",
             "link_label": "",
             "link_url": ""
           }
@@ -164,12 +158,25 @@
         "consegna": {
           "type": "collapsible",
           "settings": {
+            "heading": "Cura del capo",
+            "open": false,
+            "source": "metafield",
+            "metafield": "",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "cura": {
+          "type": "collapsible",
+          "settings": {
             "heading": "Realizzazione e consegna",
             "open": false,
             "source": "metafield",
-            "metafield": "custom.realizzazione_consegna",
+            "metafield": "",
             "content": "",
-            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -181,13 +188,12 @@
           "settings": {
             "heading": "Pagamenti, spedizioni e resi",
             "open": false,
-            "source": "metafield",
-            "metafield": "custom.pagamenti_spedizioni",
+            "source": "text",
+            "metafield": "",
             "content": "",
-            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
-            "link_label": "Customer care",
+            "link_label": "Customer Care",
             "link_url": ""
           }
         }
@@ -195,34 +201,36 @@
       "block_order": [
         "eyebrow",
         "title",
-        "subtitle",
-        "opening",
+        "subtitle_haxTQi",
         "hours",
-        "variants-color",
+        "fact-tecnica",
+        "fact-unicita",
         "price",
-        "variants-size",
-        "included",
+        "variants",
+        "production",
         "buy",
-        "service",
-        "look",
-        "creazione",
+        "consult",
+        "look_6KtzV8",
+        "descrizione",
         "materiali",
         "vestibilita",
-        "cura",
         "consegna",
+        "cura",
         "spedizioni"
       ],
       "settings": {
         "breadcrumb_label": "Creazioni",
+        "breadcrumb_url": "",
         "crop_details": true,
-        "show_captions": false,
+        "show_captions": true,
         "enable_zoom": true,
         "show_craft": true,
+        "craft_image": "shopify://shop_images/11_copia.jpg",
         "craft_eyebrow": "IL TEMPO DELLE MANI",
         "craft_heading": "Dentro la",
         "craft_italic": "lavorazione.",
         "craft_note": "Film di lavorazione · In preparazione",
-        "video_label": "Guarda il film"
+        "video_label": "Video della lavorazione"
       }
     }
   },
