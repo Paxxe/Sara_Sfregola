@@ -14,7 +14,8 @@
       "settings": {
         "breadcrumb_label": "Creazioni",
         "show_description": true,
-        "tabs_menu": "",
+        "fallback_description": "Abiti, corsetti e accessori in cui il gesto artigianale incontra la forma contemporanea. Scopri le creazioni di Sara Sfregola.",
+        "tabs_menu": "main-menu",
         "tabs_filter_label": "Tipo di prodotto",
         "all_label": "Tutte le creazioni",
         "products_per_page": 24,
@@ -26,7 +27,13 @@
         "enable_sort": true,
         "show_editorial": true,
         "editorial_caption": "",
-        "show_consult": true
+        "show_consult": true,
+        "consult_eyebrow": "UN INCONTRO, UN’IDEA, LA TUA CREAZIONE",
+        "consult_heading": "Da immaginare",
+        "consult_italic": "insieme.",
+        "consult_text": "Una forma, una lavorazione, un dettaglio che ti somiglia. Sara ti accompagna nella scelta e nella realizzazione del tuo capo.",
+        "consult_label": "Richiedi una consulenza privata",
+        "consult_url": ""
       }
     }
   },
