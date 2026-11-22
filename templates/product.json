@@ -127,7 +127,7 @@
             "open": false,
             "source": "metafield",
             "metafield": "custom.materiali",
-            "content": "",
+            "content": "{{ product.metafields.custom.materiali | metafield_tag }}",
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
