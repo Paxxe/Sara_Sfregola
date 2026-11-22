@@ -73,8 +73,16 @@
         {%- endif -%}
 
         {%- comment -%} Carrello: apre il minicart {%- endcomment -%}
-        <a href="{{ routes.cart_url }}" class="text-[10px] uppercase tracking-[1px]" data-cart-open>
-          {{- 'cart.header_label' | t }} (<span data-cart-count>{{ cart.item_count }}</span>)
+        <a
+          href="{{ routes.cart_url }}"
+          class="relative -m-2 flex items-center gap-[5px] p-2"
+          aria-label="{{ 'cart.header_label' | t }} ({{ cart.item_count }})"
+          data-cart-open
+        >
+          {%- render 'icon-bag', class: 'h-[21px] w-[21px]' -%}
+          <span class="min-w-[1ch] text-[10px] leading-none tracking-[.5px]" aria-hidden="true" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>
+            {{- cart.item_count -}}
+          </span>
         </a>
 
       <button

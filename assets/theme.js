@@ -690,7 +690,13 @@
       if (freshContent && content) content.innerHTML = freshContent.innerHTML;
       const count = doc.querySelector('cart-drawer')?.dataset.count;
       if (count !== undefined) {
-        document.querySelectorAll('[data-cart-count]').forEach((el) => (el.textContent = count));
+        document.querySelectorAll('[data-cart-count]').forEach((el) => {
+          el.textContent = count;
+          el.hidden = count === '0';
+        });
+        document.querySelectorAll('[data-cart-open][aria-label]').forEach((el) => {
+          el.setAttribute('aria-label', el.getAttribute('aria-label').replace(/\(\d+\)/, `(${count})`));
+        });
       }
     }
   }
