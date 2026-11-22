@@ -26,6 +26,7 @@
         "enable_filters": true,
         "enable_sort": true,
         "show_editorial": true,
+        "editorial_image": "shopify://shop_images/11_copia.jpg",
         "editorial_caption": "",
         "show_consult": true,
         "consult_eyebrow": "UN INCONTRO, UN’IDEA, LA TUA CREAZIONE",
