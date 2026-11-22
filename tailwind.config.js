@@ -37,6 +37,7 @@ module.exports = {
       fontFamily: {
         sans: ['Arial', 'Helvetica', 'sans-serif'],
         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        manrope: ['Manrope', 'Arial', 'sans-serif'],
       },
     },
   },

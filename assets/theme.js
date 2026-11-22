@@ -265,20 +265,44 @@
     connectedCallback() {
       const json = this.querySelector('[data-variants]');
       this.variants = json ? JSON.parse(json.textContent) : [];
-      this.selects = [...this.querySelectorAll('[data-option-index]')];
+      this.inputs = [...this.querySelectorAll('[data-option-index]')];
       this.idInput = this.querySelector('[data-variant-id]');
       this.button = this.querySelector('[data-add-button]');
       this.price = this.querySelector('[data-price]');
       this.compare = this.querySelector('[data-compare-price]');
+      this.sku = this.querySelector('[data-sku]');
+      this.consultVariant = this.querySelector('[data-consult-variant]');
+      this.consultSummary = this.querySelector('[data-consult-summary]');
+      this.service = this.querySelector('[data-personal-service]');
       this.money = new Intl.NumberFormat(document.documentElement.lang || 'it', {
         style: 'currency',
         currency: this.dataset.currency || 'EUR',
       });
-      this.selects.forEach((select) => select.addEventListener('change', () => this.onChange()));
+      this.inputs.forEach((input) => input.addEventListener('change', () => this.onChange(input)));
+      this.updateBespoke(this.selectedValues());
     }
 
-    onChange() {
-      const values = this.selects.map((s) => s.value);
+    // Valori scelti per ogni opzione: menu a tendina o pulsanti radio (colore / taglia)
+    selectedValues() {
+      const values = [];
+      this.inputs.forEach((input) => {
+        const i = Number(input.dataset.optionIndex);
+        if (input.type === 'radio') {
+          if (input.checked) values[i] = input.value;
+        } else {
+          values[i] = input.value;
+        }
+      });
+      return values;
+    }
+
+    onChange(input) {
+      // "Colore · Rame": aggiorna il nome del valore scelto
+      const label = input?.closest('[data-option-group]')?.querySelector('[data-option-selected]');
+      if (label) label.textContent = input.value;
+
+      const values = this.selectedValues();
+      this.updateBespoke(values);
       const variant = this.variants.find((v) => v.options.every((opt, i) => opt === values[i]));
 
       if (!variant) {
@@ -293,6 +317,12 @@
         this.compare.classList.toggle('hidden', !onSale);
         if (onSale) this.compare.textContent = this.money.format(variant.compare_at_price / 100);
       }
+      if (this.sku) this.sku.textContent = variant.sku || '';
+      if (this.consultVariant) this.consultVariant.value = variant.title;
+      if (this.consultSummary) {
+        const title = this.consultSummary.textContent.split('·')[0].trim();
+        this.consultSummary.textContent = `${title} · ${variant.title}`;
+      }
       this.setButton(variant.available, variant.available ? this.dataset.labelAdd : this.dataset.labelSoldOut);
 
       const url = new URL(window.location.href);
@@ -302,6 +332,14 @@
       if (variant.featured_media) {
         this.querySelector('product-gallery')?.showMedia(variant.featured_media.id);
       }
+    }
+
+    // Scelta "Su misura": evidenzia il riquadro consulenza
+    updateBespoke(values) {
+      if (!this.service) return;
+      const bespoke = (this.service.dataset.bespoke || '').trim().toLowerCase();
+      const active = !!bespoke && values.some((v) => (v || '').trim().toLowerCase() === bespoke);
+      this.service.classList.toggle('is-bespoke', active);
     }
 
     setButton(enabled, label) {
@@ -441,7 +479,7 @@
     showMedia(id) {
       const slide = this.slides.find((s) => s.dataset.mediaId === String(id));
       if (!slide) return;
-      if (this.track.scrollWidth > this.track.clientWidth) {
+      if (this.track && this.track.scrollWidth > this.track.clientWidth) {
         // mobile: scorre il carosello
         this.track.scrollTo({ left: slide.offsetLeft - this.track.offsetLeft, behavior: 'smooth' });
       } else if (slide.getBoundingClientRect().top < 0 || slide.getBoundingClientRect().bottom > window.innerHeight) {
@@ -485,6 +523,30 @@
   customElements.get('product-gallery') || customElements.define('product-gallery', ProductGallery);
   customElements.get('product-recommendations') ||
     customElements.define('product-recommendations', ProductRecommendations);
+
+  /* ---------- PLP: "Ordina per" e menu filtri ---------- */
+  document.addEventListener('change', (e) => {
+    const select = e.target.closest('[data-sort-select]');
+    if (!select) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort_by', select.value);
+    url.searchParams.delete('page');
+    window.location.href = url.toString();
+  });
+
+  // Chiude il menu "Filtra" cliccando fuori o con Esc
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('[data-filter-dropdown][open]').forEach((d) => {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('[data-filter-dropdown][open]').forEach((d) => {
+      d.removeAttribute('open');
+      d.querySelector('summary')?.focus();
+    });
+  });
 
   /* ---------- Carrello: + / − e aggiornamento automatico ---------- */
   document.addEventListener('click', (e) => {

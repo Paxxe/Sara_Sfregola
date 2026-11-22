@@ -46,14 +46,15 @@
     "from_price": "da {{ price }}",
     "all": "Creazioni",
     "hours_unit": "ore",
-    "add_to_cart": "Acquista",
+    "add_to_cart": "Aggiungi al carrello",
     "unavailable": "Non disponibile",
     "related_empty": "Abbinamenti in arrivo.",
     "zoom_open": "Ingrandisci immagine",
     "zoom_title": "Immagini della creazione",
     "zoom_hint": "Clicca sull’immagine per ingrandire",
     "zoom_previous": "Immagine precedente",
-    "zoom_next": "Immagine successiva"
+    "zoom_next": "Immagine successiva",
+    "whatsapp_message": "Buongiorno, vorrei informazioni su {{ product }}."
   },
   "collections": {
     "breadcrumb": "Percorso",
@@ -66,12 +67,17 @@
     "sort_by": "Ordina per",
     "price_from": "Da (€)",
     "price_to": "A (€)",
-    "apply": "Mostra risultati",
+    "apply": "Applica",
     "clear_all": "Rimuovi filtri",
     "empty": "Nessuna creazione corrisponde alla selezione.",
     "pagination": "Pagine",
     "previous": "Pagina precedente",
-    "next": "Pagina successiva"
+    "next": "Pagina successiva",
+    "home_label": "Home",
+    "categories": "Categorie delle creazioni",
+    "catalogue": "Catalogo",
+    "filter": "Filtra",
+    "discover": "Scopri {{ title }}"
   },
   "contact": {
     "name": "Nome e cognome",

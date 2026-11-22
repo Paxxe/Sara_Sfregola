@@ -1,151 +1,191 @@
 {%- comment -%}
-  PDP — scheda creazione (da prodotto.html).
-  Galleria a sinistra (prima immagine piena + coppie, didascalie dall'alt),
-  colonna informazioni a destra composta da blocchi riordinabili.
-
-  Metafield usati di default (namespace "custom"):
-  ore_manifattura (intero), nota_ore, tecnica, unicita, tempo_realizzazione
+  PDP — scheda creazione, layout "Corolla d'Arancio" (corolla-arancio.html + corolla.css).
+  Colonna sinistra: look intero, dettagli, riquadro "Il tempo delle mani" (film).
+  Colonna destra: blocchi riordinabili (titolo con corsivo, incipit, ore, colori, prezzo,
+  taglie, acquisto, consulenza, completa il look, schede a comparsa).
 {%- endcomment -%}
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign crumb_collection = collection | default: product.collections.first
+  assign dialog_prefix = 'ProductDialog-' | append: section.id
+  assign consult_id = dialog_prefix | append: '-consult'
+
   assign video_media = nil
-  for media in product.media
-    if media.media_type == 'video' or media.media_type == 'external_video'
-      assign video_media = media
-      break
-    endif
-  endfor
   assign image_count = 0
   for media in product.media
     if media.media_type == 'image'
       assign image_count = image_count | plus: 1
+    elsif video_media == nil
+      if media.media_type == 'video' or media.media_type == 'external_video'
+        assign video_media = media
+      endif
     endif
   endfor
-  assign dialog_prefix = 'ProductDialog-' | append: section.id
+
+  assign craft_image = section.settings.craft_image
+  if craft_image == blank and video_media
+    assign craft_image = video_media.preview_image
+  endif
 -%}
 
 <product-info
-  class="block"
+  class="block font-manrope"
   data-section="{{ section.id }}"
   data-currency="{{ cart.currency.iso_code }}"
   data-label-add="{{ 'products.add_to_cart' | t }}"
   data-label-sold-out="{{ 'products.sold_out' | t }}"
   data-label-unavailable="{{ 'products.unavailable' | t }}"
 >
+  {%- unless product.has_only_default_variant -%}
+    <script type="application/json" data-variants>
+      {{ product.variants | json }}
+    </script>
+  {%- endunless -%}
+
   {%- comment -%} Breadcrumb {%- endcomment -%}
   <nav
     aria-label="{{ 'collections.breadcrumb' | t }}"
-    class="px-[6%] pb-[25px] pt-[30px] text-[9px] uppercase tracking-[1.35px] md:px-[4%] md:pt-[40px]"
+    class="px-4 py-[22px] text-[11px] text-[#736e61] md:px-[3%] md:py-[30px] md:text-[12px]"
   >
-    {%- if crumb_collection -%}
-      <a href="{{ crumb_collection.url }}">{{ crumb_collection.title }}</a>
-    {%- else -%}
-      <a href="{{ routes.all_products_collection_url }}">{{ 'products.all' | t }}</a>
-    {%- endif -%}
-    <span aria-hidden="true" class="mx-1">/</span>
-    <span aria-current="page" class="text-muted">{{ product.title }}</span>
+    <a href="{{ section.settings.breadcrumb_url | default: routes.all_products_collection_url }}">
+      {{- section.settings.breadcrumb_label -}}
+    </a>
+    {%- if crumb_collection and crumb_collection.handle != 'all' %}
+      / <a href="{{ crumb_collection.url }}">{{ crumb_collection.title }}</a>
+    {%- endif %}
+    / <span aria-current="page">{{ product.title }}</span>
   </nav>
 
-  <section class="grid grid-cols-1 gap-[45px] pb-20 md:grid-cols-[1.2fr_1fr] md:gap-[6%] md:px-[4%] md:pb-[130px]">
+  <section
+    class="flex flex-col px-4 pb-[60px] md:grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-[4%] md:px-[3%] md:pb-[90px] lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-[6%]"
+    aria-label="{{ product.title | escape }}"
+  >
     {%- comment -%} ===================== Galleria ===================== {%- endcomment -%}
-    <product-gallery class="block min-w-0">
-      <div
-        class="flex items-start snap-x snap-mandatory gap-[10px] overflow-x-auto px-[6%] [scrollbar-width:none] md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
-        data-gallery-track
-      >
-        {%- assign image_index = 0 -%}
+    <product-gallery class="block min-w-0" data-gallery-track>
+      {%- assign image_index = 0 -%}
+      {%- capture detail_figures -%}
         {%- for media in product.media -%}
           {%- if media.media_type == 'image' -%}
             {%- assign image_index = image_index | plus: 1 -%}
-            <figure
-              class="m-0 w-[88%] shrink-0 snap-center md:w-auto{% if image_index == 1 %} md:col-span-2{% endif %}"
-              data-media-id="{{ media.id }}"
-            >
-              {%- if section.settings.enable_zoom -%}
+            {%- if image_index > 1 -%}
+              <figure class="m-0" data-media-id="{{ media.id }}">
                 <button
                   type="button"
-                  class="group relative block w-full cursor-zoom-in overflow-hidden bg-mist"
-                  style="aspect-ratio: {{ media.aspect_ratio | default: 0.8 }}"
-                  aria-label="{{ 'products.zoom_open' | t }}{% if media.alt != blank %} — {{ media.alt | escape }}{% endif %}"
-                  data-zoom-open="{{ image_index | minus: 1 }}"
+                  class="group relative block w-full overflow-hidden bg-mist{% if section.settings.enable_zoom %} cursor-zoom-in{% else %} cursor-default{% endif %}{% if section.settings.crop_details %} h-[400px] lg:h-[430px]{% endif %}"
+                  {% unless section.settings.crop_details %}
+                    style="aspect-ratio: {{ media.aspect_ratio | default: 0.8 }}"
+                  {% endunless %}
+                  {% if section.settings.enable_zoom %}
+                    data-zoom-open="{{ image_index | minus: 1 }}" aria-label="{{ 'products.zoom_open' | t }}{% if media.alt != blank %} — {{ media.alt | escape }}{% endif %}"
+                  {% else %}
+                    tabindex="-1" aria-hidden="true"
+                  {% endif %}
                 >
-              {%- else -%}
-                <div class="overflow-hidden bg-mist" style="aspect-ratio: {{ media.aspect_ratio | default: 0.8 }}">
-              {%- endif -%}
-                {%- liquid
-                  if image_index == 1
-                    assign gallery_sizes = '(min-width: 721px) 55vw, 88vw'
-                  else
-                    assign gallery_sizes = '(min-width: 721px) 28vw, 88vw'
-                  endif
-                -%}
-                {%- if image_index == 1 -%}
                   {{
                     media
-                    | image_url: width: 2000
+                    | image_url: width: 1400
                     | image_tag:
-                      class: 'h-full w-full object-contain',
-                      widths: '600,900,1200,1600,2000',
-                      sizes: gallery_sizes,
-                      loading: 'eager',
-                      fetchpriority: 'high'
-                  }}
-                {%- else -%}
-                  {{
-                    media
-                    | image_url: width: 1600
-                    | image_tag:
-                      class: 'h-full w-full object-contain',
-                      widths: '600,900,1200,1600',
-                      sizes: gallery_sizes,
+                      class: 'h-full w-full object-cover',
+                      widths: '500,800,1100,1400',
+                      sizes: '(min-width: 1001px) 28vw, (min-width: 721px) 50vw, 100vw',
                       loading: 'lazy'
                   }}
-                {%- endif -%}
-              {%- if section.settings.enable_zoom -%}
-                  <span
-                    class="pointer-events-none absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-paper/90 text-[15px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
-                    aria-hidden="true"
-                  >+</span>
                 </button>
-              {%- else -%}
-                </div>
-              {%- endif -%}
-              {%- if section.settings.show_captions and media.alt != blank and media.alt != product.title -%}
-                <figcaption class="mt-4 text-[8px] uppercase tracking-[2px]">{{ media.alt }}</figcaption>
-              {%- endif -%}
-            </figure>
+                {%- if section.settings.show_captions and media.alt != blank and media.alt != product.title -%}
+                  <figcaption class="mb-[25px] mt-3 text-[12px] leading-[1.5] text-[#746e61]">{{ media.alt }}</figcaption>
+                {%- endif -%}
+              </figure>
+            {%- endif -%}
           {%- endif -%}
-        {%- else -%}
-          {%- for i in (1..3) -%}
-            <figure class="m-0 w-[88%] shrink-0 snap-center md:w-auto{% if forloop.first %} md:col-span-2{% endif %}">
-              <div class="{% if forloop.first %}aspect-[4/5]{% else %}aspect-[3/4]{% endif %} overflow-hidden">
-                {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
-              </div>
-            </figure>
-          {%- endfor -%}
         {%- endfor -%}
-      </div>
+      {%- endcapture -%}
 
-      <div class="mt-4 flex items-center justify-between px-[6%] md:px-0">
-        {%- if image_count > 1 -%}
-          <span class="text-[8px] tracking-[1.2px] text-cue md:hidden" data-gallery-counter>
-            01 / {{ image_count | prepend: '0' | slice: -2, 2 }}
-          </span>
+      {%- comment -%} Look intero {%- endcomment -%}
+      {%- assign first_image = nil -%}
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          {%- assign first_image = media -%}
+          {%- break -%}
         {%- endif -%}
+      {%- endfor -%}
 
-        {%- if video_media -%}
+      {%- if first_image -%}
+        <figure class="m-0" data-media-id="{{ first_image.id }}">
           <button
             type="button"
-            class="line-link md:mt-[10px]"
-            data-dialog-open="{{ dialog_prefix }}-video"
-            aria-haspopup="dialog"
+            class="block w-full{% if section.settings.enable_zoom %} cursor-zoom-in{% else %} cursor-default{% endif %}"
+            {% if section.settings.enable_zoom %}
+              data-zoom-open="0" aria-label="{{ 'products.zoom_open' | t }}{% if first_image.alt != blank %} — {{ first_image.alt | escape }}{% endif %}"
+            {% else %}
+              tabindex="-1" aria-hidden="true"
+            {% endif %}
           >
-            ▷ {{ section.settings.video_label }}
+            {{
+              first_image
+              | image_url: width: 2200
+              | image_tag:
+                class: 'block h-auto w-full',
+                widths: '600,900,1200,1600,2200',
+                sizes: '(min-width: 1001px) 52vw, (min-width: 721px) 50vw, 100vw',
+                loading: 'eager',
+                fetchpriority: 'high'
+            }}
           </button>
-        {%- endif -%}
-      </div>
+          {%- if section.settings.show_captions and first_image.alt != blank and first_image.alt != product.title -%}
+            <figcaption class="mb-[25px] mt-3 text-[12px] leading-[1.5] text-[#746e61]">{{ first_image.alt }}</figcaption>
+          {%- endif -%}
+        </figure>
+      {%- else -%}
+        <div class="aspect-[4/5]">{{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+      {%- endif -%}
 
+      {%- comment -%} Dettagli {%- endcomment -%}
+      {%- if image_count > 1 -%}
+        <div class="mt-[10px] grid grid-cols-1 gap-3 lg:grid-cols-2">{{ detail_figures }}</div>
+      {%- endif -%}
+
+      {%- comment -%} Il tempo delle mani: film di lavorazione {%- endcomment -%}
+      {%- if section.settings.show_craft and craft_image != blank -%}
+        <figure class="relative m-0 mt-5 aspect-[4/3] overflow-hidden">
+          {{
+            craft_image
+            | image_url: width: 1600
+            | image_tag:
+              class: 'h-full w-full object-cover brightness-[.56]',
+              widths: '600,900,1200,1600',
+              sizes: '(min-width: 721px) 52vw, 100vw',
+              loading: 'lazy',
+              alt: ''
+          }}
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-[30px] text-center text-white">
+            {%- if section.settings.craft_eyebrow != blank -%}
+              <p class="eyebrow mb-[27px]">{{ section.settings.craft_eyebrow }}</p>
+            {%- endif -%}
+            <h2 class="font-manrope text-[32px] leading-[1.1] tracking-normal">
+              {{- section.settings.craft_heading }}
+              {% if section.settings.craft_italic != blank %}<em class="text-[1.2em] leading-none">{{ section.settings.craft_italic }}</em>{% endif -%}
+            </h2>
+            {%- if video_media -%}
+              <button
+                type="button"
+                class="mt-6 rounded-full border border-white/70 px-6 py-3 text-[13px]"
+                data-dialog-open="{{ dialog_prefix }}-video"
+                aria-haspopup="dialog"
+              >
+                ▷ {{ section.settings.video_label }}
+              </button>
+            {%- elsif section.settings.craft_note != blank -%}
+              <span class="mt-5 text-[13px]">{{ section.settings.craft_note }}</span>
+            {%- endif -%}
+          </div>
+        </figure>
+      {%- elsif video_media -%}
+        <button type="button" class="line-link mt-5" data-dialog-open="{{ dialog_prefix }}-video" aria-haspopup="dialog">
+          ▷ {{ section.settings.video_label }}
+        </button>
+      {%- endif -%}
+
+      {%- comment -%} Zoom: visualizzatore a schermo intero {%- endcomment -%}
       {%- if section.settings.enable_zoom and image_count > 0 -%}
         <dialog
           id="{{ dialog_prefix }}-zoom"
@@ -159,7 +199,6 @@
               <span class="hidden uppercase md:block">{{ 'products.zoom_hint' | t }}</span>
               <button type="button" class="text-[30px] leading-none text-ink" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
             </div>
-
             <div
               class="zoom-track flex min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               data-zoom-track
@@ -180,7 +219,6 @@
                 {%- endif -%}
               {%- endfor -%}
             </div>
-
             {%- if image_count > 1 -%}
               <div class="flex items-center justify-center gap-5 py-3">
                 <button type="button" class="rounded-full px-2 py-1 text-[19px]" aria-label="{{ 'products.zoom_previous' | t }}" data-zoom-prev>←</button>
@@ -193,101 +231,271 @@
     </product-gallery>
 
     {%- comment -%} ===================== Informazioni ===================== {%- endcomment -%}
-    <div class="px-[6%] md:sticky md:top-[30px] md:self-start md:px-0 md:pr-[4%] lg:pr-[8%]">
+    <div class="min-w-0 pt-[25px] md:max-w-[620px]">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'eyebrow' -%}
-            <p class="eyebrow mb-[22px]" {{ block.shopify_attributes }}>
+            <p class="mb-[27px] text-[11px] uppercase leading-[1.8] tracking-[1.5px]" {{ block.shopify_attributes }}>
               {%- case block.settings.source -%}
                 {%- when 'type' -%}
-                  {{ product.type | default: block.settings.text | upcase }}
+                  {{ product.type | default: block.settings.text }}
                 {%- when 'collection' -%}
-                  {{ crumb_collection.title | default: block.settings.text | upcase }}
+                  {{ crumb_collection.title | default: block.settings.text }}
                 {%- when 'vendor' -%}
-                  {{ product.vendor | upcase }}
+                  {{ product.vendor }}
+                {%- when 'metafield' -%}
+                  {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.text, plain: true -%}
                 {%- else -%}
                   {{ block.settings.text }}
               {%- endcase -%}
             </p>
 
           {%- when 'title' -%}
-            <h1 class="text-[34px] leading-[1.17] md:text-[42px]" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+            {%- liquid
+              assign title_words = product.title | split: ' '
+              assign title_first = title_words | first
+              assign title_rest = product.title | remove_first: title_first | strip
+            -%}
+            <h1
+              class="font-manrope text-[43px] font-normal leading-[1.05] tracking-[-1.8px] md:text-[clamp(38px,4.3vw,66px)]"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.italic_split and title_rest != blank -%}
+                {{ title_first }}
+                <em class="text-[1.18em] leading-[1.05] tracking-normal md:block">{{ title_rest }}</em>
+              {%- else -%}
+                {{ product.title }}
+              {%- endif -%}
+            </h1>
+
+          {%- when 'subtitle' -%}
+            {%- capture subtitle_text -%}
+              {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback, plain: true -%}
+            {%- endcapture -%}
+            {%- if subtitle_text != blank -%}
+              <p class="mb-3 mt-5 text-[16px]" {{ block.shopify_attributes }}>{{ subtitle_text }}</p>
+            {%- endif -%}
+
+          {%- when 'opening' -%}
+            {%- capture opening_text -%}
+              {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.text -%}
+            {%- endcapture -%}
+            {%- if opening_text != blank -%}
+              <div class="mb-[30px] mt-5 font-serif text-[22px] leading-[1.45] [&_p]:m-0" {{ block.shopify_attributes }}>
+                {{ opening_text }}
+              </div>
+            {%- endif -%}
 
           {%- when 'hours' -%}
             {%- capture hours_value -%}
-              {%- render 'metafield-value', product: product, key: block.settings.hours_key, fallback: '—' -%}
+              {%- render 'metafield-value', product: product, key: block.settings.hours_key, fallback: '—', plain: true -%}
             {%- endcapture -%}
-            <div class="my-[30px] border-y border-line py-[22px]" {{ block.shopify_attributes }}>
-              <span class="eyebrow block">{{ block.settings.heading }}</span>
-              <strong class="mt-2 block text-[42px] font-normal leading-none tracking-[-1px]">
-                {{ hours_value | strip }} <em class="font-serif text-[1.15em] italic">{{ 'products.hours_unit' | t }}</em>
-              </strong>
-              <p class="mt-3 text-[11px] leading-[1.8] text-muted">
-                {%- render 'metafield-value', product: product, key: block.settings.note_key, fallback: block.settings.note -%}
-              </p>
+            {%- capture hours_text -%}
+              {%- render 'metafield-value', product: product, key: block.settings.text_key, fallback: block.settings.text, plain: true -%}
+            {%- endcapture -%}
+            <div class="my-[22px] bg-[#e9e4d9] px-[15px] py-5 md:mb-[30px] md:mt-[25px] md:px-6 md:py-[25px]" {{ block.shopify_attributes }}>
+              <div class="flex items-center gap-6">
+                <span class="font-serif text-[52px] leading-none">{{ hours_value | strip }}</span>
+                <span class="text-[11px] uppercase tracking-[1px]">
+                  {{- block.settings.heading -}}
+                  <small class="mt-[6px] block text-[12px] normal-case tracking-normal text-[#746e61]">
+                    {%- render 'metafield-value', product: product, key: block.settings.note_key, fallback: block.settings.note, plain: true -%}
+                  </small>
+                </span>
+              </div>
+              {%- if hours_text != blank -%}
+                <p class="mt-5 font-serif text-[21px] italic leading-[1.4]">{{ hours_text }}</p>
+              {%- endif -%}
             </div>
 
           {%- when 'fact' -%}
-            <div class="flex justify-between gap-6 border-t border-line py-3 text-[11px]" {{ block.shopify_attributes }}>
-              <span class="text-muted">{{ block.settings.label }}</span>
+            <div class="flex justify-between gap-6 border-t border-line py-3 text-[13px]" {{ block.shopify_attributes }}>
+              <span class="text-[#746e61]">{{ block.settings.label }}</span>
               <span class="text-right">
-                {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback -%}
+                {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback, plain: true -%}
               </span>
             </div>
 
           {%- when 'price' -%}
-            <div class="flex justify-between gap-6 border-y border-line py-3 text-[11px]" {{ block.shopify_attributes }}>
-              <span class="text-muted">{{ block.settings.label }}</span>
-              <span class="text-right">
+            <div class="mb-[30px] mt-[18px] flex flex-wrap items-baseline justify-between gap-[10px] text-[14px]" {{ block.shopify_attributes }}>
+              <span>
+                {%- if block.settings.show_label and block.settings.label != blank -%}
+                  <span class="mr-2 text-[#746e61]">{{ block.settings.label }}</span>
+                {%- endif -%}
                 <span data-price>{{ current_variant.price | money }}</span>
-                <s class="ml-1 text-muted{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}" data-compare-price>
+                <s class="ml-1 text-[#746e61]{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}" data-compare-price>
                   {{- current_variant.compare_at_price | money -}}
                 </s>
+              </span>
+              <span class="text-[12px] text-[#746e61]">
+                {%- render 'metafield-value', product: product, key: block.settings.note_key, fallback: block.settings.note, plain: true -%}
               </span>
             </div>
 
           {%- when 'variant_picker' -%}
             {%- unless product.has_only_default_variant -%}
-              <div class="mt-[10px]" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign color_names = block.settings.color_names | downcase | split: ','
+                assign guide_id = dialog_prefix | append: '-guide-' | append: block.id
+              -%}
+              <div {{ block.shopify_attributes }}>
                 {%- for option in product.options_with_values -%}
-                  <label class="block">
-                    <span class="field-label">{{ option.name }}</span>
-                    <select class="field cursor-pointer" data-option-index="{{ forloop.index0 }}" name="options[{{ option.name | escape }}]">
-                      {%- for value in option.values -%}
-                        <option
-                          value="{{ value | escape }}"
-                          {% if option.selected_value == value %}
-                            selected
-                          {% endif %}
-                        >
-                          {{- value -}}
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                  </label>
+                  {%- liquid
+                    assign option_index = forloop.index0
+                    assign option_name_lc = option.name | downcase | strip
+                    assign is_color = false
+                    for name in color_names
+                      assign clean_name = name | strip
+                      if clean_name == option_name_lc
+                        assign is_color = true
+                      endif
+                    endfor
+                    if option.values.first.swatch
+                      assign is_color = true
+                    endif
+
+                    assign show_option = true
+                    if block.settings.options == 'color' and is_color == false
+                      assign show_option = false
+                    elsif block.settings.options == 'other' and is_color
+                      assign show_option = false
+                    endif
+                  -%}
+                  {%- if show_option -%}
+                    {%- if is_color -%}
+                      <fieldset class="m-0 mb-[22px] border-0 p-0" data-option-group>
+                        <legend class="mb-[18px] text-[14px]">
+                          {{ option.name }} · <span data-option-selected>{{ option.selected_value }}</span>
+                        </legend>
+                        <div class="flex flex-wrap gap-[26px]">
+                          {%- for value in option.values -%}
+                            {%- liquid
+                              assign swatch_style = ''
+                              if value.swatch.image
+                                assign swatch_url = value.swatch.image | image_url: width: 80
+                                assign swatch_style = 'background-image: url(' | append: swatch_url | append: '); background-size: cover;'
+                              elsif value.swatch.color
+                                assign swatch_style = 'background-color: ' | append: value.swatch.color | append: ';'
+                              else
+                                assign swatch_hex = '#c9c0b0'
+                                assign color_pairs = block.settings.color_map | split: ','
+                                for pair in color_pairs
+                                  assign pair_parts = pair | split: ':'
+                                  assign pair_name = pair_parts[0] | strip | downcase
+                                  assign value_name = value | downcase
+                                  if pair_name == value_name
+                                    assign swatch_hex = pair_parts[1] | strip
+                                  endif
+                                endfor
+                                assign swatch_style = 'background-color: ' | append: swatch_hex | append: ';'
+                              endif
+                            -%}
+                            <label class="relative flex cursor-pointer items-center gap-[9px] text-[13px]">
+                              <input
+                                type="radio"
+                                class="peer sr-only"
+                                name="{{ section.id }}-option-{{ option_index }}"
+                                value="{{ value | escape }}"
+                                data-option-index="{{ option_index }}"
+                                {% if value.selected %}
+                                  checked
+                                {% endif %}
+                              >
+                              <span
+                                class="block h-[26px] w-[26px] rounded-full border-[3px] border-paper outline outline-1 outline-transparent peer-checked:outline-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-[3px] peer-focus-visible:outline-ink"
+                                style="{{ swatch_style }}"
+                                aria-hidden="true"
+                              ></span>
+                              <span>{{ value }}</span>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      </fieldset>
+                    {%- else -%}
+                      <div class="mb-[14px] flex items-center justify-between gap-[15px] text-[14px]">
+                        <span id="{{ section.id }}-option-label-{{ option_index }}">{{ option.name }}</span>
+                        {%- if block.settings.size_guide_page != blank -%}
+                          <button
+                            type="button"
+                            class="text-[12px] underline underline-offset-2"
+                            data-dialog-open="{{ guide_id }}"
+                            aria-haspopup="dialog"
+                          >
+                            {{- block.settings.size_guide_label -}}
+                          </button>
+                        {%- endif -%}
+                      </div>
+                      <fieldset
+                        class="m-0 mb-[22px] flex flex-wrap gap-2 border-0 p-0"
+                        aria-labelledby="{{ section.id }}-option-label-{{ option_index }}"
+                        data-option-group
+                      >
+                        {%- for value in option.values -%}
+                          <label class="relative cursor-pointer">
+                            <input
+                              type="radio"
+                              class="peer sr-only"
+                              name="{{ section.id }}-option-{{ option_index }}"
+                              value="{{ value | escape }}"
+                              data-option-index="{{ option_index }}"
+                              {% if value.selected %}
+                                checked
+                              {% endif %}
+                            >
+                            <span class="block border border-line px-[17px] py-[13px] text-[14px] peer-checked:border-ink peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-[3px] peer-focus-visible:outline-ink">
+                              {{- value -}}
+                            </span>
+                          </label>
+                        {%- endfor -%}
+                      </fieldset>
+                    {%- endif -%}
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
-              <script type="application/json" data-variants>
-                {{ product.variants | json }}
-              </script>
+
+              {%- if block.settings.size_guide_page != blank -%}
+                <dialog
+                  id="{{ guide_id }}"
+                  class="m-auto max-h-[90svh] w-[min(620px,92vw)] overflow-y-auto border-0 bg-paper px-[30px] py-[45px] font-manrope text-ink"
+                  aria-labelledby="{{ guide_id }}-title"
+                >
+                  <button type="button" class="absolute right-[18px] top-3 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+                  <p class="eyebrow mb-4">{{ block.settings.size_guide_label | upcase }}</p>
+                  <h2 id="{{ guide_id }}-title" class="mb-6 text-[35px] tracking-normal">{{ block.settings.size_guide_page.title }}</h2>
+                  <div class="rte text-[15px] leading-[1.9]">{{ block.settings.size_guide_page.content }}</div>
+                </dialog>
+              {%- endif -%}
             {%- endunless -%}
 
+          {%- when 'included' -%}
+            {%- capture included_text -%}
+              {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback, plain: true -%}
+            {%- endcapture -%}
+            <div {{ block.shopify_attributes }}>
+              {%- if included_text != blank -%}
+                <p class="mb-2 mt-[18px] text-[12px] leading-[1.6]">{{ included_text }}</p>
+              {%- endif -%}
+              {%- if block.settings.show_sku -%}
+                <p class="text-[11px] tracking-[.7px] text-[#746e61]" data-sku>{{ current_variant.sku }}</p>
+              {%- endif -%}
+            </div>
+
           {%- when 'production_time' -%}
-            <p class="mt-[25px] flex justify-between gap-6 text-[9px] uppercase tracking-[1.35px]" {{ block.shopify_attributes }}>
-              {{ block.settings.label }}
-              <span class="text-right normal-case tracking-normal text-muted">
-                {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback -%}
+            <p class="mt-[18px] flex justify-between gap-6 text-[12px]" {{ block.shopify_attributes }}>
+              <span class="text-[#746e61]">{{ block.settings.label }}</span>
+              <span class="text-right">
+                {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback, plain: true -%}
               </span>
             </p>
 
           {%- when 'buy_buttons' -%}
-            <div class="mt-[25px]" {{ block.shopify_attributes }}>
+            <div {{ block.shopify_attributes }}>
               {%- form 'product', product, data-product-form: '' -%}
                 <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
                 <button
                   type="submit"
                   name="add"
-                  class="btn-solid w-full disabled:cursor-not-allowed disabled:opacity-40"
+                  class="mt-[22px] block w-full rounded-[28px] bg-ink px-5 py-[17px] text-[14px] text-paper transition-opacity disabled:cursor-default disabled:bg-[#555447] disabled:opacity-[.55]"
                   data-add-button
                   {% unless current_variant.available %}
                     disabled
@@ -303,25 +511,166 @@
                   <div class="mt-3">{{ form | payment_button }}</div>
                 {%- endif -%}
               {%- endform -%}
+              {%- if block.settings.note != blank -%}
+                <p class="mt-[9px] text-[11px] leading-[1.5] text-[#746e61]">{{ block.settings.note }}</p>
+              {%- endif -%}
             </div>
 
           {%- when 'consult_link' -%}
             <a
               href="{{ block.settings.url | default: routes.root_url }}"
-              class="mt-[18px] block text-center text-[11px] underline underline-offset-4"
+              class="mt-[18px] block text-center text-[13px] underline underline-offset-4"
               {{ block.shopify_attributes }}
             >
               {{- block.settings.label }} ↗
             </a>
 
+          {%- when 'personal_service' -%}
+            <aside
+              class="my-[25px] border-y border-line py-[27px] transition-[background-color,padding] duration-300 [&.is-bespoke]:bg-[#e9e4d9] [&.is-bespoke]:px-5"
+              data-personal-service
+              data-bespoke="{{ block.settings.bespoke_value | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              <h2 class="font-manrope text-[23px] leading-[1.2] tracking-normal">
+                {{- block.settings.heading }}
+                {% if block.settings.italic != blank %}<em class="text-[1.2em] leading-none">{{ block.settings.italic }}</em>{% endif -%}
+              </h2>
+              {%- if block.settings.text != blank -%}
+                <p class="my-4 text-[14px] leading-[1.8]">{{ block.settings.text }}</p>
+              {%- endif -%}
+              <button
+                type="button"
+                class="block w-full rounded-[28px] border border-ink bg-transparent px-5 py-[17px] text-[14px] text-ink"
+                data-dialog-open="{{ consult_id }}"
+                aria-haspopup="dialog"
+              >
+                {{- block.settings.button_label -}}
+              </button>
+              {%- if block.settings.whatsapp != blank or block.settings.email != blank -%}
+                <div class="mt-[18px] flex flex-wrap gap-5 text-[13px]">
+                  {%- if block.settings.whatsapp != blank -%}
+                    {%- assign wa_number = block.settings.whatsapp | remove: '+' | remove: ' ' -%}
+                    {%- capture wa_text -%}{{ 'products.whatsapp_message' | t: product: product.title }}{%- endcapture -%}
+                    <a href="https://wa.me/{{ wa_number }}?text={{ wa_text | url_encode }}" class="underline underline-offset-2" target="_blank" rel="noopener">
+                      {{- block.settings.whatsapp_label -}}
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.email != blank -%}
+                    <a href="mailto:{{ block.settings.email }}?subject={{ product.title | url_encode }}" class="underline underline-offset-2">
+                      {{- block.settings.email_label -}}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.note != blank -%}
+                <small class="mt-[10px] block text-[11px] text-[#746e61]">{{ block.settings.note }}</small>
+              {%- endif -%}
+            </aside>
+
+            {%- comment -%} Finestra consulenza: invia una richiesta reale via modulo contatti {%- endcomment -%}
+            <dialog
+              id="{{ consult_id }}"
+              class="m-auto max-h-[90svh] w-[min(620px,92vw)] overflow-y-auto border-0 bg-paper px-[30px] py-[45px] font-manrope text-ink"
+              aria-labelledby="{{ consult_id }}-title"
+            >
+              <button type="button" class="absolute right-[18px] top-3 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+              <p class="eyebrow mb-4">{{ block.settings.dialog_eyebrow }}</p>
+              <h2 id="{{ consult_id }}-title" class="mb-4 text-[35px] tracking-normal">{{ block.settings.dialog_heading }}</h2>
+              <p class="text-[15px] leading-[1.9]" data-consult-summary>
+                {{ product.title }}{% unless product.has_only_default_variant %} · {{ current_variant.title }}{% endunless %}
+              </p>
+              {%- assign consult_form_id = 'ConsultProduct-' | append: section.id -%}
+              {%- form 'contact', id: consult_form_id -%}
+                {%- if form.posted_successfully? -%}
+                  <p class="mt-5 bg-[#e9e4d9] p-5 text-[14px]" role="status" data-form-status>{{ block.settings.success_message }}</p>
+                {%- elsif form.errors -%}
+                  <div class="mt-5 bg-[#e9e4d9] p-5 text-[14px] text-[#8a2a1a]" role="alert" data-form-status>{{ form.errors | default_errors }}</div>
+                {%- endif -%}
+                <input type="hidden" name="contact[Creazione]" value="{{ product.title | escape }}">
+                <input type="hidden" name="contact[Variante]" value="{{ current_variant.title | escape }}" data-consult-variant>
+                <input type="hidden" name="contact[Pagina]" value="{{ shop.url }}{{ product.url }}">
+                <label class="my-[17px] grid gap-2 text-[14px]">
+                  {{ 'contact.name' | t }}
+                  <input class="w-full border border-line bg-transparent p-3" type="text" name="contact[name]" autocomplete="name" required>
+                </label>
+                <label class="my-[17px] grid gap-2 text-[14px]">
+                  {{ 'contact.email' | t }}
+                  <input class="w-full border border-line bg-transparent p-3" type="email" name="contact[email]" autocomplete="email" required>
+                </label>
+                <label class="my-[17px] grid gap-2 text-[14px]">
+                  {{ block.settings.message_label }}
+                  <textarea
+                    class="w-full border border-line bg-transparent p-3"
+                    name="contact[body]"
+                    rows="4"
+                    placeholder="{{ block.settings.message_placeholder | escape }}"
+                    required
+                  ></textarea>
+                </label>
+                <button type="submit" class="block w-full rounded-[28px] border border-ink px-5 py-[17px] text-[14px]">
+                  {{- block.settings.submit_label -}}
+                </button>
+              {%- endform -%}
+            </dialog>
+
+          {%- when 'look' -%}
+            {%- liquid
+              assign look_products = nil
+              assign look_parts = block.settings.metafield | strip | split: '.'
+              if look_parts.size == 2
+                assign look_products = product.metafields[look_parts[0]][look_parts[1]].value
+              endif
+              assign look_limit = block.settings.limit | plus: 0
+            -%}
+            {%- if look_products != blank or request.design_mode -%}
+              <section class="pb-[35px] pt-[15px]" {{ block.shopify_attributes }}>
+                {%- if block.settings.eyebrow != blank -%}
+                  <p class="text-[10px] uppercase leading-[1.8] tracking-[1.3px]">{{ block.settings.eyebrow }}</p>
+                {%- endif -%}
+                <h2 class="font-manrope text-[28px] leading-[1.2] tracking-normal">
+                  {{- block.settings.heading }}
+                  {% if block.settings.italic != blank %}<em class="text-[1.2em] leading-none">{{ block.settings.italic }}</em>{% endif -%}
+                </h2>
+                {%- if block.settings.text != blank -%}
+                  <p class="text-[13px] leading-[1.9]">{{ block.settings.text }}</p>
+                {%- endif -%}
+                <div class="mt-[22px] grid grid-cols-2 gap-x-3 gap-y-[22px]">
+                  {%- if look_products != blank -%}
+                    {%- for look in look_products limit: look_limit -%}
+                      <a href="{{ look.url }}" class="block min-w-0">
+                        <span class="block aspect-[3/4] overflow-hidden bg-sand">
+                          {%- if look.featured_media -%}
+                            {{ look.featured_media | image_url: width: 700 | image_tag: class: 'h-full w-full object-cover', widths: '300,450,700', sizes: '(min-width: 721px) 20vw, 50vw', loading: 'lazy' }}
+                          {%- endif -%}
+                        </span>
+                        <span class="mt-[10px] block text-[13px] uppercase leading-[1.5]">{{ look.title }}</span>
+                        <small class="mt-[5px] block text-[11px] text-[#746e61]">
+                          {%- if block.settings.note != blank -%}{{ block.settings.note }}{%- else -%}{{ look.price | money }}{%- endif -%}
+                        </small>
+                      </a>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- assign look_placeholders = 'Bralette a tombolo,Gonna a trapezio' | split: ',' -%}
+                    {%- for look_title in look_placeholders -%}
+                      <div class="min-w-0">
+                        <span class="block aspect-[3/4] overflow-hidden bg-sand">{{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}</span>
+                        <span class="mt-[10px] block text-[13px] uppercase leading-[1.5]">{{ look_title }}</span>
+                        <small class="mt-[5px] block text-[11px] text-[#746e61]">{{ block.settings.note }}</small>
+                      </div>
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+              </section>
+            {%- endif -%}
+
           {%- when 'text' -%}
-            <div class="rte mt-[25px] leading-[1.9] text-ink-soft" {{ block.shopify_attributes }}>
+            <div class="rte mt-[25px] text-[14px] leading-[1.8]" {{ block.shopify_attributes }}>
               {{ block.settings.text }}
             </div>
 
           {%- when 'collapsible' -%}
             {%- liquid
-              # Descrizione prodotto, altrimenti il metafield (se compilato) ha la priorità sul testo
               if block.settings.source == 'description'
                 assign collapsible_content = product.description
               elsif block.settings.metafield != blank
@@ -333,7 +682,7 @@
               endif
               assign popup_id = dialog_prefix | append: '-' | append: block.id
 
-              # la prima scheda di un gruppo ha spazio e linea sopra
+              # la prima scheda di un gruppo ha la linea sopra
               assign starts_group = true
               if forloop.index0 > 0
                 assign prev_index = forloop.index0 | minus: 1
@@ -343,30 +692,25 @@
               endif
             -%}
             <details
-              class="accordion{% if starts_group %} mt-[35px] border-t{% endif %}"
+              class="accordion--pdp{% if starts_group %} border-t border-line{% endif %}"
               {% if block.settings.open %}
                 open
               {% endif %}
               {{ block.shopify_attributes }}
             >
               <summary>{{ block.settings.heading }}</summary>
-              <div class="accordion-body">
+              <div class="accordion--pdp-body">
                 {%- if collapsible_content != blank -%}
                   <div class="rte">{{ collapsible_content }}</div>
                 {%- endif -%}
                 {%- if block.settings.popup_page != blank and block.settings.popup_label != blank -%}
-                  <button
-                    type="button"
-                    class="line-link mt-4 text-ink"
-                    data-dialog-open="{{ popup_id }}"
-                    aria-haspopup="dialog"
-                  >
-                    {{- block.settings.popup_label }} ↗
+                  <button type="button" class="pdp-link" data-dialog-open="{{ popup_id }}" aria-haspopup="dialog">
+                    {{- block.settings.popup_label -}}
                   </button>
                 {%- endif -%}
                 {%- if block.settings.link_label != blank -%}
-                  <a class="line-link mt-4 text-ink" href="{{ block.settings.link_url | default: routes.root_url }}">
-                    {{- block.settings.link_label }} ↗
+                  <a class="pdp-link" href="{{ block.settings.link_url | default: routes.root_url }}">
+                    {{- block.settings.link_label -}}
                   </a>
                 {%- endif -%}
               </div>
@@ -375,12 +719,12 @@
             {%- if block.settings.popup_page != blank and block.settings.popup_label != blank -%}
               <dialog
                 id="{{ popup_id }}"
-                class="m-auto max-h-[90svh] w-[min(860px,94vw)] overflow-y-auto border-0 bg-paper px-[23px] py-[45px] text-ink md:p-[55px]"
+                class="m-auto max-h-[90svh] w-[min(620px,92vw)] overflow-y-auto border-0 bg-paper px-[30px] py-[45px] font-manrope text-ink"
                 aria-labelledby="{{ popup_id }}-title"
               >
                 <button type="button" class="absolute right-[18px] top-3 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
-                <h2 id="{{ popup_id }}-title" class="mb-6 text-[32px] md:text-[43px]">{{ block.settings.popup_page.title }}</h2>
-                <div class="rte leading-[1.9] text-ink-soft">{{ block.settings.popup_page.content }}</div>
+                <h2 id="{{ popup_id }}-title" class="mb-6 text-[35px] tracking-normal">{{ block.settings.popup_page.title }}</h2>
+                <div class="rte text-[15px] leading-[1.9]">{{ block.settings.popup_page.content }}</div>
               </dialog>
             {%- endif -%}
 
@@ -397,7 +741,6 @@
       id="{{ dialog_prefix }}-video"
       class="m-auto w-[min(1100px,94vw)] border-0 bg-ink p-0 text-paper"
       aria-label="{{ section.settings.video_label | escape }}"
-      data-video-dialog
     >
       <button type="button" class="absolute right-[18px] top-3 z-10 text-[30px]" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
       <div class="aspect-video">
@@ -422,25 +765,89 @@
   "class": "section-product-main",
   "settings": [
     {
+      "type": "header",
+      "content": "Percorso"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_label",
+      "label": "Primo livello",
+      "default": "Creazioni"
+    },
+    {
+      "type": "url",
+      "id": "breadcrumb_url",
+      "label": "Link primo livello"
+    },
+    {
+      "type": "header",
+      "content": "Galleria"
+    },
+    {
+      "type": "checkbox",
+      "id": "crop_details",
+      "label": "Dettagli in riquadri ritagliati",
+      "default": true,
+      "info": "Dalla seconda immagine: riquadri alti 430px come nella bozza (usa il punto focale). Disattiva per mostrarle intere."
+    },
+    {
       "type": "checkbox",
       "id": "show_captions",
       "label": "Didascalie immagini",
-      "default": true,
-      "info": "Usa il testo alternativo dell'immagine (es. VISTA FRONTALE, DETTAGLIO)."
+      "default": false,
+      "info": "Usa il testo alternativo dell'immagine."
     },
     {
       "type": "checkbox",
       "id": "enable_zoom",
       "label": "Zoom immagini",
-      "default": true,
-      "info": "Clic sull'immagine: visualizzatore a schermo intero con ingrandimento."
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Il tempo delle mani (film)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_craft",
+      "label": "Mostra riquadro lavorazione",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "craft_image",
+      "label": "Immagine",
+      "info": "Se vuota usa l'anteprima del video del prodotto."
+    },
+    {
+      "type": "text",
+      "id": "craft_eyebrow",
+      "label": "Sopratitolo",
+      "default": "IL TEMPO DELLE MANI"
+    },
+    {
+      "type": "text",
+      "id": "craft_heading",
+      "label": "Titolo",
+      "default": "Dentro la"
+    },
+    {
+      "type": "text",
+      "id": "craft_italic",
+      "label": "Titolo (corsivo)",
+      "default": "lavorazione."
+    },
+    {
+      "type": "text",
+      "id": "craft_note",
+      "label": "Nota senza video",
+      "default": "Film di lavorazione · In preparazione"
     },
     {
       "type": "text",
       "id": "video_label",
       "label": "Testo pulsante video",
-      "default": "Video della lavorazione",
-      "info": "Il pulsante appare se il prodotto ha un video tra i media."
+      "default": "Guarda il film"
     }
   ],
   "blocks": [
@@ -455,12 +862,19 @@
           "id": "source",
           "label": "Contenuto",
           "options": [
-            { "value": "type", "label": "Tipo di prodotto" },
+            { "value": "metafield", "label": "Metafield prodotto" },
             { "value": "collection", "label": "Collezione" },
+            { "value": "type", "label": "Tipo di prodotto" },
             { "value": "vendor", "label": "Fornitore" },
             { "value": "text", "label": "Testo libero" }
           ],
           "default": "type"
+        },
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "default": "custom.linea"
         },
         {
           "type": "text",
@@ -474,7 +888,52 @@
       "type": "title",
       "name": "Titolo",
       "limit": 1,
-      "settings": []
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "italic_split",
+          "label": "Seconda parte in corsivo",
+          "default": true,
+          "info": "Es. Corolla d’Arancio → Corolla + d’Arancio in serif corsivo."
+        }
+      ]
+    },
+    {
+      "type": "subtitle",
+      "name": "Sottotitolo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "default": "custom.sottotitolo",
+          "info": "Es. Bralette a tombolo."
+        },
+        {
+          "type": "text",
+          "id": "fallback",
+          "label": "Testo se vuoto"
+        }
+      ]
+    },
+    {
+      "type": "opening",
+      "name": "Incipit",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "default": "custom.incipit"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testo se vuoto"
+        }
+      ]
     },
     {
       "type": "hours",
@@ -485,7 +944,7 @@
           "type": "text",
           "id": "heading",
           "label": "Titolo",
-          "default": "IL TEMPO DELLE MANI"
+          "default": "ORE DI LAVORAZIONE A MANO"
         },
         {
           "type": "text",
@@ -502,8 +961,20 @@
         {
           "type": "text",
           "id": "note",
-          "label": "Nota (se il metafield è vuoto)",
-          "default": "Dato da inserire"
+          "label": "Nota se vuoto",
+          "default": "Monte ore in attesa di conferma"
+        },
+        {
+          "type": "text",
+          "id": "text_key",
+          "label": "Metafield testo",
+          "default": "custom.testo_ore"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testo (corsivo) se vuoto",
+          "default": "Il disegno prende forma sul tombolo, nell’intreccio paziente dei fuselli. È questo tempo a rendere ogni creazione irripetibile."
         }
       ]
     },
@@ -538,21 +1009,95 @@
       "limit": 1,
       "settings": [
         {
+          "type": "checkbox",
+          "id": "show_label",
+          "label": "Mostra etichetta",
+          "default": false
+        },
+        {
           "type": "text",
           "id": "label",
           "label": "Etichetta",
           "default": "Prezzo"
+        },
+        {
+          "type": "text",
+          "id": "note_key",
+          "label": "Metafield nota a destra",
+          "default": "custom.tempo_realizzazione"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota a destra se vuoto",
+          "default": "Realizzato su ordinazione"
         }
       ]
     },
     {
       "type": "variant_picker",
       "name": "Varianti",
+      "settings": [
+        {
+          "type": "select",
+          "id": "options",
+          "label": "Opzioni da mostrare",
+          "options": [
+            { "value": "all", "label": "Tutte" },
+            { "value": "color", "label": "Solo colore" },
+            { "value": "other", "label": "Tutte tranne il colore" }
+          ],
+          "default": "all",
+          "info": "Usa due blocchi (colore e taglia) per mettere il prezzo in mezzo, come nella bozza."
+        },
+        {
+          "type": "text",
+          "id": "color_names",
+          "label": "Nomi opzione colore",
+          "default": "colore,color,colour"
+        },
+        {
+          "type": "text",
+          "id": "color_map",
+          "label": "Colori pallini",
+          "default": "Rame:#ac6946, Cioccolato:#4a3027",
+          "info": "Nome:#esadecimale separati da virgola. Usato se l'opzione non ha campioni Shopify."
+        },
+        {
+          "type": "page",
+          "id": "size_guide_page",
+          "label": "Pagina guida alle misure"
+        },
+        {
+          "type": "text",
+          "id": "size_guide_label",
+          "label": "Testo guida alle misure",
+          "default": "Guida alle misure"
+        }
+      ]
+    },
+    {
+      "type": "included",
+      "name": "Contenuto e codice",
       "limit": 1,
       "settings": [
         {
-          "type": "paragraph",
-          "content": "Un menu a tendina per ogni opzione (es. Taglia, Colore)."
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield",
+          "default": "custom.incluso",
+          "info": "Es. \"La selezione include soltanto la bralette…\""
+        },
+        {
+          "type": "text",
+          "id": "fallback",
+          "label": "Testo se vuoto"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sku",
+          "label": "Mostra codice (SKU)",
+          "default": true
         }
       ]
     },
@@ -565,7 +1110,7 @@
           "type": "text",
           "id": "label",
           "label": "Etichetta",
-          "default": "TEMPO DI REALIZZAZIONE"
+          "default": "Tempo di realizzazione"
         },
         {
           "type": "text",
@@ -591,6 +1136,174 @@
           "id": "show_dynamic_checkout",
           "label": "Pagamento rapido (Shop Pay, Apple Pay…)",
           "default": false
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota sotto il pulsante"
+        }
+      ]
+    },
+    {
+      "type": "personal_service",
+      "name": "Consulenza d’atelier",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titolo",
+          "default": "Un consiglio,"
+        },
+        {
+          "type": "text",
+          "id": "italic",
+          "label": "Titolo (corsivo)",
+          "default": "solo per te."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testo",
+          "default": "Hai un dubbio sulla taglia o desideri una versione su misura? Raccontaci come vorresti indossarla. Sara ti accompagna nella scelta."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Testo pulsante",
+          "default": "Richiedi una consulenza d’atelier"
+        },
+        {
+          "type": "text",
+          "id": "bespoke_value",
+          "label": "Valore \"su misura\"",
+          "default": "Su misura",
+          "info": "Quando il cliente sceglie questo valore, il riquadro si evidenzia."
+        },
+        {
+          "type": "text",
+          "id": "whatsapp",
+          "label": "Numero WhatsApp",
+          "info": "Con prefisso, es. +39 333 1234567. Vuoto = link nascosto."
+        },
+        {
+          "type": "text",
+          "id": "whatsapp_label",
+          "label": "Testo link WhatsApp",
+          "default": "WhatsApp · Scrivici"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email atelier",
+          "info": "Vuoto = link nascosto."
+        },
+        {
+          "type": "text",
+          "id": "email_label",
+          "label": "Testo link email",
+          "default": "Email all’atelier"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota"
+        },
+        {
+          "type": "header",
+          "content": "Finestra richiesta"
+        },
+        {
+          "type": "text",
+          "id": "dialog_eyebrow",
+          "label": "Sopratitolo",
+          "default": "CONSULENZA PRIVATA"
+        },
+        {
+          "type": "text",
+          "id": "dialog_heading",
+          "label": "Titolo",
+          "default": "Immaginiamola insieme."
+        },
+        {
+          "type": "text",
+          "id": "message_label",
+          "label": "Etichetta messaggio",
+          "default": "Raccontaci il tuo desiderio"
+        },
+        {
+          "type": "text",
+          "id": "message_placeholder",
+          "label": "Suggerimento messaggio",
+          "default": "L’occasione, la vestibilità o la personalizzazione che immagini"
+        },
+        {
+          "type": "text",
+          "id": "submit_label",
+          "label": "Testo invio",
+          "default": "Invia la richiesta"
+        },
+        {
+          "type": "text",
+          "id": "success_message",
+          "label": "Messaggio di conferma",
+          "default": "Grazie, la tua richiesta è arrivata in atelier. Sara ti ricontatterà al più presto."
+        }
+      ]
+    },
+    {
+      "type": "look",
+      "name": "Completa il look",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Sopratitolo",
+          "default": "GLI ELEMENTI DEL TUO ENSEMBLE"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titolo",
+          "default": "Completa"
+        },
+        {
+          "type": "text",
+          "id": "italic",
+          "label": "Titolo (corsivo)",
+          "default": "il look."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Testo",
+          "default": "Ogni elemento è venduto anche singolarmente."
+        },
+        {
+          "type": "text",
+          "id": "metafield",
+          "label": "Metafield prodotti",
+          "default": "custom.abbinamenti",
+          "info": "Metafield di tipo \"Lista di prodotti\". Se vuoto il blocco non appare."
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Nota sotto i prodotti",
+          "default": "Venduto singolarmente",
+          "info": "Vuoto = mostra il prezzo."
+        },
+        {
+          "type": "select",
+          "id": "limit",
+          "label": "Numero di prodotti",
+          "options": [
+            { "value": "2", "label": "2" },
+            { "value": "4", "label": "4" },
+            { "value": "6", "label": "6" }
+          ],
+          "default": "4"
         }
       ]
     },
@@ -631,7 +1344,7 @@
           "type": "text",
           "id": "heading",
           "label": "Titolo",
-          "default": "Descrizione"
+          "default": "La creazione"
         },
         {
           "type": "checkbox",

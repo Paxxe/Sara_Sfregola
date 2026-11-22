@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -15,188 +6,224 @@
         "eyebrow": {
           "type": "eyebrow",
           "settings": {
-            "source": "type",
+            "source": "metafield",
+            "metafield": "custom.linea",
             "text": "COUTURE"
           }
         },
         "title": {
           "type": "title",
-          "settings": {}
+          "settings": {
+            "italic_split": true
+          }
+        },
+        "subtitle": {
+          "type": "subtitle",
+          "settings": {
+            "metafield": "custom.sottotitolo",
+            "fallback": ""
+          }
+        },
+        "opening": {
+          "type": "opening",
+          "settings": {
+            "metafield": "custom.incipit",
+            "text": ""
+          }
         },
         "hours": {
           "type": "hours",
           "settings": {
-            "heading": "IL TEMPO DELLE MANI",
+            "heading": "ORE DI LAVORAZIONE A MANO",
             "hours_key": "custom.ore_manifattura",
             "note_key": "custom.nota_ore",
-            "note": "Dato da inserire"
+            "note": "Monte ore in attesa di conferma",
+            "text_key": "custom.testo_ore",
+            "text": "Il disegno prende forma sul tombolo, nell’intreccio paziente dei fuselli. È questo tempo a rendere ogni creazione irripetibile."
           }
         },
-        "fact-tecnica": {
-          "type": "fact",
+        "variants-color": {
+          "type": "variant_picker",
           "settings": {
-            "label": "Tecnica",
-            "metafield": "custom.tecnica",
-            "fallback": "Da inserire"
-          }
-        },
-        "fact-unicita": {
-          "type": "fact",
-          "settings": {
-            "label": "Unicità",
-            "metafield": "custom.unicita",
-            "fallback": "Da inserire"
+            "options": "color",
+            "color_names": "colore,color,colour",
+            "color_map": "Rame:#ac6946, Cioccolato:#4a3027",
+            "size_guide_label": "Guida alle misure"
           }
         },
         "price": {
           "type": "price",
           "settings": {
-            "label": "Prezzo"
+            "show_label": false,
+            "label": "Prezzo",
+            "note_key": "custom.tempo_realizzazione",
+            "note": "Su richiesta"
           }
         },
-        "variants": {
+        "variants-size": {
           "type": "variant_picker",
+          "settings": {
+            "options": "other",
+            "color_names": "colore,color,colour",
+            "color_map": "Rame:#ac6946, Cioccolato:#4a3027",
+            "size_guide_label": "Guida alle misure"
+          }
+        },
+        "included": {
+          "type": "included",
+          "settings": {
+            "metafield": "custom.incluso",
+            "fallback": "",
+            "show_sku": true
+          }
+        },
+        "service": {
+          "type": "personal_service",
+          "settings": {
+            "heading": "Realizzata",
+            "italic": "per te.",
+            "text": "Questa creazione nasce su ordinazione. Raccontaci l’occasione e le tue misure: Sara ti guiderà in ogni scelta.",
+            "button_label": "Richiedi una consulenza d’atelier"
+          }
+        },
+        "look": {
+          "type": "look",
           "settings": {}
         },
-        "production": {
-          "type": "production_time",
-          "settings": {
-            "label": "TEMPO DI REALIZZAZIONE",
-            "metafield": "custom.tempo_realizzazione",
-            "fallback": "Su richiesta"
-          }
-        },
-        "consult": {
-          "type": "consult_link",
-          "settings": {
-            "label": "Richiedi una consulenza privata per questa creazione"
-          }
-        },
-        "descrizione": {
+        "creazione": {
           "type": "collapsible",
           "settings": {
-            "heading": "Descrizione",
+            "heading": "La creazione",
             "open": true,
-            "source": "description"
+            "source": "description",
+            "metafield": "",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "tecniche": {
           "type": "collapsible",
           "settings": {
             "heading": "Tecniche e ore di manifattura",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.tecniche_dettaglio",
-            "link_label": "Esplora il savoir-faire"
+            "metafield": "",
+            "content": "{{ product.metafields.custom.details2 | metafield_tag }}",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "materiali": {
           "type": "collapsible",
           "settings": {
-            "heading": "Materiali, composizione e provenienza",
+            "heading": "Materiali e savoir-faire",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.materiali"
+            "metafield": "custom.materiali",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "vestibilita": {
           "type": "collapsible",
           "settings": {
-            "heading": "Vestibilità e guida alle misure",
+            "heading": "Vestibilità e su misura",
+            "open": false,
             "source": "metafield",
             "metafield": "custom.vestibilita",
-            "popup_label": "Come prendere le misure"
+            "content": "",
+            "popup_page": "",
+            "popup_label": "Come prendere le misure",
+            "link_label": "",
+            "link_url": ""
           }
         },
-        "personalizzazioni": {
+        "cura": {
           "type": "collapsible",
           "settings": {
-            "heading": "Personalizzazioni",
+            "heading": "Cura del capo",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.personalizzazioni"
+            "metafield": "custom.cura",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "consegna": {
           "type": "collapsible",
           "settings": {
             "heading": "Realizzazione e consegna",
+            "open": false,
             "source": "metafield",
-            "metafield": "custom.realizzazione_consegna"
-          }
-        },
-        "cura": {
-          "type": "collapsible",
-          "settings": {
-            "heading": "Cura e conservazione",
-            "source": "metafield",
-            "metafield": "custom.cura"
+            "metafield": "custom.realizzazione_consegna",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "spedizioni": {
           "type": "collapsible",
           "settings": {
-            "heading": "Spedizioni, pagamenti e resi",
+            "heading": "Pagamenti, spedizioni e resi",
+            "open": false,
             "source": "text",
-            "link_label": "Customer Care"
+            "metafield": "",
+            "content": "",
+            "popup_page": "",
+            "popup_label": "",
+            "link_label": "Customer Care",
+            "link_url": ""
           }
         }
       },
       "block_order": [
         "eyebrow",
         "title",
+        "subtitle",
+        "opening",
         "hours",
-        "fact-tecnica",
-        "fact-unicita",
+        "variants-color",
         "price",
-        "variants",
-        "production",
-        "consult",
-        "descrizione",
+        "variants-size",
+        "included",
+        "service",
+        "look",
+        "creazione",
         "tecniche",
         "materiali",
         "vestibilita",
-        "personalizzazioni",
-        "consegna",
         "cura",
+        "consegna",
         "spedizioni"
       ],
       "settings": {
-        "show_captions": true,
-        "video_label": "Video della lavorazione"
-      }
-    },
-    "editorial": {
-      "type": "product-editorial",
-      "settings": {
-        "eyebrow": "DETTAGLI",
-        "heading": "La creazione",
-        "metafield": "custom.racconto",
-        "link_label": "Incontra le tecniche"
-      }
-    },
-    "related": {
-      "type": "product-related",
-      "settings": {
-        "eyebrow": "ABBINAMENTI",
-        "heading": "Completa il look",
-        "source": "metafield",
-        "metafield": "custom.abbinamenti",
-        "limit": "3"
-      }
-    },
-    "consulenza": {
-      "type": "contact-consultation",
-      "settings": {
-        "number": "",
-        "eyebrow": "SU RICHIESTA",
-        "heading": "Realizzata per te",
-        "button_label": "Prepara la tua richiesta",
-        "button_mode": "dialog"
+        "breadcrumb_label": "Creazioni",
+        "crop_details": true,
+        "show_captions": false,
+        "enable_zoom": true,
+        "show_craft": true,
+        "craft_eyebrow": "IL TEMPO DELLE MANI",
+        "craft_heading": "Dentro la",
+        "craft_italic": "lavorazione.",
+        "craft_note": "Film di lavorazione · In preparazione",
+        "video_label": "Guarda il film"
       }
     }
   },
   "order": [
-    "main",
-    "consulenza",
-    "editorial",
-    "related"
+    "main"
   ]
 }

@@ -7,6 +7,7 @@
   - product: prodotto
   - key: es. 'custom.tecnica'
   - fallback: testo se il metafield è vuoto
+  - plain: true per stampare sempre testo semplice (campi brevi in linea)
 {%- endcomment -%}
 {%- liquid
   assign mf = blank
@@ -18,12 +19,16 @@
   endif
 
   if mf != blank
-    case mf.type
-      when 'rich_text_field', 'multi_line_text_field'
-        echo mf | metafield_tag
-      else
-        echo mf | metafield_text
-    endcase
+    if plain
+      echo mf | metafield_text
+    else
+      case mf.type
+        when 'rich_text_field', 'multi_line_text_field'
+          echo mf | metafield_tag
+        else
+          echo mf | metafield_text
+      endcase
+    endif
   else
     echo fallback
   endif

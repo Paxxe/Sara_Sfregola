@@ -1,11 +1,11 @@
 {%- comment -%}
-  PLP — pagina collezione nello stile dell'homepage.
-  Intestazione editoriale, tab categorie, drawer filtri/ordinamento (Search & Discovery),
-  griglia sfalsata e blocchi editoriali inseriti tra i prodotti.
+  PLP — pagina collezione (creazioni.html + catalogue.css + catalogue-filter.js).
+  Intestazione con categorie e descrizione in Cormorant, barra con conteggio / filtri /
+  "Ordina per", griglia a 4 colonne con immagine editoriale inserita, consulenza finale.
 {%- endcomment -%}
 {%- liquid
-  assign drawer_id = 'FilterDrawer-' | append: section.id
   assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign filters_id = 'Filters-' | append: section.id
 
   assign active_count = 0
   for filter in collection.filters
@@ -18,9 +18,6 @@
     endif
   endfor
 
-  comment
-    Tab: menu dedicato oppure i valori di un filtro (es. "Tipo di prodotto")
-  endcomment
   assign tabs_filter = nil
   if section.settings.tabs_menu == blank and section.settings.tabs_filter_label != blank
     for filter in collection.filters
@@ -30,67 +27,24 @@
       endif
     endfor
   endif
-
-  assign subtitle = collection.metafields.custom.sottotitolo.value | default: section.settings.subtitle
 -%}
 
-{%- comment -%} ===================== Intestazione ===================== {%- endcomment -%}
-<section class="px-[6%] pb-[45px] pt-[50px] md:pb-[70px] md:pt-[80px]">
-  <nav aria-label="{{ 'collections.breadcrumb' | t }}" class="eyebrow mb-[22px] md:mb-[38px]">
-    <a href="{{ routes.root_url }}">{{ 'collections.home' | t }}</a>
-    <span aria-hidden="true" class="mx-2">/</span>
-    <span aria-current="page">{{ collection.title | upcase }}</span>
-  </nav>
+<div class="font-manrope">
+  {%- comment -%} ===================== Intestazione ===================== {%- endcomment -%}
+  <section class="px-4 pb-[25px] pt-10 md:px-6 md:pb-[30px] md:pt-[65px]">
+    <p class="mb-[25px] text-[12px] text-[#736f64]">
+      <a href="{{ routes.root_url }}">{{ 'collections.home_label' | t }}</a>
+      / {{ section.settings.breadcrumb_label }}
+    </p>
+    <h1 class="font-manrope text-[clamp(28px,3vw,44px)] font-normal leading-[1.2] tracking-[-1px]">{{ collection.title }}</h1>
 
-  <div class="grid gap-[27px] md:grid-cols-2 md:items-end md:gap-[12%]">
-    <h1 class="text-[34px] leading-[1.22] md:text-[42px] md:leading-[1.17]">
-      {{- collection.title -}}
-      {%- if subtitle != blank -%}
-        <br><em>{{ subtitle }}</em>
-      {%- endif -%}
-    </h1>
-
-    <div>
-      {%- if collection.description != blank and section.settings.show_description -%}
-        <div class="rte max-w-[430px] text-[12px] leading-[1.95] text-ink-soft md:text-[13px]">
-          {{ collection.description }}
-        </div>
-      {%- endif -%}
-      <p class="mt-[18px] text-[9px] uppercase tracking-[1px]" role="status">
-        {{ 'collections.count' | t: count: collection.products_count }}
-      </p>
-    </div>
-  </div>
-</section>
-
-{%- if section.settings.show_image and collection.image -%}
-  <div class="h-[420px] overflow-hidden md:h-[560px]">
-    {{
-      collection.image
-      | image_url: width: 2400
-      | image_tag:
-        class: 'h-full w-full object-cover',
-        widths: '720,1200,1600,2000,2400',
-        sizes: '100vw',
-        loading: 'eager',
-        fetchpriority: 'high'
-    }}
-  </div>
-{%- endif -%}
-
-{%- comment -%} ===================== Toolbar ===================== {%- endcomment -%}
-<div class="sticky top-0 z-10 border-y border-line bg-paper/95 px-[6%] backdrop-blur-sm">
-  <div class="flex items-center justify-between gap-6">
-    <div
-      class="-mb-px flex min-w-0 gap-[22px] overflow-x-auto whitespace-nowrap [scrollbar-width:none] md:gap-[25px] [&::-webkit-scrollbar]:hidden"
-      role="navigation"
-      aria-label="{{ 'sections.featured_creations.categories' | t }}"
-    >
+    {%- comment -%} Categorie {%- endcomment -%}
+    <nav class="mt-7 flex flex-wrap gap-x-5 gap-y-[13px] text-[13px] md:gap-x-[30px] md:gap-y-[14px] md:text-[14px]" aria-label="{{ 'collections.categories' | t }}">
       {%- if section.settings.tabs_menu != blank -%}
         {%- for link in section.settings.tabs_menu.links -%}
           <a
             href="{{ link.url }}"
-            class="filter-btn py-[18px]"
+            class="border-b pb-[5px]{% if link.current or link.active %} border-ink{% else %} border-transparent{% endif %}"
             {% if link.current or link.active %}
               aria-current="page"
             {% endif %}
@@ -101,9 +55,9 @@
       {%- elsif tabs_filter -%}
         <a
           href="{{ collection.url }}?sort_by={{ sort_by }}"
-          class="filter-btn py-[18px]"
+          class="border-b pb-[5px]{% if tabs_filter.active_values.size == 0 %} border-ink{% else %} border-transparent{% endif %}"
           {% if tabs_filter.active_values.size == 0 %}
-            aria-current="true"
+            aria-current="page"
           {% endif %}
         >
           {{- section.settings.all_label -}}
@@ -112,292 +66,223 @@
           {%- if value.count > 0 or value.active -%}
             <a
               href="{{ collection.url }}?{{ value.param_name }}={{ value.value | url_encode }}&sort_by={{ sort_by }}"
-              class="filter-btn py-[18px]"
+              class="border-b pb-[5px]{% if value.active %} border-ink{% else %} border-transparent{% endif %}"
               {% if value.active %}
-                aria-current="true"
+                aria-current="page"
               {% endif %}
             >
               {{- value.label -}}
             </a>
           {%- endif -%}
         {%- endfor -%}
-      {%- else -%}
-        <span class="filter-btn py-[18px]" aria-current="true">{{ section.settings.all_label }}</span>
       {%- endif -%}
-    </div>
+    </nav>
 
-    {%- if section.settings.enable_filters or section.settings.enable_sort -%}
-      <button
-        type="button"
-        class="shrink-0 py-[18px] text-[11px]"
-        data-dialog-open="{{ drawer_id }}"
-        aria-haspopup="dialog"
-      >
-        {{- 'collections.filter_and_sort' | t -}}
-        {%- if active_count > 0 %} ({{ active_count }}){% endif %}
-        <span aria-hidden="true" class="ml-1">+</span>
-      </button>
+    {%- if section.settings.show_description -%}
+      {%- assign description = collection.description | default: section.settings.fallback_description -%}
+      {%- if description != blank -%}
+        <div class="mt-[26px] max-w-[640px] font-serif text-[21px] leading-[1.45] md:text-[22px] [&_p]:m-0">
+          {{ description }}
+        </div>
+      {%- endif -%}
     {%- endif -%}
-  </div>
-</div>
+  </section>
 
-{%- comment -%} Filtri attivi {%- endcomment -%}
-{%- if active_count > 0 -%}
-  <div class="flex flex-wrap items-center gap-[10px] px-[6%] pt-[25px]">
-    {%- for filter in collection.filters -%}
-      {%- if filter.type == 'price_range' -%}
-        {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-          <a href="{{ filter.url_to_remove }}" class="rounded-full border border-pill px-4 py-2 text-[10px]">
-            {{- filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }}
-            <span aria-hidden="true" class="ml-1">×</span>
-          </a>
-        {%- endif -%}
-      {%- else -%}
-        {%- for value in filter.active_values -%}
-          <a href="{{ value.url_to_remove }}" class="rounded-full border border-pill px-4 py-2 text-[10px]">
-            {{- value.label }}
-            <span aria-hidden="true" class="ml-1">×</span>
-          </a>
-        {%- endfor -%}
-      {%- endif -%}
-    {%- endfor -%}
-    <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="ml-1 border-b border-ink pb-px text-[10px]">
-      {{- 'collections.clear_all' | t -}}
-    </a>
-  </div>
-{%- endif -%}
-
-{%- comment -%} ===================== Griglia ===================== {%- endcomment -%}
-<section class="px-[6%] pb-20 pt-[35px] md:pb-[130px] md:pt-[55px]">
-  {%- paginate collection.products by section.settings.products_per_page -%}
-    {%- if collection.products.size > 0 -%}
-      <div class="plp-grid plp-grid--{{ section.settings.columns }}{% if section.settings.staggered %} plp-grid--staggered{% endif %}">
-        {%- for product in collection.products -%}
-          {%- liquid
-            assign card_loading = 'lazy'
-            if forloop.index <= 3
-              assign card_loading = 'eager'
-            endif
-          -%}
-          {%- render 'product-card',
-            product: product,
-            image_class: section.settings.image_ratio,
-            sizes: '(min-width: 721px) 33vw, 50vw',
-            show_secondary: section.settings.show_secondary_image,
-            show_badges: section.settings.show_badges,
-            loading: card_loading
-          -%}
-
-          {%- comment -%} Blocchi editoriali (solo prima pagina) {%- endcomment -%}
-          {%- if paginate.current_page == 1 -%}
-            {%- for block in section.blocks -%}
-              {%- if block.settings.after_products == forloop.parentloop.index -%}
-                <aside
-                  class="col-span-full my-[20px] grid grid-cols-1 bg-linen md:my-[40px] md:grid-cols-2"
-                  {{ block.shopify_attributes }}
-                >
-                  <div class="h-[420px] overflow-hidden md:h-[560px]{% if block.settings.image_right %} md:order-2{% endif %}">
-                    {%- render 'media',
-                      image: block.settings.image,
-                      placeholder: 'lifestyle-2',
-                      class: 'h-full w-full object-cover',
-                      sizes: '(min-width: 721px) 50vw, 100vw'
-                    -%}
-                  </div>
-                  <div class="self-center px-[8%] py-[55px] md:px-[14%] md:py-[70px]">
-                    {%- if block.settings.eyebrow != blank -%}
-                      <p class="eyebrow mb-[27px]">{{ block.settings.eyebrow }}</p>
-                    {%- endif -%}
-                    <h2 class="text-[31px] leading-[1.3] md:text-[38px] md:leading-[1.17]">
-                      {{- block.settings.heading -}}
-                      {%- if block.settings.heading_italic != blank -%}
-                        <br><em>{{ block.settings.heading_italic }}</em>
-                      {%- endif -%}
-                    </h2>
-                    {%- if block.settings.text != blank -%}
-                      <div class="rte my-[30px] max-w-[430px] leading-[1.9] text-ink-soft">{{ block.settings.text }}</div>
-                    {%- endif -%}
-                    {%- if block.settings.link_label != blank -%}
-                      <a class="line-link mt-[10px]" href="{{ block.settings.link_url | default: routes.root_url }}">
-                        {{- block.settings.link_label }} ↗
-                      </a>
-                    {%- endif -%}
-                  </div>
-                </aside>
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-
-      {%- comment -%} Paginazione stile hero: ← 01 / 04 → {%- endcomment -%}
-      {%- if paginate.pages > 1 -%}
-        <nav
-          class="mt-[80px] flex items-center justify-center gap-[20px] text-[8px] tracking-[1.2px] text-cue md:mt-[110px]"
-          aria-label="{{ 'collections.pagination' | t }}"
-        >
-          {%- if paginate.previous -%}
-            <a href="{{ paginate.previous.url }}" class="rounded-full px-2 py-1 text-[19px] text-ink" aria-label="{{ 'collections.previous' | t }}">←</a>
-          {%- else -%}
-            <span class="px-2 py-1 text-[19px] opacity-30" aria-hidden="true">←</span>
-          {%- endif -%}
-          <span>
-            {{- paginate.current_page | prepend: '0' | slice: -2, 2 }} /
-            {{ paginate.pages | prepend: '0' | slice: -2, 2 -}}
-          </span>
-          {%- if paginate.next -%}
-            <a href="{{ paginate.next.url }}" class="rounded-full px-2 py-1 text-[19px] text-ink" aria-label="{{ 'collections.next' | t }}">→</a>
-          {%- else -%}
-            <span class="px-2 py-1 text-[19px] opacity-30" aria-hidden="true">→</span>
-          {%- endif -%}
-        </nav>
-      {%- endif -%}
-    {%- else -%}
-      <div class="py-[90px] text-center">
-        <p class="eyebrow mb-[27px]">{{ collection.title | upcase }}</p>
-        <h2 class="text-[29px] md:text-[35px]">{{ 'collections.empty' | t }}</h2>
-        {%- if active_count > 0 -%}
-          <a class="line-link mt-[35px]" href="{{ collection.url }}">{{ 'collections.clear_all' | t }} ↗</a>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-  {%- endpaginate -%}
-</section>
-
-{%- comment -%} ===================== Drawer filtri e ordinamento ===================== {%- endcomment -%}
-{%- if section.settings.enable_filters or section.settings.enable_sort -%}
-  <dialog
-    id="{{ drawer_id }}"
-    class="drawer m-0 ml-auto h-[100svh] max-h-none w-[min(440px,100vw)] max-w-none border-0 bg-paper p-0 text-ink"
-    aria-labelledby="{{ drawer_id }}-title"
-  >
-    <form action="{{ collection.url }}" method="get" class="flex h-full flex-col">
-      <div class="flex items-center justify-between border-b border-line px-[30px] py-[26px]">
-        <h2 id="{{ drawer_id }}-title" class="eyebrow">{{ 'collections.filter_and_sort' | t }}</h2>
-        <button type="button" class="text-[30px] leading-none" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
-      </div>
-
-      <div class="flex-1 overflow-y-auto px-[30px] pb-[30px]">
-        {%- if section.settings.enable_sort -%}
-          <details class="accordion" open>
-            <summary>{{ 'collections.sort_by' | t }}</summary>
-            <div class="accordion-body space-y-3">
-              {%- for option in collection.sort_options -%}
-                <label class="flex cursor-pointer items-center gap-3 text-ink">
-                  <input
-                    type="radio"
-                    name="sort_by"
-                    value="{{ option.value | escape }}"
-                    class="h-3 w-3 accent-ink"
-                    {% if option.value == sort_by %}
-                      checked
-                    {% endif %}
-                  >
-                  {{ option.name }}
-                </label>
-              {%- endfor -%}
-            </div>
-          </details>
-        {%- else -%}
-          <input type="hidden" name="sort_by" value="{{ sort_by | escape }}">
-        {%- endif -%}
-
-        {%- if section.settings.enable_filters -%}
-          {%- for filter in collection.filters -%}
-            <details
-              class="accordion"
-              {% if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil %}
-                open
-              {% endif %}
+  {%- comment -%} ===================== Catalogo ===================== {%- endcomment -%}
+  <section class="px-2 pb-10 md:px-3 md:pb-[70px]" aria-label="{{ 'collections.catalogue' | t }}">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      {%- comment -%} Barra: conteggio, filtri, ordinamento {%- endcomment -%}
+      <div class="flex flex-wrap items-center gap-[15px] px-2 pb-[22px] pt-[10px] text-[14px] md:flex-nowrap md:gap-[25px] md:px-3 md:pt-[15px]">
+        {%- if section.settings.enable_filters and collection.filters.size > 0 -%}
+          <details class="relative z-[5]" data-filter-dropdown>
+            <summary class="cursor-pointer">
+              {{- 'collections.filter' | t -}}
+              {%- if active_count > 0 %} ({{ active_count }}){% endif -%}
+              <span class="ml-3 text-[16px]" aria-hidden="true">+</span>
+            </summary>
+            <form
+              action="{{ collection.url }}"
+              method="get"
+              id="{{ filters_id }}"
+              class="absolute left-0 top-[35px] grid max-h-[70vh] w-[260px] gap-[15px] overflow-y-auto bg-paper p-6 shadow-[0_6px_24px_#27261f18] md:w-[275px]"
             >
-              <summary>
-                {{- filter.label -}}
-                {%- if filter.active_values.size > 0 %} ({{ filter.active_values.size }}){% endif -%}
-              </summary>
-              <div class="accordion-body">
-                {%- case filter.type -%}
-                  {%- when 'list', 'boolean' -%}
-                    <ul class="space-y-3">
-                      {%- for value in filter.values -%}
-                        {%- assign disabled = false -%}
-                        {%- if value.count == 0 and value.active == false -%}
-                          {%- assign disabled = true -%}
-                        {%- endif -%}
-                        <li>
-                          <label class="flex cursor-pointer items-center gap-3 text-ink{% if disabled %} cursor-default opacity-40{% endif %}">
-                            <input
-                              type="checkbox"
-                              name="{{ value.param_name }}"
-                              value="{{ value.value | escape }}"
-                              class="h-3 w-3 accent-ink"
-                              {% if value.active %}
-                                checked
-                              {% endif %}
-                              {% if disabled %}
-                                disabled
-                              {% endif %}
-                            >
-                            {%- if filter.presentation == 'swatch' and value.swatch.color -%}
-                              <span
-                                class="h-3 w-3 rounded-full border border-line"
-                                style="background-color: {{ value.swatch.color }}"
-                                aria-hidden="true"
-                              ></span>
-                            {%- endif -%}
-                            <span>{{ value.label }}</span>
-                            <span class="ml-auto text-[10px] text-muted">{{ value.count }}</span>
-                          </label>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-
-                  {%- when 'price_range' -%}
-                    <div class="grid grid-cols-2 gap-4">
-                      <label>
-                        <span class="field-label mt-0">{{ 'collections.price_from' | t }}</span>
+              <input type="hidden" name="sort_by" value="{{ sort_by | escape }}">
+              {%- for filter in collection.filters -%}
+                <fieldset class="m-0 border-0 border-b border-line p-0 pb-[15px]">
+                  <legend class="mb-3 text-[12px] uppercase tracking-[1px] text-[#736f64]">{{ filter.label }}</legend>
+                  {%- case filter.type -%}
+                    {%- when 'list', 'boolean' -%}
+                      <div class="grid gap-[10px]">
+                        {%- for value in filter.values -%}
+                          {%- if value.count > 0 or value.active -%}
+                            <label class="flex cursor-pointer items-center gap-3 text-[13px]">
+                              <input
+                                type="checkbox"
+                                name="{{ value.param_name }}"
+                                value="{{ value.value | escape }}"
+                                class="h-3 w-3 accent-ink"
+                                {% if value.active %}
+                                  checked
+                                {% endif %}
+                              >
+                              <span>{{ value.label }}</span>
+                              <span class="ml-auto text-[11px] text-[#736f64]">{{ value.count }}</span>
+                            </label>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- when 'price_range' -%}
+                      <div class="grid grid-cols-2 gap-3">
                         <input
-                          class="field"
+                          class="w-full border-0 border-b border-line bg-transparent p-2 text-[13px] focus:outline-none"
                           type="number"
-                          inputmode="decimal"
                           min="0"
                           step="any"
+                          inputmode="decimal"
                           name="{{ filter.min_value.param_name }}"
+                          placeholder="{{ 'collections.price_from' | t }}"
+                          aria-label="{{ 'collections.price_from' | t }}"
                           {% if filter.min_value.value %}
                             value="{{ filter.min_value.value | divided_by: 100.0 }}"
                           {% endif %}
-                          placeholder="0"
                         >
-                      </label>
-                      <label>
-                        <span class="field-label mt-0">{{ 'collections.price_to' | t }}</span>
                         <input
-                          class="field"
+                          class="w-full border-0 border-b border-line bg-transparent p-2 text-[13px] focus:outline-none"
                           type="number"
-                          inputmode="decimal"
                           min="0"
                           step="any"
+                          inputmode="decimal"
                           name="{{ filter.max_value.param_name }}"
+                          placeholder="{{ 'collections.price_to' | t }}"
+                          aria-label="{{ 'collections.price_to' | t }}"
                           {% if filter.max_value.value %}
                             value="{{ filter.max_value.value | divided_by: 100.0 }}"
                           {% endif %}
-                          placeholder="{{ filter.range_max | divided_by: 100.0 | ceil }}"
                         >
-                      </label>
-                    </div>
-                {%- endcase -%}
+                      </div>
+                  {%- endcase -%}
+                </fieldset>
+              {%- endfor -%}
+              <div class="flex items-center justify-between gap-4">
+                <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="text-[12px] underline underline-offset-2">{{ 'collections.clear_all' | t }}</a>
+                <button type="submit" class="rounded-full bg-ink px-5 py-[10px] text-[12px] text-paper">{{ 'collections.apply' | t }}</button>
               </div>
-            </details>
-          {%- endfor -%}
+            </form>
+          </details>
+        {%- endif -%}
+
+        <span class="ml-auto text-[12px] text-[#736f64] md:ml-0" aria-live="polite">
+          {{ 'collections.count' | t: count: collection.products_count }}
+        </span>
+
+        {%- if section.settings.enable_sort -%}
+          <label class="flex w-full items-center justify-between gap-3 text-[12px] md:ml-auto md:w-auto md:justify-start md:text-[14px]">
+            {{ 'collections.sort_by' | t }}
+            <select class="cursor-pointer border-0 bg-transparent p-2 font-manrope text-[inherit] focus:outline-none" data-sort-select>
+              {%- for option in collection.sort_options -%}
+                <option
+                  value="{{ option.value | escape }}"
+                  {% if option.value == sort_by %}
+                    selected
+                  {% endif %}
+                >
+                  {{- option.name -}}
+                </option>
+              {%- endfor -%}
+            </select>
+          </label>
         {%- endif -%}
       </div>
 
-      <div class="flex items-center justify-between gap-4 border-t border-line px-[30px] py-[22px]">
-        <a href="{{ collection.url }}" class="border-b border-ink pb-px text-[10px]">{{ 'collections.clear_all' | t }}</a>
-        <button type="submit" class="btn-solid">{{ 'collections.apply' | t }}</button>
-      </div>
-    </form>
-  </dialog>
-{%- endif -%}
+      {%- comment -%} Griglia {%- endcomment -%}
+      {%- liquid
+        assign page_count = collection.products.size
+        if page_count >= 8
+          assign insert_after = 4
+          assign editorial_class = 'md:col-start-3 md:col-span-2 md:row-start-2 md:row-span-2 md:aspect-auto md:min-h-full'
+        elsif page_count >= 3
+          assign insert_after = 2
+          assign editorial_class = 'md:col-start-3 md:col-span-2 md:row-start-1 md:row-span-2 md:aspect-auto md:min-h-full'
+        else
+          assign insert_after = page_count
+          assign editorial_class = 'md:col-start-3 md:col-span-2 md:row-start-1 md:aspect-[3/4]'
+        endif
+
+        assign show_editorial = false
+        if section.settings.show_editorial and paginate.current_page == 1
+          if section.settings.editorial_image != blank or request.design_mode
+            assign show_editorial = true
+          endif
+        endif
+      -%}
+
+      {%- if page_count > 0 -%}
+        <div class="grid grid-cols-2 items-start gap-x-2 gap-y-[30px] md:grid-cols-4 md:gap-y-[38px]">
+          {%- for product in collection.products -%}
+            {%- liquid
+              assign card_loading = 'lazy'
+              if forloop.index <= 4
+                assign card_loading = 'eager'
+              endif
+            -%}
+            {%- render 'plp-card',
+              product: product,
+              caption_source: section.settings.caption_source,
+              caption_key: section.settings.caption_metafield,
+              caption_fallback: section.settings.caption_fallback,
+              show_badges: section.settings.show_badges,
+              loading: card_loading
+            -%}
+
+            {%- if show_editorial and forloop.index == insert_after -%}
+              <figure class="relative col-span-2 m-0 aspect-[4/3] self-stretch overflow-hidden bg-sand {{ editorial_class }}">
+                {%- render 'media',
+                  image: section.settings.editorial_image,
+                  placeholder: 'lifestyle-2',
+                  class: 'absolute inset-0 h-full w-full object-cover',
+                  sizes: '(min-width: 721px) 50vw, 100vw'
+                -%}
+                {%- if section.settings.editorial_caption != blank -%}
+                  <figcaption class="absolute bottom-6 left-[25px] right-[25px] font-serif text-[23px] italic leading-[1.2] text-white [text-shadow:0_1px_8px_#0008] lg:text-[28px]">
+                    {{ section.settings.editorial_caption }}
+                  </figcaption>
+                {%- endif -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- render 'pagination', paginate: paginate -%}
+      {%- else -%}
+        <div class="px-5 py-10">
+          <p class="text-[14px]">{{ 'collections.empty' | t }}</p>
+          {%- if active_count > 0 -%}
+            <a href="{{ collection.url }}" class="mt-3 inline-block text-[14px] underline">{{ 'collections.clear_all' | t }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </section>
+
+  {%- comment -%} ===================== Consulenza ===================== {%- endcomment -%}
+  {%- if section.settings.show_consult -%}
+    <section class="bg-sand px-5 pb-[55px] pt-[55px] text-center md:px-6 md:pb-[100px] md:pt-[65px]">
+      {%- if section.settings.consult_eyebrow != blank -%}
+        <p class="eyebrow mb-[27px]">{{ section.settings.consult_eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="font-manrope text-[clamp(35px,4vw,60px)] leading-[1.1] tracking-[-1px]">
+        {{- section.settings.consult_heading }}
+        {% if section.settings.consult_italic != blank %}<em class="text-[1.2em] leading-none">{{ section.settings.consult_italic }}</em>{% endif -%}
+      </h2>
+      {%- if section.settings.consult_text != blank -%}
+        <p class="mx-auto my-6 max-w-[550px] text-[16px] leading-[1.9]">{{ section.settings.consult_text }}</p>
+      {%- endif -%}
+      {%- if section.settings.consult_label != blank -%}
+        <a class="line-link text-[14px]" href="{{ section.settings.consult_url | default: routes.root_url }}">{{ section.settings.consult_label }}</a>
+      {%- endif -%}
+    </section>
+  {%- endif -%}
+</div>
 
 {% schema %}
 {
@@ -411,10 +296,9 @@
     },
     {
       "type": "text",
-      "id": "subtitle",
-      "label": "Seconda riga titolo (corsivo)",
-      "default": "fatte a mano.",
-      "info": "Sovrascrivibile per collezione con il metafield custom.sottotitolo."
+      "id": "breadcrumb_label",
+      "label": "Percorso (dopo Home)",
+      "default": "Creazioni"
     },
     {
       "type": "checkbox",
@@ -423,180 +307,151 @@
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "show_image",
-      "label": "Mostra immagine collezione",
-      "default": false
+      "type": "textarea",
+      "id": "fallback_description",
+      "label": "Descrizione se la collezione non ne ha",
+      "default": "Abiti, corsetti e accessori in cui il gesto artigianale incontra la forma contemporanea. Scopri le creazioni di Sara Sfregola."
     },
     {
       "type": "header",
-      "content": "Tab categorie"
+      "content": "Categorie"
     },
     {
       "type": "link_list",
       "id": "tabs_menu",
-      "label": "Menu tab",
-      "info": "Es. Tutte / Couture / Pezzi unici / Accessori (link alle collezioni). Ha la precedenza sul filtro."
+      "label": "Menu categorie",
+      "info": "Es. Tutte le creazioni / Heritage / Collezione Africa / Abiti… (link alle collezioni). Ha la precedenza sul filtro."
     },
     {
       "type": "text",
       "id": "tabs_filter_label",
-      "label": "Oppure: nome del filtro da usare come tab",
-      "default": "Tipo di prodotto",
-      "info": "Nome esatto del filtro in Search & Discovery."
+      "label": "Oppure: nome del filtro da usare come categorie",
+      "default": "Tipo di prodotto"
     },
     {
       "type": "text",
       "id": "all_label",
       "label": "Etichetta \"tutte\"",
-      "default": "Tutte"
+      "default": "Tutte le creazioni"
     },
     {
       "type": "header",
       "content": "Griglia"
     },
     {
-      "type": "select",
-      "id": "columns",
-      "label": "Colonne (desktop)",
-      "options": [
-        {
-          "value": "2",
-          "label": "2"
-        },
-        {
-          "value": "3",
-          "label": "3"
-        }
-      ],
-      "default": "3"
-    },
-    {
-      "type": "checkbox",
-      "id": "staggered",
-      "label": "Composizione sfalsata",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Proporzione immagini",
-      "options": [
-        {
-          "value": "aspect-[4/5]",
-          "label": "4:5"
-        },
-        {
-          "value": "aspect-[3/4]",
-          "label": "3:4"
-        },
-        {
-          "value": "aspect-[2/3]",
-          "label": "2:3"
-        }
-      ],
-      "default": "aspect-[3/4]"
-    },
-    {
       "type": "range",
       "id": "products_per_page",
       "label": "Prodotti per pagina",
-      "min": 6,
-      "max": 36,
-      "step": 6,
-      "default": 18
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
     },
     {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "label": "Seconda immagine al passaggio del mouse",
-      "default": true
+      "type": "select",
+      "id": "caption_source",
+      "label": "Testo sotto il nome",
+      "options": [
+        { "value": "metafield", "label": "Didascalia (metafield)" },
+        { "value": "price", "label": "Prezzo" }
+      ],
+      "default": "metafield"
+    },
+    {
+      "type": "text",
+      "id": "caption_metafield",
+      "label": "Metafield didascalia",
+      "default": "custom.didascalia"
+    },
+    {
+      "type": "text",
+      "id": "caption_fallback",
+      "label": "Didascalia se vuota",
+      "default": "Creazione d’atelier"
     },
     {
       "type": "checkbox",
       "id": "show_badges",
-      "label": "Mostra etichette (esaurito / pezzo unico)",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Filtri"
+      "label": "Etichette (esaurito / pezzo unico)",
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "enable_filters",
-      "label": "Abilita filtri",
+      "label": "Filtri",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_sort",
-      "label": "Abilita ordinamento",
+      "label": "Ordina per",
       "default": true
-    }
-  ],
-  "blocks": [
+    },
     {
-      "type": "editorial",
-      "name": "Blocco editoriale",
-      "limit": 3,
-      "settings": [
-        {
-          "type": "range",
-          "id": "after_products",
-          "label": "Mostra dopo il prodotto n.",
-          "min": 6,
-          "max": 30,
-          "step": 6,
-          "default": 6,
-          "info": "Multipli di 6, così il blocco chiude sempre una riga intera."
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Immagine"
-        },
-        {
-          "type": "checkbox",
-          "id": "image_right",
-          "label": "Immagine a destra",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "eyebrow",
-          "label": "Sopratitolo",
-          "default": "SAVOIR-FAIRE"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Titolo",
-          "default": "Ogni pezzo"
-        },
-        {
-          "type": "text",
-          "id": "heading_italic",
-          "label": "Seconda riga (corsivo)",
-          "default": "racconta un tempo."
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Testo"
-        },
-        {
-          "type": "text",
-          "id": "link_label",
-          "label": "Testo pulsante",
-          "default": "Scopri le tecniche"
-        },
-        {
-          "type": "url",
-          "id": "link_url",
-          "label": "Link"
-        }
-      ]
+      "type": "header",
+      "content": "Immagine editoriale"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_editorial",
+      "label": "Mostra immagine nella griglia",
+      "default": true,
+      "info": "Occupa 2×2 card, dopo il 4° prodotto (o il 2° con pochi prodotti). Solo prima pagina."
+    },
+    {
+      "type": "image_picker",
+      "id": "editorial_image",
+      "label": "Immagine"
+    },
+    {
+      "type": "text",
+      "id": "editorial_caption",
+      "label": "Didascalia (corsivo)"
+    },
+    {
+      "type": "header",
+      "content": "Consulenza"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consult",
+      "label": "Mostra consulenza in fondo",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "consult_eyebrow",
+      "label": "Sopratitolo",
+      "default": "UN INCONTRO, UN’IDEA, LA TUA CREAZIONE"
+    },
+    {
+      "type": "text",
+      "id": "consult_heading",
+      "label": "Titolo",
+      "default": "Da immaginare"
+    },
+    {
+      "type": "text",
+      "id": "consult_italic",
+      "label": "Titolo (corsivo)",
+      "default": "insieme."
+    },
+    {
+      "type": "textarea",
+      "id": "consult_text",
+      "label": "Testo",
+      "default": "Una forma, una lavorazione, un dettaglio che ti somiglia. Sara ti accompagna nella scelta e nella realizzazione del tuo capo."
+    },
+    {
+      "type": "text",
+      "id": "consult_label",
+      "label": "Testo pulsante",
+      "default": "Richiedi una consulenza privata"
+    },
+    {
+      "type": "url",
+      "id": "consult_url",
+      "label": "Link pulsante"
     }
   ]
 }

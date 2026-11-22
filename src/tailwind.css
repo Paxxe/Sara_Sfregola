@@ -344,6 +344,44 @@
     }
   }
 
+  /* PDP Corolla: schede a comparsa (corolla.css .corolla-accordions) */
+  .accordion--pdp {
+    @apply border-b border-line;
+  }
+
+  .accordion--pdp > summary {
+    @apply flex cursor-pointer justify-between py-5 text-[14px];
+  }
+
+  .accordion--pdp > summary::after {
+    content: '+';
+  }
+
+  .accordion--pdp[open] > summary::after {
+    content: '−';
+  }
+
+  .accordion--pdp-body {
+    @apply pb-[15px] text-[14px] leading-[1.8];
+  }
+
+  .accordion--pdp-body .rte p + p {
+    margin-top: 1em;
+  }
+
+  .pdp-link {
+    @apply mt-2 inline-block p-0 text-[14px] underline underline-offset-2;
+  }
+
+  .pdp-link + .pdp-link {
+    @apply ml-5;
+  }
+
+  /* Pagine interne: header con filetto (pages.css .page-header) */
+  body:not(.template-index) .header-wrapper {
+    @apply border-b border-[#ddd7cb] bg-paper;
+  }
+
   /* PDP: zoom immagini */
   .zoom-track.is-locked {
     overflow: hidden;

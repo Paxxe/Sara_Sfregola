@@ -1,0 +1,62 @@
+{%- comment -%}
+  Card prodotto della PLP (catalogue.css .shop-card).
+
+  Parametri:
+  - product: prodotto
+  - caption_source: 'metafield' (didascalia, es. "Creazione d'atelier") o 'price'
+  - caption_key: metafield didascalia (es. custom.didascalia)
+  - caption_fallback: testo se il metafield è vuoto
+  - show_badges: etichetta esaurito / pezzo unico
+  - loading: 'eager' per le prime card
+{%- endcomment -%}
+{%- assign card_loading = loading | default: 'lazy' -%}
+<article class="min-w-0">
+  <a href="{{ product.url }}" class="group block w-full text-left hover:opacity-100" aria-label="{{ 'collections.discover' | t: title: product.title | escape }}">
+    <span class="relative block aspect-[3/4] overflow-hidden bg-[#e9e4dc]">
+      {%- if product.featured_media -%}
+        {{
+          product.featured_media
+          | image_url: width: 1000
+          | image_tag:
+            class: 'h-full w-full object-cover object-center transition-transform duration-[600ms] group-hover:scale-[1.025]',
+            widths: '300,450,600,800,1000',
+            sizes: '(min-width: 721px) 25vw, 50vw',
+            loading: card_loading,
+            alt: product.title
+        }}
+      {%- else -%}
+        {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+      {%- endif -%}
+
+      {%- if show_badges -%}
+        {%- liquid
+          assign badge = ''
+          if product.available == false
+            assign badge = 'products.sold_out' | t
+          elsif product.tags contains 'pezzo-unico'
+            assign badge = 'products.unique_piece' | t
+          endif
+        -%}
+        {%- if badge != blank -%}
+          <span class="absolute left-2 top-[9px] bg-paper/90 px-[6px] py-[6px] text-[8px] uppercase tracking-[1px] md:left-[17px] md:top-[18px] md:px-[9px] md:py-[7px]">{{ badge }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </span>
+
+    <span class="mx-[2px] mb-1 mt-[10px] block text-[13px] uppercase leading-[1.5] tracking-[.4px] md:mx-2 md:mt-3 md:text-[14px]">
+      {{- product.title -}}
+    </span>
+    <span class="mx-[2px] block text-[12px] text-[#746e61] md:mx-2">
+      {%- if caption_source == 'price' -%}
+        {%- if product.price_varies -%}
+          {%- assign price_min = product.price_min | money -%}
+          {{ 'products.from_price' | t: price: price_min }}
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+      {%- else -%}
+        {%- render 'metafield-value', product: product, key: caption_key, fallback: caption_fallback, plain: true -%}
+      {%- endif -%}
+    </span>
+  </a>
+</article>
