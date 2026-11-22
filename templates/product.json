@@ -49,7 +49,7 @@
           "settings": {
             "show_label": false,
             "label": "Prezzo",
-            "note_key": "custom.tempo_realizzazione",
+            "note_key": "",
             "note": "Realizzato su ordinazione"
           }
         },
