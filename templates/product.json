@@ -106,23 +106,10 @@
           "settings": {
             "heading": "La creazione",
             "open": true,
-            "source": "description",
-            "metafield": "",
-            "content": "",
-            "popup_page": "",
-            "popup_label": "",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "tecniche": {
-          "type": "collapsible",
-          "settings": {
-            "heading": "Tecniche e ore di manifattura",
-            "open": false,
             "source": "metafield",
-            "metafield": "",
-            "content": "{{ product.metafields.custom.details2 | metafield_tag }}",
+            "metafield": "custom.details2",
+            "content": "",
+            "description_fallback": true,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -137,6 +124,7 @@
             "source": "metafield",
             "metafield": "custom.materiali",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -151,6 +139,7 @@
             "source": "metafield",
             "metafield": "custom.vestibilita",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "Come prendere le misure",
             "link_label": "",
@@ -165,6 +154,7 @@
             "source": "metafield",
             "metafield": "custom.cura",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -179,6 +169,7 @@
             "source": "metafield",
             "metafield": "custom.realizzazione_consegna",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
             "link_label": "",
@@ -190,12 +181,13 @@
           "settings": {
             "heading": "Pagamenti, spedizioni e resi",
             "open": false,
-            "source": "text",
-            "metafield": "",
+            "source": "metafield",
+            "metafield": "custom.pagamenti_spedizioni",
             "content": "",
+            "description_fallback": false,
             "popup_page": "",
             "popup_label": "",
-            "link_label": "Customer Care",
+            "link_label": "Customer care",
             "link_url": ""
           }
         }
@@ -214,7 +206,6 @@
         "service",
         "look",
         "creazione",
-        "tecniche",
         "materiali",
         "vestibilita",
         "cura",

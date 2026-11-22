@@ -369,6 +369,14 @@
     margin-top: 1em;
   }
 
+  .accordion--pdp-body .rte :is(h1, h2, h3, h4, h5, h6) {
+    @apply mb-[0.4em] mt-[1.2em] font-manrope text-[14px] font-semibold leading-[1.5] tracking-normal;
+  }
+
+  .accordion--pdp-body .rte strong {
+    @apply font-semibold;
+  }
+
   .pdp-link {
     @apply mt-2 inline-block p-0 text-[14px] underline underline-offset-2;
   }

@@ -269,11 +269,15 @@
             </h1>
 
           {%- when 'subtitle' -%}
+            {%- comment -%} Rich text: metafield (formattazione mantenuta) o testo del blocco {%- endcomment -%}
             {%- capture subtitle_text -%}
-              {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback, plain: true -%}
+              {%- render 'metafield-value', product: product, key: block.settings.metafield, fallback: block.settings.fallback -%}
             {%- endcapture -%}
-            {%- if subtitle_text != blank -%}
-              <p class="mb-3 mt-5 text-[16px]" {{ block.shopify_attributes }}>{{ subtitle_text }}</p>
+            {%- assign subtitle_check = subtitle_text | strip_html | strip -%}
+            {%- if subtitle_check != blank -%}
+              <div class="rte mb-3 mt-5 text-[16px] leading-[1.6] [&_p+p]:mt-2 [&_p]:m-0" {{ block.shopify_attributes }}>
+                {{ subtitle_text }}
+              </div>
             {%- endif -%}
 
           {%- when 'opening' -%}
@@ -671,6 +675,8 @@
 
           {%- when 'collapsible' -%}
             {%- liquid
+              # Rich text: metafield del prodotto (formattazione mantenuta), poi testo del blocco,
+              # infine, se attivo, la descrizione del prodotto
               if block.settings.source == 'description'
                 assign collapsible_content = product.description
               elsif block.settings.metafield != blank
@@ -679,6 +685,10 @@
                 endcapture
               else
                 assign collapsible_content = block.settings.content
+              endif
+              assign collapsible_check = collapsible_content | strip_html | strip
+              if collapsible_check == blank and block.settings.description_fallback
+                assign collapsible_content = product.description
               endif
               assign popup_id = dialog_prefix | append: '-' | append: block.id
 
@@ -908,12 +918,13 @@
           "id": "metafield",
           "label": "Metafield",
           "default": "custom.sottotitolo",
-          "info": "Es. Bralette a tombolo."
+          "info": "Metafield di tipo Rich text (es. Bralette a tombolo). La formattazione viene mantenuta."
         },
         {
-          "type": "text",
+          "type": "richtext",
           "id": "fallback",
-          "label": "Testo se vuoto"
+          "label": "Testo se il metafield è vuoto",
+          "info": "Puoi anche collegare qui un metafield Rich text con l'icona della fonte dinamica."
         }
       ]
     },
@@ -1357,22 +1368,29 @@
           "id": "source",
           "label": "Contenuto",
           "options": [
+            { "value": "metafield", "label": "Metafield prodotto (rich text)" },
             { "value": "text", "label": "Testo qui sotto" },
-            { "value": "description", "label": "Descrizione prodotto" },
-            { "value": "metafield", "label": "Metafield prodotto" }
+            { "value": "description", "label": "Descrizione prodotto" }
           ],
-          "default": "text"
+          "default": "metafield"
         },
         {
           "type": "text",
           "id": "metafield",
           "label": "Metafield",
-          "info": "Formato namespace.chiave (es. custom.materiali). Se compilato e il prodotto ha un valore, ha la priorità sul testo qui sotto."
+          "info": "Metafield di tipo Rich text, formato namespace.chiave (es. custom.materiali). Grassetti, elenchi e paragrafi vengono mantenuti."
         },
         {
           "type": "richtext",
           "id": "content",
-          "label": "Testo"
+          "label": "Testo se il metafield è vuoto",
+          "info": "Puoi anche collegare qui un metafield Rich text con l'icona della fonte dinamica."
+        },
+        {
+          "type": "checkbox",
+          "id": "description_fallback",
+          "label": "Se vuoto usa la descrizione prodotto",
+          "default": false
         },
         {
           "type": "header",
