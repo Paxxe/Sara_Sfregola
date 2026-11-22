@@ -14,15 +14,24 @@
       "blocks": {
         "slide-1": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image_left": "shopify://shop_images/1.jpg",
+            "image_right": "shopify://shop_images/2.jpg"
+          }
         },
         "slide-2": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image_left": "shopify://shop_images/3.jpg",
+            "image_right": "shopify://shop_images/4_copia.jpg"
+          }
         },
         "slide-3": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image_left": "shopify://shop_images/5.jpg",
+            "image_right": "shopify://shop_images/6.jpg"
+          }
         }
       },
       "block_order": [
@@ -31,10 +40,13 @@
         "slide-3"
       ],
       "settings": {
+        "aria_label": "Racconto visivo dell’atelier",
+        "logo_label": "Sara Sfregola, scopri il nostro mondo",
         "show_eyebrow": false,
         "eyebrow": "SARA SFREGOLA",
         "heading": "Creazioni",
         "link_label": "Esplora le creazioni",
+        "link_url": "",
         "scroll_label": "SCORRI PER ESPLORARE",
         "location": "BARLETTA, ITALIA"
       }
@@ -46,7 +58,9 @@
         "eyebrow": "THE ATELIER",
         "heading": "Creazioni",
         "heading_italic": "fatte a mano.",
-        "link_label": "Entra nell’atelier"
+        "text": "",
+        "link_label": "Entra nell’atelier",
+        "link_url": ""
       }
     },
     "creazioni": {
@@ -55,36 +69,23 @@
         "filter-couture": {
           "type": "filter",
           "settings": {
-            "label": "Couture",
-            "tag": "couture"
-          }
-        },
-        "filter-unique": {
-          "type": "filter",
-          "settings": {
-            "label": "Pezzi unici",
-            "tag": "unique"
-          }
-        },
-        "filter-accessories": {
-          "type": "filter",
-          "settings": {
-            "label": "Accessori",
-            "tag": "accessories"
+            "label": "",
+            "tag": ""
           }
         }
       },
       "block_order": [
-        "filter-couture",
-        "filter-unique",
-        "filter-accessories"
+        "filter-couture"
       ],
       "settings": {
         "anchor": "creazioni",
         "number": "01",
         "eyebrow": "LE CREAZIONI",
         "heading": "Creazioni",
+        "side_text": "",
+        "collection": "",
         "products_to_show": 3,
+        "all_label": "Tutte",
         "placeholder_titles": "Creazione 01, Creazione 02, Accessorio"
       }
     },
@@ -94,25 +95,37 @@
         "tombolo": {
           "type": "technique",
           "settings": {
-            "title": "Tombolo"
+            "title": "Tombolo",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
           }
         },
         "chiacchierino": {
           "type": "technique",
           "settings": {
-            "title": "Chiacchierino"
+            "title": "Chiacchierino",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
           }
         },
         "macrame": {
           "type": "technique",
           "settings": {
-            "title": "Macramè"
+            "title": "Macramè",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
           }
         },
         "corsetteria": {
           "type": "technique",
           "settings": {
-            "title": "Corsetteria e drappeggio"
+            "title": "Corsetteria e drappeggio",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
           }
         }
       },
@@ -126,7 +139,8 @@
         "anchor": "savoir-faire",
         "number": "02",
         "eyebrow": "SAVOIR-FAIRE",
-        "heading": "Le tecniche artigianali"
+        "heading": "Le tecniche artigianali",
+        "text": ""
       }
     },
     "tempo": {
@@ -135,19 +149,22 @@
         "ore": {
           "type": "item",
           "settings": {
-            "title": "Ore di manifattura"
+            "title": "Ore di manifattura",
+            "text": ""
           }
         },
         "tempi": {
           "type": "item",
           "settings": {
-            "title": "Tempi di realizzazione"
+            "title": "Tempi di realizzazione",
+            "text": ""
           }
         },
         "cura": {
           "type": "item",
           "settings": {
-            "title": "Cura del capo"
+            "title": "Cura del capo",
+            "text": ""
           }
         }
       },
@@ -165,10 +182,13 @@
       "type": "editorial-bridal",
       "settings": {
         "anchor": "sposa",
-        "number": "03",
-        "eyebrow": "BRIDAL & CEREMONY",
-        "heading": "Sposa e Cerimonia",
-        "link_label": "Scopri la consulenza privata"
+        "image": "shopify://shop_images/10_copia.jpg",
+        "number": "",
+        "eyebrow": "SU MISURA",
+        "heading": "Un abito che Ti somilgia",
+        "text": "<p>Partiamo dall’occasione, da come vorresti sentirti e dai dettagli che ti attirano. Puoi portare un’immagine, un’idea o semplicemente la voglia di capire cosa ti starebbe bene.</p><p>Nel primo incontro, Sara ti ascolta e ti guida nella scelta di forme, tessuti e lavorazioni. Insieme, dai primi spunti alle prove, darete forma a un capo pensato per te.</p>",
+        "link_label": "Scopri la consulenza privata",
+        "link_url": ""
       }
     },
     "atelier": {
@@ -178,6 +198,7 @@
         "number": "04",
         "eyebrow": "L’ATELIER",
         "heading": "The Atelier",
+        "text": "",
         "caption": "IMMAGINE"
       }
     },
@@ -188,8 +209,14 @@
         "number": "05",
         "eyebrow": "PRIVATE APPOINTMENT",
         "heading": "Consulenza privata",
+        "text": "",
         "button_label": "Prepara la tua richiesta",
-        "button_mode": "dialog"
+        "button_mode": "dialog",
+        "button_url": "",
+        "form_heading": "Prepara la tua richiesta",
+        "request_types": "Abito da sposa, Abito da cerimonia, Couture su misura, Accessori, Altro",
+        "submit_label": "Invia la richiesta",
+        "success_message": "Grazie, la tua richiesta è stata inviata. Ti ricontatteremo al più presto."
       }
     },
     "faq": {
@@ -198,25 +225,37 @@
         "ordini": {
           "type": "question",
           "settings": {
-            "question": "Ordini e creazioni"
+            "question": "Ordini e creazioni",
+            "answer": "",
+            "link_label": "Customer care",
+            "link_url": ""
           }
         },
         "taglie": {
           "type": "question",
           "settings": {
-            "question": "Taglie e vestibilità"
+            "question": "Taglie e vestibilità",
+            "answer": "",
+            "link_label": "Customer care",
+            "link_url": ""
           }
         },
         "tempi": {
           "type": "question",
           "settings": {
-            "question": "Tempi di realizzazione"
+            "question": "Tempi di realizzazione",
+            "answer": "",
+            "link_label": "Customer care",
+            "link_url": ""
           }
         },
         "spedizioni": {
           "type": "question",
           "settings": {
-            "question": "Spedizioni e resi"
+            "question": "Spedizioni e resi",
+            "answer": "",
+            "link_label": "Customer care",
+            "link_url": ""
           }
         }
       },
