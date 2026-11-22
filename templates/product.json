@@ -94,6 +94,18 @@
             "url": ""
           }
         },
+        "look_6KtzV8": {
+          "type": "look",
+          "settings": {
+            "eyebrow": "GLI ELEMENTI DEL TUO ENSEMBLE",
+            "heading": "Completa",
+            "italic": "il look.",
+            "text": "Ogni elemento è venduto anche singolarmente.",
+            "metafield": "custom.abbinamenti",
+            "note": "Venduto singolarmente",
+            "limit": "4"
+          }
+        },
         "descrizione": {
           "type": "collapsible",
           "settings": {
@@ -190,6 +202,7 @@
         "production",
         "buy",
         "consult",
+        "look_6KtzV8",
         "descrizione",
         "materiali",
         "vestibilita",
@@ -204,40 +217,16 @@
         "show_captions": true,
         "enable_zoom": true,
         "show_craft": true,
+        "craft_image": "shopify://shop_images/11_copia.jpg",
         "craft_eyebrow": "IL TEMPO DELLE MANI",
         "craft_heading": "Dentro la",
         "craft_italic": "lavorazione.",
         "craft_note": "Film di lavorazione · In preparazione",
         "video_label": "Video della lavorazione"
       }
-    },
-    "editorial": {
-      "type": "product-editorial",
-      "settings": {
-        "eyebrow": "DETTAGLI",
-        "heading": "La creazione",
-        "heading_italic": "",
-        "metafield": "custom.racconto",
-        "text": "",
-        "image_right": false,
-        "link_label": "Incontra le tecniche",
-        "link_url": ""
-      }
-    },
-    "related": {
-      "type": "product-related",
-      "settings": {
-        "eyebrow": "ABBINAMENTI",
-        "heading": "Completa il look",
-        "source": "complementary",
-        "metafield": "custom.abbinamenti",
-        "limit": "3"
-      }
     }
   },
   "order": [
-    "main",
-    "editorial",
-    "related"
+    "main"
   ]
 }
