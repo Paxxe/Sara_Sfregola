@@ -44,22 +44,6 @@
             "text": "Il disegno prende forma sul tombolo, nell’intreccio paziente dei fuselli. È questo tempo a rendere ogni creazione irripetibile."
           }
         },
-        "fact-tecnica": {
-          "type": "fact",
-          "settings": {
-            "label": "Tecnica",
-            "metafield": "custom.tecnica",
-            "fallback": "Da inserire"
-          }
-        },
-        "fact-unicita": {
-          "type": "fact",
-          "settings": {
-            "label": "Unicità",
-            "metafield": "custom.unicita",
-            "fallback": "Da inserire"
-          }
-        },
         "price": {
           "type": "price",
           "settings": {
@@ -209,8 +193,6 @@
         "title",
         "subtitle_haxTQi",
         "hours",
-        "fact-tecnica",
-        "fact-unicita",
         "price",
         "variants",
         "production",
