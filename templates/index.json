@@ -89,60 +89,6 @@
         "placeholder_titles": "Creazione 01, Creazione 02, Accessorio"
       }
     },
-    "savoir-faire": {
-      "type": "editorial-techniques",
-      "blocks": {
-        "tombolo": {
-          "type": "technique",
-          "settings": {
-            "title": "Tombolo",
-            "text": "",
-            "link_label": "Scopri la tecnica",
-            "link_url": ""
-          }
-        },
-        "chiacchierino": {
-          "type": "technique",
-          "settings": {
-            "title": "Chiacchierino",
-            "text": "",
-            "link_label": "Scopri la tecnica",
-            "link_url": ""
-          }
-        },
-        "macrame": {
-          "type": "technique",
-          "settings": {
-            "title": "Macramè",
-            "text": "",
-            "link_label": "Scopri la tecnica",
-            "link_url": ""
-          }
-        },
-        "corsetteria": {
-          "type": "technique",
-          "settings": {
-            "title": "Corsetteria e drappeggio",
-            "text": "",
-            "link_label": "Scopri la tecnica",
-            "link_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "tombolo",
-        "chiacchierino",
-        "macrame",
-        "corsetteria"
-      ],
-      "settings": {
-        "anchor": "savoir-faire",
-        "number": "02",
-        "eyebrow": "SAVOIR-FAIRE",
-        "heading": "Le tecniche artigianali",
-        "text": ""
-      }
-    },
     "tempo": {
       "type": "editorial-manufacturing",
       "blocks": {
@@ -191,15 +137,59 @@
         "link_url": ""
       }
     },
-    "atelier": {
-      "type": "editorial-atelier",
+    "savoir-faire": {
+      "type": "editorial-techniques",
+      "blocks": {
+        "tombolo": {
+          "type": "technique",
+          "settings": {
+            "title": "Tombolo",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
+          }
+        },
+        "chiacchierino": {
+          "type": "technique",
+          "settings": {
+            "title": "Chiacchierino",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
+          }
+        },
+        "macrame": {
+          "type": "technique",
+          "settings": {
+            "title": "Macramè",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
+          }
+        },
+        "corsetteria": {
+          "type": "technique",
+          "settings": {
+            "title": "Corsetteria e drappeggio",
+            "text": "",
+            "link_label": "Scopri la tecnica",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tombolo",
+        "chiacchierino",
+        "macrame",
+        "corsetteria"
+      ],
       "settings": {
-        "anchor": "atelier",
-        "number": "04",
-        "eyebrow": "L’ATELIER",
-        "heading": "The Atelier",
-        "text": "",
-        "caption": "IMMAGINE"
+        "anchor": "SAVOIR-FAIRE",
+        "image": "shopify://shop_images/11_copia.jpg",
+        "number": "",
+        "eyebrow": "Le tecniche artigianali",
+        "heading": "Le tecniche artigianali",
+        "text": "<p>Riscoprire il piacere di un <em>pezzo unico</em> comincia dai dettagli. Nel tombolo i fili si incrociano seguendo il disegno. Nel chiacchierino, piccoli nodi diventano anelli e archetti. Quando queste lavorazioni entrano in un abito, il disegno prende forma sul tessuto e segue la linea del capo. È lì che si riconosce il gesto di chi l’ha fatto.</p><p>TomboloChiacchierinoMacramèCorsetteria e drappeggio</p><h2>Il valore <em>del tempo</em></h2><p>Ci sono ore che restano tra i fili. Nei nodi di un merletto, in un ricamo, nelle prove che danno all’abito la sua forma. Ore di mani, di attenzione, di scelte. È questo tempo a rendere ogni creazione irripetibile.</p><p><a href=\"creazioni.html\">Esplora le creazioni</a><a href=\"private-commission.html#richiesta\">Richiedi una consulenza privata</a></p><p>CUSTOMER CARE</p><h2>FAQ</h2><p>Ordini e creazioniTaglie e vestibilitàTempi di realizzazioneSpedizioni e resiARTI TESSILI · HAUTE COUTURE<a href=\"creazioni.html\">Creazioni</a><a href=\"tecniche.html\">Savoir-faire</a><a href=\"private-commission.html#richiesta\">Consulenza privata</a><a href=\"customer-care.html#faq\">FAQ</a>© SARA SFREGOLABOZZA GRAFICA · CONTENUTI DA DEFINIRE<a href=\"press.html\">Press</a><a href=\"customer-care.html\">Customer Care</a><a href=\"#home\">↑</a>WhatsApp · Scrivici</p>"
       }
     },
     "consulenza": {
@@ -276,10 +266,9 @@
     "hero",
     "intro",
     "creazioni",
-    "savoir-faire",
     "tempo",
     "sposa",
-    "atelier",
+    "savoir-faire",
     "consulenza",
     "faq"
   ]
