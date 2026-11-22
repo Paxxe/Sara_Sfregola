@@ -30,7 +30,7 @@
           "type": "hours",
           "settings": {
             "heading": "IL TEMPO DELLE MANI",
-            "hours_key": "custom.ore_manifattura",
+            "hours_key": "{{ product.metafields.custom.ore_di_lavoro.value }}",
             "note_key": "custom.nota_ore",
             "note": "Dato da inserire",
             "text_key": "custom.testo_ore",
