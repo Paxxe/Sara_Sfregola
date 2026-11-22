@@ -1,0 +1,33 @@
+{%- comment -%}
+  Proprietà personalizzate di una riga del carrello (es. misure su misura).
+  Le proprietà che iniziano con "_" sono nascoste, come da convenzione Shopify.
+
+  Parametri:
+  - item: riga del carrello
+{%- endcomment -%}
+{%- liquid
+  assign visible_count = 0
+  for property in item.properties
+    assign first_char = property.first | slice: 0
+    if property.last != blank and first_char != '_'
+      assign visible_count = visible_count | plus: 1
+    endif
+  endfor
+-%}
+{%- if visible_count > 0 -%}
+  <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-[2px] text-[11px] leading-[1.6] text-[#746e61]">
+    {%- for property in item.properties -%}
+      {%- assign first_char = property.first | slice: 0 -%}
+      {%- if property.last != blank and first_char != '_' -%}
+        <dt>{{ property.first }}</dt>
+        <dd class="text-ink">
+          {%- if property.last contains '/uploads/' -%}
+            <a href="{{ property.last }}" class="underline" target="_blank" rel="noopener">{{ property.last | split: '/' | last }}</a>
+          {%- else -%}
+            {{ property.last }}
+          {%- endif -%}
+        </dd>
+      {%- endif -%}
+    {%- endfor -%}
+  </dl>
+{%- endif -%}

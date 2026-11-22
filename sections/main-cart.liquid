@@ -35,12 +35,7 @@
                     {%- endfor -%}
                   </p>
                 {%- endunless -%}
-                {%- for property in item.properties -%}
-                  {%- assign first_char = property.first | slice: 0 -%}
-                  {%- if property.last != blank and first_char != '_' -%}
-                    <p class="mt-1 text-[11px] text-muted">{{ property.first }}: {{ property.last }}</p>
-                  {%- endif -%}
-                {%- endfor -%}
+                {%- render 'line-item-properties', item: item -%}
                 <p class="mt-2 text-[11px]">
                   {{ item.final_price | money }}
                   {%- if item.original_price > item.final_price %}

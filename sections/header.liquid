@@ -62,14 +62,20 @@
         </ul>
       </nav>
 
-      {%- if section.settings.secondary_label != blank -%}
-        <a
-          href="{{ section.settings.secondary_url | default: routes.root_url }}"
-          class="hidden text-[10px] uppercase tracking-[1px] lg:block"
-        >
-          {{- section.settings.secondary_label }} ↗
+      <div class="flex items-center gap-5 md:gap-[30px]">
+        {%- if section.settings.secondary_label != blank -%}
+          <a
+            href="{{ section.settings.secondary_url | default: routes.root_url }}"
+            class="hidden text-[10px] uppercase tracking-[1px] lg:block"
+          >
+            {{- section.settings.secondary_label }} ↗
+          </a>
+        {%- endif -%}
+
+        {%- comment -%} Carrello: apre il minicart {%- endcomment -%}
+        <a href="{{ routes.cart_url }}" class="text-[10px] uppercase tracking-[1px]" data-cart-open>
+          {{- 'cart.header_label' | t }} (<span data-cart-count>{{ cart.item_count }}</span>)
         </a>
-      {%- endif -%}
 
       <button
         type="button"
@@ -83,6 +89,7 @@
       >
         <span aria-hidden="true" data-menu-icon>☰</span>
       </button>
+      </div>
     {%- endif -%}
   </div>
 

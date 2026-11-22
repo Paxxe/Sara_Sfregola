@@ -54,7 +54,14 @@
     "zoom_hint": "Clicca sull’immagine per ingrandire",
     "zoom_previous": "Immagine precedente",
     "zoom_next": "Immagine successiva",
-    "whatsapp_message": "Buongiorno, vorrei informazioni su {{ product }}."
+    "whatsapp_message": "Buongiorno, vorrei informazioni su {{ product }}.",
+    "measures_missing": "Inserisci le tue misure per procedere.",
+    "measures_edit": "Modifica",
+    "measures_confirm": "Conferma le misure",
+    "hint_bust": "Nel punto più ampio, con il metro orizzontale.",
+    "hint_waist": "Alla vita naturale.",
+    "hint_hips": "Nel punto più ampio del bacino.",
+    "hint_height": "Senza scarpe."
   },
   "collections": {
     "breadcrumb": "Percorso",
@@ -101,7 +108,11 @@
     "checkout": "Procedi all’acquisto",
     "update": "Aggiorna",
     "empty": "Il carrello è vuoto. Ogni creazione nasce dalle mani dell’atelier: scopri quella pensata per te.",
-    "explore": "Esplora le creazioni"
+    "explore": "Esplora le creazioni",
+    "header_label": "Carrello",
+    "drawer_title": "IL TUO CARRELLO",
+    "drawer_empty": "Il carrello è vuoto.",
+    "view": "Vedi il carrello"
   },
   "search": {
     "label": "Cerca",

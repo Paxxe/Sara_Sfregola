@@ -1,0 +1,88 @@
+{%- comment -%}
+  Minicart: pannello laterale. Viene ricaricato via Section Rendering API (?sections=cart-drawer)
+  dopo ogni aggiunta / modifica, quindi tutto il contenuto vive dentro [data-cart-drawer-content].
+{%- endcomment -%}
+<cart-drawer class="contents" data-count="{{ cart.item_count }}">
+  <dialog
+    id="CartDrawer"
+    class="drawer m-0 ml-auto h-[100svh] max-h-none w-[min(440px,100vw)] max-w-none border-0 bg-paper p-0 font-manrope text-ink"
+    aria-labelledby="CartDrawerTitle"
+  >
+    <div class="flex h-full flex-col" data-cart-drawer-content>
+      <div class="flex items-center justify-between border-b border-line px-6 py-[22px]">
+        <h2 id="CartDrawerTitle" class="eyebrow">
+          {{- 'cart.drawer_title' | t }} ({{ cart.item_count }})
+        </h2>
+        <button type="button" class="text-[30px] leading-none" aria-label="{{ 'general.close' | t }}" data-dialog-close>×</button>
+      </div>
+
+      {%- if cart.item_count > 0 -%}
+        <ul class="flex-1 overflow-y-auto px-6">
+          {%- for item in cart.items -%}
+            <li class="grid grid-cols-[84px_1fr] gap-4 border-b border-line py-5" data-line="{{ forloop.index }}">
+              <a href="{{ item.url }}" class="block aspect-[3/4] overflow-hidden bg-[#e9e4dc]">
+                {%- if item.image -%}
+                  {{ item.image | image_url: width: 300 | image_tag: class: 'h-full w-full object-cover', widths: '170,250,300', sizes: '84px', loading: 'lazy' }}
+                {%- endif -%}
+              </a>
+              <div class="min-w-0">
+                <div class="flex items-start justify-between gap-3">
+                  <a href="{{ item.url }}" class="text-[13px] uppercase leading-[1.5] tracking-[.4px]">{{ item.product.title }}</a>
+                  <span class="shrink-0 text-[13px]">{{ item.final_line_price | money }}</span>
+                </div>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="mt-1 text-[12px] text-[#746e61]">{{ item.variant.title }}</p>
+                {%- endunless -%}
+
+                {%- render 'line-item-properties', item: item -%}
+
+                <div class="mt-3 flex items-center justify-between gap-3">
+                  <div class="flex w-[104px] items-center justify-between rounded-full border border-pill px-1">
+                    <button type="button" class="px-2 py-[6px] text-[14px]" aria-label="{{ 'cart.decrease' | t }}" data-cart-qty="{{ item.quantity | minus: 1 }}">−</button>
+                    <span class="text-[12px]" aria-label="{{ 'cart.quantity' | t }}">{{ item.quantity }}</span>
+                    <button type="button" class="px-2 py-[6px] text-[14px]" aria-label="{{ 'cart.increase' | t }}" data-cart-qty="{{ item.quantity | plus: 1 }}">+</button>
+                  </div>
+                  <button type="button" class="text-[11px] underline underline-offset-2" data-cart-qty="0">{{ 'cart.remove' | t }}</button>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <div class="border-t border-line px-6 pb-6 pt-5">
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <p class="mb-2 flex justify-between text-[12px] text-[#746e61]">
+              <span>{{ discount.title }}</span><span>−{{ discount.total_allocated_amount | money }}</span>
+            </p>
+          {%- endfor -%}
+          <p class="flex justify-between text-[14px]">
+            <span>{{ 'cart.subtotal' | t }}</span>
+            <span>{{ cart.total_price | money_with_currency }}</span>
+          </p>
+          <p class="mt-2 text-[11px] leading-[1.5] text-[#746e61]">{{ 'cart.taxes_note' | t }}</p>
+          <form action="{{ routes.cart_url }}" method="post" class="mt-5">
+            <button type="submit" name="checkout" class="block w-full rounded-[28px] bg-ink px-5 py-[17px] text-[14px] text-paper">
+              {{- 'cart.checkout' | t -}}
+            </button>
+          </form>
+          <a href="{{ routes.cart_url }}" class="mt-3 block w-full rounded-[28px] border border-ink px-5 py-[15px] text-center text-[14px]">
+            {{- 'cart.view' | t -}}
+          </a>
+        </div>
+      {%- else -%}
+        <div class="flex flex-1 flex-col items-center justify-center px-8 text-center">
+          <p class="font-serif text-[22px] leading-[1.45]">{{ 'cart.drawer_empty' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="line-link mt-6 text-[14px]">{{ 'cart.explore' | t }}</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </dialog>
+</cart-drawer>
+
+{% schema %}
+{
+  "name": "Minicart",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

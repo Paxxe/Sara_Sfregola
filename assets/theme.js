@@ -279,7 +279,111 @@
         currency: this.dataset.currency || 'EUR',
       });
       this.inputs.forEach((input) => input.addEventListener('change', () => this.onChange(input)));
+
+      // Misure obbligatorie per la variante su misura
+      this.measures = this.querySelector('[data-measures-dialog]');
+      this.measureInputs = this.measures ? [...this.measures.querySelectorAll('[data-measure]')] : [];
+      this.measuresSummary = this.querySelector('[data-measures-summary]');
+      this.measuresText = this.querySelector('[data-measures-text]');
+      this.measuresMissing = this.measuresText?.textContent || '';
+      this.measures?.querySelector('[data-measures-confirm]')?.addEventListener('click', () => this.confirmMeasures());
+      this.querySelector('[data-measures-edit]')?.addEventListener('click', () => this.openMeasures());
+      this.measureInputs.forEach((input) =>
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            this.confirmMeasures();
+          }
+        })
+      );
+
+      // Aggiunta al carrello senza ricaricare la pagina, poi apre il minicart
+      this.form = this.querySelector('[data-product-form]');
+      this.form?.addEventListener('submit', (e) => this.onSubmit(e));
+
       this.updateBespoke(this.selectedValues());
+    }
+
+    async onSubmit(e) {
+      if (this.isBespoke && this.measures && !this.measuresValid()) {
+        e.preventDefault();
+        this.openMeasures();
+        return;
+      }
+      const drawer = document.querySelector('cart-drawer');
+      if (!drawer || e.submitter?.name === 'checkout') return; // senza minicart: invio classico
+      e.preventDefault();
+
+      const label = this.button?.textContent;
+      if (this.button) {
+        this.button.disabled = true;
+        this.button.setAttribute('aria-busy', 'true');
+      }
+      try {
+        const res = await fetch(`${window.Shopify?.routes?.root || '/'}cart/add.js`, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(this.form),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.description || data.message);
+        this.clearError();
+        await drawer.refresh();
+        drawer.open();
+      } catch (err) {
+        this.showError(err.message);
+      } finally {
+        if (this.button) {
+          this.button.disabled = false;
+          this.button.removeAttribute('aria-busy');
+          this.button.textContent = label;
+        }
+      }
+    }
+
+    showError(message) {
+      let box = this.querySelector('[data-cart-error]');
+      if (!box) {
+        box = document.createElement('p');
+        box.dataset.cartError = '';
+        box.setAttribute('role', 'alert');
+        box.className = 'mt-3 text-[12px] text-[#8a2a1a]';
+        this.button?.insertAdjacentElement('afterend', box);
+      }
+      box.textContent = message || '';
+    }
+
+    clearError() {
+      this.querySelector('[data-cart-error]')?.remove();
+    }
+
+    openMeasures() {
+      if (!this.measures) return;
+      this.measures.showModal();
+      (this.measureInputs.find((i) => !i.value) || this.measureInputs[0])?.focus();
+    }
+
+    measuresValid() {
+      return this.measureInputs.every((i) => i.value !== '' && i.checkValidity());
+    }
+
+    confirmMeasures() {
+      const invalid = this.measureInputs.find((i) => i.value === '' || !i.checkValidity());
+      if (invalid) {
+        invalid.reportValidity();
+        invalid.focus();
+        return;
+      }
+      this.measures.close();
+      this.updateMeasuresSummary();
+    }
+
+    updateMeasuresSummary() {
+      if (!this.measuresText) return;
+      const filled = this.measureInputs.filter((i) => i.value !== '');
+      this.measuresText.textContent = filled.length
+        ? filled.map((i) => `${i.dataset.label} ${i.value} cm`).join(' · ')
+        : this.measuresMissing;
     }
 
     // Valori scelti per ogni opzione: menu a tendina o pulsanti radio (colore / taglia)
@@ -302,7 +406,9 @@
       if (label) label.textContent = input.value;
 
       const values = this.selectedValues();
+      const wasBespoke = this.isBespoke;
       this.updateBespoke(values);
+      if (this.isBespoke && !wasBespoke && this.measures) this.openMeasures();
       const variant = this.variants.find((v) => v.options.every((opt, i) => opt === values[i]));
 
       if (!variant) {
@@ -336,10 +442,15 @@
 
     // Scelta "Su misura": evidenzia il riquadro consulenza
     updateBespoke(values) {
-      if (!this.service) return;
-      const bespoke = (this.service.dataset.bespoke || '').trim().toLowerCase();
+      const source = this.measures || this.service;
+      const bespoke = (source?.dataset.bespoke || '').trim().toLowerCase();
       const active = !!bespoke && values.some((v) => (v || '').trim().toLowerCase() === bespoke);
-      this.service.classList.toggle('is-bespoke', active);
+      this.isBespoke = active;
+      this.service?.classList.toggle('is-bespoke', active);
+      // campi disattivati = non obbligatori e non inviati con le altre varianti
+      this.measureInputs?.forEach((i) => (i.disabled = !active));
+      if (this.measuresSummary) this.measuresSummary.hidden = !active;
+      if (active) this.updateMeasuresSummary();
     }
 
     setButton(enabled, label) {
@@ -519,6 +630,72 @@
     }
   }
 
+  /* ---------- Minicart (pannello laterale) ---------- */
+  class CartDrawer extends HTMLElement {
+    connectedCallback() {
+      this.dialog = this.querySelector('dialog');
+      this.root = window.Shopify?.routes?.root || '/';
+
+      // + / − / Rimuovi
+      this.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-cart-qty]');
+        if (!btn) return;
+        const line = Number(btn.closest('[data-line]')?.dataset.line);
+        if (line) this.change(line, Number(btn.dataset.cartQty));
+      });
+
+      // Link "Carrello (n)" nell'header
+      this.onOpenClick = (e) => {
+        const link = e.target.closest('[data-cart-open]');
+        if (!link) return;
+        e.preventDefault();
+        this.open();
+      };
+      document.addEventListener('click', this.onOpenClick);
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('click', this.onOpenClick);
+    }
+
+    open() {
+      if (this.dialog && !this.dialog.open) this.dialog.showModal();
+    }
+
+    async change(line, quantity) {
+      const content = this.querySelector('[data-cart-drawer-content]');
+      content?.setAttribute('aria-busy', 'true');
+      content?.classList.add('opacity-60', 'pointer-events-none');
+      try {
+        await fetch(`${this.root}cart/change.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ line, quantity }),
+        });
+        await this.refresh();
+      } finally {
+        const fresh = this.querySelector('[data-cart-drawer-content]');
+        fresh?.removeAttribute('aria-busy');
+        fresh?.classList.remove('opacity-60', 'pointer-events-none');
+      }
+    }
+
+    // Ridisegna il contenuto con la Section Rendering API e aggiorna il contatore
+    async refresh() {
+      const res = await fetch(`${this.root}?sections=cart-drawer`);
+      const json = await res.json();
+      const doc = new DOMParser().parseFromString(json['cart-drawer'], 'text/html');
+      const freshContent = doc.querySelector('[data-cart-drawer-content]');
+      const content = this.querySelector('[data-cart-drawer-content]');
+      if (freshContent && content) content.innerHTML = freshContent.innerHTML;
+      const count = doc.querySelector('cart-drawer')?.dataset.count;
+      if (count !== undefined) {
+        document.querySelectorAll('[data-cart-count]').forEach((el) => (el.textContent = count));
+      }
+    }
+  }
+
+  customElements.get('cart-drawer') || customElements.define('cart-drawer', CartDrawer);
   customElements.get('product-info') || customElements.define('product-info', ProductInfo);
   customElements.get('product-gallery') || customElements.define('product-gallery', ProductGallery);
   customElements.get('product-recommendations') ||
