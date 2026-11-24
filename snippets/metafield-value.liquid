@@ -5,20 +5,36 @@
 
   Parametri:
   - product: prodotto
-  - key: es. 'custom.tecnica'
+  - key: es. 'custom.tecnica' — oppure direttamente il valore, quando nel customizer
+         il campo è collegato al metafield come origine dinamica
   - fallback: testo se il metafield è vuoto
   - plain: true per stampare sempre testo semplice (campi brevi in linea)
 {%- endcomment -%}
 {%- liquid
   assign mf = blank
-  if key != blank
-    assign key_parts = key | strip | split: '.'
+  assign is_ref = false
+  assign key_clean = key | strip
+
+  if key_clean != blank
+    assign key_parts = key_clean | split: '.'
     if key_parts.size == 2
-      assign mf = product.metafields[key_parts[0]][key_parts[1]]
+      unless key_clean contains ' '
+        assign first_part = key_parts[0]
+        assign first_as_number = first_part | plus: 0 | append: ''
+        if first_as_number != first_part
+          assign is_ref = true
+          assign mf = product.metafields[key_parts[0]][key_parts[1]]
+        endif
+      endunless
     endif
   endif
 
-  if mf != blank
+  if is_ref == false and key_clean != blank
+    comment
+      Origine dinamica: il campo contiene già il valore del metafield.
+    endcomment
+    echo key
+  elsif mf != blank
     if plain
       echo mf | metafield_text
     else
