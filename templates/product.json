@@ -38,9 +38,9 @@
           "settings": {
             "heading": "IL TEMPO DELLE MANI",
             "hours_key": "{{ product.metafields.custom.ore_di_lavoro.value }}",
-            "note_key": "custom.nota_ore",
+            "note_key": "",
             "note": "Dato da inserire",
-            "text_key": "custom.testo_ore",
+            "text_key": "",
             "text": "Il disegno prende forma sul tombolo, nell’intreccio paziente dei fuselli. È questo tempo a rendere ogni creazione irripetibile."
           }
         },
@@ -75,7 +75,18 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
-            "note": ""
+            "note": "",
+            "enable_measures": true,
+            "bespoke_value": "Personalizzata",
+            "measures_eyebrow": "LE TUE MISURE",
+            "measures_heading": "Su misura,",
+            "measures_italic": "per te.",
+            "measures_text": "Prendi le misure con un metro morbido, senza stringere. Sara le userà per realizzare la tua creazione.",
+            "label_bust": "Giroseno",
+            "label_waist": "Girovita",
+            "label_hips": "Fianchi",
+            "label_height": "Altezza",
+            "measures_note": "Dopo l'ordine l'atelier ti contatterà per confermare le misure prima di iniziare la lavorazione."
           }
         },
         "consult": {
