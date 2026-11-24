@@ -39,7 +39,7 @@
             "heading": "IL TEMPO DELLE MANI",
             "hours_key": "{{ product.metafields.custom.ore_di_lavoro.value }}",
             "note_key": "",
-            "note": "Dato da inserire",
+            "note": "",
             "text_key": "",
             "text": "Il disegno prende forma sul tombolo, nell’intreccio paziente dei fuselli. È questo tempo a rendere ogni creazione irripetibile."
           }
