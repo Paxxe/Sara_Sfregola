@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "sections": {
     "apertura": {
@@ -16,7 +15,9 @@
         "eyebrow": "THE ATELIER / BARLETTA, ITALIA",
         "heading": "The Atelier",
         "lead": "A Barletta, le arti tessili incontrano la <em>modellistica sartoriale.</em>",
-        "caption": "IL TERRITORIO"
+        "image": "shopify://shop_images/hero-cattedrale.webp",
+        "caption": "IL TERRITORIO",
+        "detail_image": "shopify://shop_images/atelier-lavoro.webp"
       }
     },
     "storia": {
@@ -47,6 +48,8 @@
       ],
       "settings": {
         "anchor": "storia",
+        "image": "shopify://shop_images/atelier-ritratto-7679.webp",
+        "detail_image": "shopify://shop_images/atelier-sara-manichino.webp",
         "heading": "La stilista",
         "lead": "Da oltre trent’anni, Sara Sfregola lavora nel tessile come stilista e modellista. La sua ricerca prende forma nel taglio, nella costruzione dell’abito e nella sperimentazione con le arti tessili.",
         "text": "<p>Il tombolo, il macramè, il filet e il chiacchierino guidano le scelte di modellistica. Sara studia tagli e proporzioni per dare risalto alle trame, ai rilievi e alle trasparenze. Nascono così opere contemporanee da indossare, pensate per avere una presenza scultorea e per essere vissute con naturalezza.</p>",
@@ -62,6 +65,7 @@
         "eyebrow": "",
         "heading": "Barletta",
         "text": "<p>Nella città in cui Sara lavora e insegna, la pietra della cattedrale racconta il legame dell’atelier con la materia e con i saperi del territorio.</p>",
+        "image": "shopify://shop_images/hero-cattedrale.webp",
         "caption": "",
         "layout": "territory"
       }
