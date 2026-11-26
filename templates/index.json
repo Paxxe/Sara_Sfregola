@@ -69,6 +69,7 @@
         "abiti": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/home-abiti.webp",
             "title": "Abiti",
             "link_url": "",
             "title_style": "sans",
@@ -78,6 +79,7 @@
         "accessori": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/home-accessori.webp",
             "title": "Accessori",
             "link_url": "",
             "title_style": "sans",
@@ -87,6 +89,7 @@
         "sposa": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/home-sposa.webp",
             "title": "Sposa",
             "link_url": "",
             "title_style": "serif",
