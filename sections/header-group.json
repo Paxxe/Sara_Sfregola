@@ -1,11 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header",
   "sections": {
     "header": {
       "type": "header",
+      "blocks": {
+        "megamenu_cNVzzW": {
+          "type": "megamenu",
+          "settings": {
+            "title": "abbigliamento",
+            "image_1": "shopify://shop_images/5.jpg",
+            "eyebrow_1": "",
+            "title_1": "",
+            "link_1": "",
+            "eyebrow_2": "",
+            "title_2": "",
+            "link_2": ""
+          }
+        }
+      },
+      "block_order": [
+        "megamenu_cNVzzW"
+      ],
       "settings": {
-        "menu": "main-menu"
+        "menu": "main-menu",
+        "secondary_label": "Customer care",
+        "secondary_url": ""
       }
     }
   },
