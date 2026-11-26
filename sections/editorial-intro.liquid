@@ -2,13 +2,13 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="px-[7%] py-[85px] text-center md:px-[25px] md:py-[100px]"
+  class="intro mx-auto max-w-[42rem] px-[7%] text-center md:px-[25px]"
 >
   {%- if section.settings.eyebrow != blank -%}
     <p class="eyebrow mb-7 md:mb-[38px]">{{ section.settings.eyebrow }}</p>
   {%- endif -%}
 
-  <h2 class="text-[34px] leading-[1.22] md:text-[35px] md:leading-[1.17]">
+  <h2 class="intro__title">
     {{- section.settings.heading -}}
     {%- if section.settings.heading_italic != blank -%}
       <br><em>{{ section.settings.heading_italic }}</em>
@@ -22,7 +22,7 @@
   {%- endif -%}
 
   {%- if section.settings.link_label != blank -%}
-    <a class="line-link mt-[30px]" href="{{ section.settings.link_url | default: routes.root_url }}">
+    <a class="line-link mt-[26px]" href="{{ section.settings.link_url | default: routes.root_url }}">
       {{- section.settings.link_label }} ↗
     </a>
   {%- endif -%}

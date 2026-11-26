@@ -303,6 +303,232 @@
     @apply border-b border-ink text-ink;
   }
 
+
+  /* ------------------------------------------------------------------------
+     Home editoriale (allineata a sito/index.html + home-editorial.css)
+     ------------------------------------------------------------------------ */
+  .editorial-title {
+    font-size: clamp(32px, 4vw, 60px);
+    line-height: 1.08;
+  }
+
+  .editorial-text {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* Intro */
+  .intro {
+    padding-block: clamp(84px, 12vw, 190px);
+  }
+
+  .intro__title {
+    font-size: clamp(36px, 4.4vw, 72px);
+    line-height: 1.03;
+  }
+
+  /* Categorie: composizione sfalsata a 3 */
+  .home-categories {
+    padding: 15px 6% 80px;
+  }
+
+  .home-categories__grid {
+    @apply grid grid-cols-1 items-start;
+    row-gap: clamp(48px, 7vw, 112px);
+  }
+
+  .home-categories__item {
+    @apply block min-w-0;
+  }
+
+  .home-categories__image {
+    @apply relative overflow-hidden bg-mist;
+    aspect-ratio: 4 / 5;
+  }
+
+  .home-categories__image img {
+    transition: transform 0.7s;
+  }
+
+  .home-categories__item:hover .home-categories__image img {
+    transform: scale(1.035);
+  }
+
+  .home-categories__item:hover {
+    opacity: 1;
+  }
+
+  .home-categories__meta {
+    @apply flex items-baseline justify-between;
+    padding-top: 20px;
+  }
+
+  .home-categories__item.is-meta-above .home-categories__meta {
+    padding-top: 0;
+    padding-bottom: 18px;
+  }
+
+  .home-categories__meta h3 {
+    @apply font-manrope font-normal uppercase;
+    font-size: clamp(20px, 1.8vw, 30px);
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+  }
+
+  .home-categories__meta h3.is-serif {
+    @apply font-serif italic normal-case;
+    font-size: clamp(38px, 3.7vw, 60px);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  @media (min-width: 721px) {
+    .home-categories {
+      padding: 30px 6% 130px;
+    }
+
+    .home-categories__grid {
+      @apply grid-cols-12;
+      column-gap: 24px;
+    }
+
+    .home-categories__item:nth-child(3n + 1) {
+      grid-column: 1 / 8;
+    }
+
+    .home-categories__item:nth-child(3n + 2) {
+      grid-column: 9 / 13;
+      margin-top: clamp(100px, 16vw, 250px);
+    }
+
+    .home-categories__item:nth-child(3n + 2) .home-categories__image {
+      aspect-ratio: 3 / 4;
+    }
+
+    .home-categories__item:nth-child(3n + 3) {
+      grid-column: 4 / 10;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    .home-categories__grid {
+      column-gap: 32px;
+    }
+  }
+
+  /* Su misura */
+  .bespoke {
+    @apply grid grid-cols-1 items-center bg-[#eae6dc];
+  }
+
+  .bespoke__photo {
+    @apply relative m-0 self-stretch;
+    aspect-ratio: 5 / 4;
+  }
+
+  .bespoke__photo img,
+  .bespoke__photo svg {
+    @apply absolute inset-0;
+  }
+
+  .bespoke__copy {
+    padding: 44px 8% 54px;
+  }
+
+  @media (min-width: 721px) {
+    .bespoke {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    }
+
+    .bespoke__photo {
+      aspect-ratio: auto;
+      min-height: clamp(500px, 49vw, 850px);
+    }
+
+    .bespoke__copy {
+      padding: clamp(28px, 6vw, 110px);
+    }
+  }
+
+  /* Savoir-faire: testo a sinistra, video/immagine a destra */
+  .craft {
+    @apply grid grid-cols-1 bg-paper;
+    padding: clamp(75px, 10vw, 170px) 0;
+  }
+
+  .craft__copy {
+    padding: 0 8% 38px;
+  }
+
+  .craft__media {
+    @apply relative overflow-hidden bg-mist;
+    aspect-ratio: 5 / 4;
+  }
+
+  @media (min-width: 721px) {
+    .craft {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+      align-items: center;
+      gap: clamp(36px, 8vw, 144px);
+      padding-left: 6%;
+    }
+
+    .craft__copy {
+      padding: 0;
+    }
+  }
+
+  /* Il valore del tempo */
+  .work-hours {
+    @apply text-center;
+    padding: clamp(12px, 2vw, 32px) 8% clamp(64px, 9vw, 145px);
+  }
+
+  .work-hours__actions {
+    @apply mt-8 flex flex-col items-center justify-center gap-4;
+  }
+
+  @media (min-width: 481px) {
+    .work-hours__actions {
+      @apply flex-row flex-wrap;
+    }
+  }
+
+  /* Chiusura home: immagine + FAQ */
+  .faq-closing {
+    @apply grid grid-cols-1;
+  }
+
+  .faq-closing__image {
+    @apply relative overflow-hidden;
+    aspect-ratio: 15 / 8;
+  }
+
+  .faq-closing__image img,
+  .faq-closing__image svg {
+    @apply absolute inset-0;
+  }
+
+  .faq-closing__body {
+    align-self: center;
+    padding: clamp(32px, 5vw, 95px) 8%;
+  }
+
+  @media (min-width: 721px) {
+    .faq-closing {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      min-height: clamp(440px, 35.5vw, 780px);
+    }
+
+    .faq-closing__image {
+      aspect-ratio: auto;
+    }
+
+    .faq-closing__body {
+      padding: clamp(32px, 5vw, 95px);
+    }
+  }
+
   /* ------------------------------------------------------------------------
      PLP: griglia editoriale sfalsata
      Le card sono <a>, i blocchi editoriali <aside>: :nth-of-type conta solo i prodotti.

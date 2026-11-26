@@ -1,8 +1,21 @@
+{%- assign has_image = false -%}
+{%- if section.settings.image != blank -%}{%- assign has_image = true -%}{%- endif -%}
+
+{%- if has_image -%}
+<div class="faq-closing">
+  <div class="faq-closing__image" aria-hidden="true">
+    {%- render 'media',
+      image: section.settings.image,
+      class: 'h-full w-full object-cover object-[center_46%]',
+      sizes: '(min-width: 721px) 67vw, 100vw'
+    -%}
+  </div>
+{%- endif -%}
 <section
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="px-[8%] py-[65px] md:px-[15%] md:py-[95px]"
+  class="{% if has_image %}faq-closing__body{% else %}px-[8%] py-[65px] md:px-[15%] md:py-[95px]{% endif %}"
 >
   {%- if section.settings.eyebrow != blank -%}
     <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
@@ -27,6 +40,9 @@
     {%- endfor -%}
   </div>
 </section>
+{%- if has_image -%}
+</div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -39,6 +55,12 @@
       "id": "anchor",
       "label": "Ancora (id)",
       "default": "faq"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine laterale",
+      "info": "Facoltativa: se presente, le FAQ si affiancano all’immagine (chiusura della home)."
     },
     {
       "type": "text",

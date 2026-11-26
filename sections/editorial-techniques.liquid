@@ -2,34 +2,27 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="grid grid-cols-1 bg-paper px-[6%] pb-[65px] pt-[15px] md:grid-cols-[1.05fr_1fr] md:gap-[6%] md:px-[4%] md:pb-[110px] md:pt-[30px]"
+  class="craft"
 >
-  <div class="relative min-h-[460px] md:min-h-[650px] lg:min-h-[760px]">
-    {%- render 'media',
-      image: section.settings.image,
-      placeholder: 'detailed-apparel-1',
-      class: 'absolute inset-0 h-full w-full object-cover',
-      sizes: '(min-width: 721px) 52vw, 100vw'
-    -%}
-  </div>
-
-  <div class="pt-[55px] md:self-center md:pb-[30px] md:pr-[5%] md:pt-[90px] lg:pr-[14%]">
-    <p class="eyebrow mb-[27px]">
-      {%- if section.settings.number != blank -%}
-        {{ section.settings.number }} /
-      {% endif -%}
-      {{ section.settings.eyebrow }}
-    </p>
-    <h2 class="text-[37px] leading-[1.2] md:text-[45px]">{{ section.settings.heading }}</h2>
+  <div class="craft__copy">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow mb-[27px]">
+        {%- if section.settings.number != blank -%}
+          {{ section.settings.number }} /
+        {% endif -%}
+        {{ section.settings.eyebrow }}
+      </p>
+    {%- endif -%}
+    <h2 class="editorial-title">{{ section.settings.heading }}</h2>
 
     {%- if section.settings.text != blank -%}
-      <div class="rte my-[30px] leading-[1.9] text-ink-soft">{{ section.settings.text }}</div>
+      <div class="rte editorial-text my-[30px]">{{ section.settings.text }}</div>
     {%- endif -%}
 
     <div class="mt-[30px]">
       {%- for block in section.blocks -%}
         <details class="accordion" {{ block.shopify_attributes }}>
-          <summary>{{ block.settings.title }}</summary>
+          <summary class="!text-[14px]">{{ block.settings.title }}</summary>
           <div class="accordion-body">
             {%- if block.settings.text != blank -%}
               <div class="rte">{{ block.settings.text }}</div>
@@ -43,6 +36,30 @@
         </details>
       {%- endfor -%}
     </div>
+  </div>
+
+  <div class="craft__media">
+    {%- if section.settings.video != blank -%}
+      {{-
+        section.settings.video
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          playsinline: true,
+          controls: true,
+          preload: 'metadata',
+          image_size: '1600x',
+          class: 'absolute inset-0 h-full w-full object-cover'
+      -}}
+    {%- else -%}
+      {%- render 'media',
+        image: section.settings.image,
+        placeholder: 'detailed-apparel-1',
+        class: 'absolute inset-0 h-full w-full object-cover',
+        sizes: '(min-width: 721px) 60vw, 100vw'
+      -%}
+    {%- endif -%}
   </div>
 </section>
 
@@ -59,6 +76,12 @@
       "default": "savoir-faire"
     },
     {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Se presente sostituisce l’immagine. Parte in automatico, muto e in loop."
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "Immagine"
@@ -66,8 +89,7 @@
     {
       "type": "text",
       "id": "number",
-      "label": "Numero sezione",
-      "default": "02"
+      "label": "Numero sezione"
     },
     {
       "type": "text",
@@ -121,30 +143,10 @@
     {
       "name": "Savoir-faire",
       "blocks": [
-        {
-          "type": "technique",
-          "settings": {
-            "title": "Tombolo"
-          }
-        },
-        {
-          "type": "technique",
-          "settings": {
-            "title": "Chiacchierino"
-          }
-        },
-        {
-          "type": "technique",
-          "settings": {
-            "title": "Macramè"
-          }
-        },
-        {
-          "type": "technique",
-          "settings": {
-            "title": "Corsetteria e drappeggio"
-          }
-        }
+        { "type": "technique", "settings": { "title": "Tombolo" } },
+        { "type": "technique", "settings": { "title": "Chiacchierino" } },
+        { "type": "technique", "settings": { "title": "Macramè" } },
+        { "type": "technique", "settings": { "title": "Altre tecniche", "link_label": "Scopri le altre tecniche" } }
       ],
       "category": "Editoriale"
     }

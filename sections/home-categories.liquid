@@ -1,0 +1,118 @@
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="home-categories"
+  {% if section.settings.aria_label != blank %}
+    aria-label="{{ section.settings.aria_label | escape }}"
+  {% endif %}
+>
+  <div class="home-categories__grid">
+    {%- for block in section.blocks -%}
+      {%- capture meta -%}
+        <div class="home-categories__meta">
+          <h3 class="{% if block.settings.title_style == 'serif' %}is-serif{% endif %}">{{ block.settings.title }}</h3>
+          <span aria-hidden="true">↗</span>
+        </div>
+      {%- endcapture -%}
+
+      <a
+        class="home-categories__item{% if block.settings.meta_position == 'above' %} is-meta-above{% endif %}"
+        href="{{ block.settings.link_url | default: routes.all_products_collection_url }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- if block.settings.meta_position == 'above' -%}{{ meta }}{%- endif -%}
+        <div class="home-categories__image">
+          {%- render 'media',
+            image: block.settings.image,
+            placeholder: 'product-apparel-1',
+            class: 'h-full w-full object-cover',
+            sizes: '(min-width: 721px) 50vw, 100vw'
+          -%}
+        </div>
+        {%- if block.settings.meta_position != 'above' -%}{{ meta }}{%- endif -%}
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categorie in evidenza",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "creazioni"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Etichetta accessibile",
+      "default": "Le creazioni"
+    },
+    {
+      "type": "paragraph",
+      "content": "La composizione asimmetrica è pensata per 3 categorie."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Categoria",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Immagine"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Abiti"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "title_style",
+          "label": "Stile titolo",
+          "options": [
+            { "value": "sans", "label": "Maiuscolo" },
+            { "value": "serif", "label": "Corsivo serif" }
+          ],
+          "default": "sans"
+        },
+        {
+          "type": "select",
+          "id": "meta_position",
+          "label": "Posizione titolo",
+          "options": [
+            { "value": "below", "label": "Sotto l’immagine" },
+            { "value": "above", "label": "Sopra l’immagine" }
+          ],
+          "default": "below"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categorie in evidenza",
+      "category": "Collezione",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Abiti" } },
+        { "type": "category", "settings": { "title": "Accessori", "meta_position": "above" } },
+        { "type": "category", "settings": { "title": "Sposa", "title_style": "serif" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
