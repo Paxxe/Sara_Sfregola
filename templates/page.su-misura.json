@@ -13,8 +13,9 @@
       "type": "editorial-bridal",
       "settings": {
         "anchor": "su-misura",
-        "eyebrow": "CREAZIONI SU COMMISSIONE",
+        "image": "shopify://shop_images/1_7a59a6d5-b11c-47f0-95bd-5eef1f56b8a6.jpg",
         "number": "",
+        "eyebrow": "CREAZIONI SU COMMISSIONE",
         "heading": "Su",
         "heading_italic": "misura",
         "subheading": "Prima di un abito,||un incontro con <em>te</em>.",
@@ -67,7 +68,8 @@
       "settings": {
         "anchor": "percorso",
         "heading": "Il",
-        "heading_italic": "percorso"
+        "heading_italic": "percorso",
+        "image": "shopify://shop_images/2.png"
       }
     },
     "pensato-per-te": {
@@ -87,6 +89,7 @@
     "immagine": {
       "type": "editorial-image",
       "settings": {
+        "image": "shopify://shop_images/3.png",
         "position": "right",
         "ratio": "16 / 9"
       }
@@ -97,7 +100,23 @@
         "anchor": "richiesta",
         "eyebrow": "UN TEMPO DEDICATO A TE",
         "heading": "Ogni creazione inizia||da una <em>conversazione</em>.",
-        "text": "<p>Non serve avere già tutte le risposte. Raccontaci cosa immagini, l’occasione che hai in mente o semplicemente come vorresti sentirti. Il primo passo lo facciamo insieme.</p><p>Lasciaci un messaggio per una consulenza privata, in atelier o in videochiamata.</p>"
+        "text": "<p>Non serve avere già tutte le risposte. Raccontaci cosa immagini, l’occasione che hai in mente o semplicemente come vorresti sentirti. Il primo passo lo facciamo insieme.</p><p>Lasciaci un messaggio per una consulenza privata, in atelier o in videochiamata.</p>",
+        "whatsapp_intro": "Preferisci un primo messaggio?",
+        "whatsapp_label": "Scrivici su WhatsApp",
+        "whatsapp": "",
+        "whatsapp_note": "Collegamento in preparazione",
+        "label_name": "Il tuo nome",
+        "label_email": "La tua email",
+        "label_project": "Cosa stai immaginando?",
+        "project_placeholder": "Scegli il tuo progetto",
+        "projects": "Abito da sposa, Abito da cerimonia, Capo su misura, Accessori, Altro",
+        "label_meeting": "Come vorresti incontrarci?",
+        "meetings": "In atelier, In videochiamata",
+        "label_date": "Hai già una data in mente?",
+        "label_message": "Raccontaci il tuo desiderio",
+        "message_placeholder": "Un’idea, un’occasione, un dettaglio che ami…",
+        "submit_label": "Iniziamo a immaginare",
+        "success_message": "Grazie, abbiamo ricevuto il tuo messaggio. Ti ricontatteremo al più presto."
       }
     }
   },
