@@ -1,0 +1,116 @@
+<section class="tech-rows">
+  {%- for block in section.blocks -%}
+    <article
+      class="tech-row{% if block.settings.reverse %} tech-row--reverse{% endif %}"
+      id="{{ block.settings.anchor | default: block.settings.title | handleize }}"
+      {{ block.shopify_attributes }}
+    >
+      <div class="tech-row__copy">
+        <h2 class="tech-row__title">{{ block.settings.title }}</h2>
+        {%- if block.settings.text != blank -%}
+          <div class="rte tech-row__text">{{ block.settings.text }}</div>
+        {%- endif -%}
+        {%- if block.settings.link_label != blank -%}
+          <a class="line-link mt-8" href="{{ block.settings.link_url | default: routes.all_products_collection_url }}">
+            {{- block.settings.link_label }} ↗
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="tech-row__media">
+        {%- if block.settings.video != blank -%}
+          {{-
+            block.settings.video
+            | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              playsinline: true,
+              preload: 'metadata',
+              image_size: '1600x',
+              class: 'absolute inset-0 h-full w-full object-cover'
+          -}}
+        {%- else -%}
+          {%- render 'media',
+            image: block.settings.image,
+            placeholder: 'detailed-apparel-1',
+            class: 'absolute inset-0 h-full w-full object-cover',
+            sizes: '(min-width: 721px) 50vw, 100vw'
+          -%}
+        {%- endif -%}
+      </div>
+    </article>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Tecniche (righe)",
+  "tag": "div",
+  "max_blocks": 10,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "technique",
+      "name": "Tecnica",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nome tecnica",
+          "default": "Tombolo"
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Ancora (id)",
+          "info": "Per i link diretti, es. /pages/savoir-faire#tombolo. Se vuoto usa il nome."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Testo"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Se presente sostituisce l’immagine."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Immagine"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Testo pulsante (facoltativo)"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "reverse",
+          "label": "Immagine a sinistra",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tecniche (righe)",
+      "category": "Editoriale",
+      "blocks": [
+        { "type": "technique", "settings": { "title": "Tombolo" } },
+        { "type": "technique", "settings": { "title": "Chiacchierino" } },
+        { "type": "technique", "settings": { "title": "Macramè" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,145 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+
+{
+  "sections": {
+    "hero": {
+      "type": "media-hero",
+      "settings": {
+        "overlay": 40,
+        "heading": "Le arti tessili",
+        "page_heading": true,
+        "text": "<p>Custodiamo gesti antichi per dare forma a creazioni contemporanee. Tra intrecci, nodi e ricami, ogni filo porta con sé il sapere delle mani e il tempo dedicato a trasformarlo.</p>"
+      }
+    },
+    "intro": {
+      "type": "editorial-time",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "heading_italic": "",
+        "text": "<p>Dalle tecniche più conosciute alle lavorazioni più rare, riscopriamo saperi tramandati nel tempo e li intrecciamo alla ricerca contemporanea. Gesti antichi tornano a vivere tra le mani, aprendosi a nuove forme ed espressioni.</p>",
+        "link_label": "",
+        "button_label": "",
+        "spacious": true
+      }
+    },
+    "tecniche": {
+      "type": "technique-rows",
+      "blocks": {
+        "tombolo": {
+          "type": "technique",
+          "settings": {
+            "title": "Tombolo",
+            "anchor": "tombolo",
+            "text": "<p>Nato tra le mani esperte delle merlettaie del Rinascimento, il tombolo è una delle massime espressioni dell'artigianato tessile d'eccellenza. Lavorato fissando il disegno su un cuscino rigido e intrecciando con precisione millimetrica decine di fuselli in legno, questo pizzo richiede ore di dedizione, calcolo e pazienza infinita. Ogni creazione a tombolo porta con sé un'aria eterea e aristocratica, trasformando un filo sottile in una vera e propria scultura da indossare o collezionare.</p>"
+          }
+        },
+        "chiacchierino": {
+          "type": "technique",
+          "settings": {
+            "title": "Chiacchierino",
+            "anchor": "chiacchierino",
+            "text": "<p>Conosciuto a livello internazionale come frivolité, il chiacchierino è l'arte di creare pizzi preziosi attraverso una successione ritmica di nodi e picot realizzati con la caratteristica navetta (o con l'ago). Il risultato è una trama resistente ma visivamente impalpabile, ricca di archi concentrici e motivi floreali. Una tecnica antica, nata per impreziosire colletti e gioielli delle dame di corte, oggi rivisitata per dare vita a pezzi raffinati, leggeri e dall'eleganza senza tempo.</p>"
+          }
+        },
+        "macrame": {
+          "type": "technique",
+          "settings": {
+            "title": "Macramè",
+            "anchor": "macrame",
+            "text": "<p>Di origine araba e diffuso nel Mediterraneo dai marinai, il macramè è un'arte pura: non richiede aghi né telai, ma solo la sensibilità delle dita nell'annodare filati robusti. Caratterizzato da motivi geometrici, frange e texture ricche al tatto, il macramè unisce un'anima ancestrale a un gusto contemporaneo, perfetto sia per complementi d'arredo materici che per accessori di carattere dal sapore boho-chic.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "tombolo",
+        "chiacchierino",
+        "macrame"
+      ],
+      "settings": {}
+    },
+    "altre-tecniche": {
+      "type": "technique-columns",
+      "blocks": {
+        "merletto": {
+          "type": "column",
+          "settings": {
+            "title": "Merletto rinascimentale",
+            "text": "<p>Ispirato ai fasti del XVI e XVII secolo, il merletto rinascimento unisce la struttura definita della spighetta a ricchi punti ad ago di fondo. A differenza dei pizzi più aerei, questa tecnica si distingue per il suo carattere deciso, la consistenza materica e il raffinato gioco di rilievi e chiaroscuri. Perfetto per chi cerca pezzi dalla forte personalità che richiamano l'opulenza, la cura del dettaglio e la grande tradizione manifatturiera italiana ed europea.</p>"
+          }
+        },
+        "uncinetto": {
+          "type": "column",
+          "settings": {
+            "title": "Uncinetto tradizionale",
+            "text": "<p>Molto più di un passatempo d'altri tempi: l'uncinetto è un'arte versatile capace di dare corpo e tridimensionalità a qualsiasi filato. Dai motivi a filet più geometrici ai trafori floreali fino alle lavorazioni compatte, ogni pezzo nasce da una singola catenella che cresce punto dopo punto. Nel nostro laboratorio utilizziamo filati nobili e punti d'archivio per restituire a questa tecnica il suo valore originario: quello di un manufatto di pregio, caldo e autentico.</p>"
+          }
+        },
+        "sperimentazioni": {
+          "type": "column",
+          "settings": {
+            "title": "Sperimentazioni",
+            "text": "<p>Cosa accade quando la disciplina delle arti antiche incontra la libertà della ricerca contemporanea? In questo spazio i confini svaniscono: il metallo incontra il cotone, i punti classici si sfaldano in forme astratte e materiali insoliti entrano nella trama. Qui troverai pezzi unici, prototipi e opere dove la tecnica secolare non è un vincolo, ma il punto di partenza per esplorare nuove visioni estetiche.</p>"
+          }
+        },
+        "foto-1": {
+          "type": "image",
+          "settings": {}
+        },
+        "foto-2": {
+          "type": "image",
+          "settings": {}
+        },
+        "foto-3": {
+          "type": "image",
+          "settings": {}
+        },
+        "foto-4": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "merletto",
+        "uncinetto",
+        "sperimentazioni",
+        "foto-1",
+        "foto-2",
+        "foto-3",
+        "foto-4"
+      ],
+      "settings": {
+        "anchor": "altre-tecniche",
+        "heading": "Altre tecniche"
+      }
+    },
+    "creazioni": {
+      "type": "editorial-time",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Creazioni",
+        "heading_italic": "",
+        "text": "",
+        "link_label": "Esplora le creazioni",
+        "link_url": "",
+        "button_label": "",
+        "spacious": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "tecniche",
+    "altre-tecniche",
+    "creazioni"
+  ]
+}

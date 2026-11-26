@@ -1,14 +1,16 @@
-<section class="work-hours{% if section.settings.spacious %} work-hours--spacious{% endif %}" aria-labelledby="Heading-{{ section.id }}">
+<section class="work-hours{% if section.settings.spacious %} work-hours--spacious{% endif %}" {% if section.settings.heading != blank %}aria-labelledby="Heading-{{ section.id }}"{% endif %}>
   {%- if section.settings.eyebrow != blank -%}
     <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
   {%- endif -%}
-  <h2 id="Heading-{{ section.id }}" class="editorial-title">
-    {{- section.settings.heading | replace: '||', '<br>' -}}
-    {%- if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{%- endif -%}
-  </h2>
+  {%- if section.settings.heading != blank or section.settings.heading_italic != blank -%}
+    <h2 id="Heading-{{ section.id }}" class="editorial-title">
+      {{- section.settings.heading | replace: '||', '<br>' -}}
+      {%- if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{%- endif -%}
+    </h2>
+  {%- endif -%}
 
   {%- if section.settings.text != blank -%}
-    <div class="rte editorial-text mx-auto mt-6 max-w-[66ch]">{{ section.settings.text }}</div>
+    <div class="rte editorial-text mx-auto max-w-[66ch]{% if section.settings.heading != blank %} mt-6{% endif %}">{{ section.settings.text }}</div>
   {%- endif -%}
 
   {%- if section.settings.link_label != blank or section.settings.button_label != blank -%}

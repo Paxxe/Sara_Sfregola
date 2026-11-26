@@ -1,0 +1,87 @@
+<section class="media-hero" aria-labelledby="Heading-{{ section.id }}">
+  <div class="media-hero__media">
+    {%- if section.settings.video != blank -%}
+      {{-
+        section.settings.video
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          playsinline: true,
+          preload: 'metadata',
+          image_size: '2000x',
+          class: 'h-full w-full object-cover'
+      -}}
+    {%- else -%}
+      {%- render 'media',
+        image: section.settings.image,
+        placeholder: 'lifestyle-1',
+        class: 'h-full w-full object-cover',
+        priority: true
+      -%}
+    {%- endif -%}
+  </div>
+  <div class="media-hero__overlay" style="opacity: {{ section.settings.overlay | divided_by: 100.0 }};" aria-hidden="true"></div>
+
+  <div class="media-hero__content">
+    {%- assign heading_tag = 'h2' -%}
+    {%- if section.settings.page_heading -%}{%- assign heading_tag = 'h1' -%}{%- endif -%}
+    <{{ heading_tag }} id="Heading-{{ section.id }}" class="media-hero__title">{{ section.settings.heading }}</{{ heading_tag }}>
+    {%- if section.settings.text != blank -%}
+      <div class="media-hero__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero con video",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Parte in automatico, muto e in loop. Se vuoto usa l’immagine."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Scurimento",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo (corsivo serif)",
+      "default": "Le arti tessili"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo"
+    },
+    {
+      "type": "checkbox",
+      "id": "page_heading",
+      "label": "Titolo principale della pagina (H1)",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero con video",
+      "category": "Editoriale"
+    }
+  ]
+}
+{% endschema %}
