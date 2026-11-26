@@ -1,0 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+
+{
+  "sections": {
+    "apertura": {
+      "type": "atelier-opening",
+      "settings": {
+        "eyebrow": "THE ATELIER / BARLETTA, ITALIA",
+        "heading": "The Atelier",
+        "lead": "A Barletta, le arti tessili incontrano la <em>modellistica sartoriale.</em>",
+        "caption": "IL TERRITORIO"
+      }
+    },
+    "storia": {
+      "type": "atelier-story",
+      "blocks": {
+        "scuola": {
+          "type": "chapter",
+          "settings": {
+            "heading": "La scuola",
+            "text": "<p>Da più di vent’anni, all’Istituto EVRIAT (SITAM Barletta e Bari), Sara e le sue docenti insegnano tecnica e modellistica. Il lavoro in aula trasmette anche la cura dei dettagli e il valore delle lavorazioni artigianali, che le allieve imparano a reinterpretare nei propri progetti.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "mostre": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Mostre e riconoscimenti",
+            "text": "<p>CNA Federmoda ha selezionato Sara per <em>Italia è Moda</em> a Montréal, nell’ambito delle Giornate della Moda Italiana nel Mondo. Il suo percorso comprende anche Milano Fashion &amp; Jewels, Sì Sposaitalia e il salone MED Italy a Napoli.</p><p>Alla Fondazione Luciana Matalon di Milano, per <em>Artnovation: Echoes of Renaissance in the Hues of Africa</em>, ha presentato quattro opere di Wearable Art: <em>Metamorfosi</em>, <em>Sole e Terra</em>, <em>Sacerdotessa della Terra</em> e <em>Girasole d’Africa</em>.</p><p>Al Teatro Curci, il progetto <em>Dall’ago all’algoritmo</em> ha ricevuto il secondo premio alla Call for Ideas «Supernova» di TEDxBarletta. Il progetto mette in relazione le lavorazioni sartoriali e la progettazione digitale.</p>",
+            "link_label": "Esplora la pagina Press",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "scuola",
+        "mostre"
+      ],
+      "settings": {
+        "anchor": "storia",
+        "heading": "La stilista",
+        "lead": "Da oltre trent’anni, Sara Sfregola lavora nel tessile come stilista e modellista. La sua ricerca prende forma nel taglio, nella costruzione dell’abito e nella sperimentazione con le arti tessili.",
+        "text": "<p>Il tombolo, il macramè, il filet e il chiacchierino guidano le scelte di modellistica. Sara studia tagli e proporzioni per dare risalto alle trame, ai rilievi e alle trasparenze. Nascono così opere contemporanee da indossare, pensate per avere una presenza scultorea e per essere vissute con naturalezza.</p>",
+        "link_label": "Scopri le tecniche",
+        "link_url": "/pages/savoir-faire"
+      }
+    },
+    "barletta": {
+      "type": "editorial-atelier",
+      "settings": {
+        "anchor": "barletta",
+        "number": "",
+        "eyebrow": "",
+        "heading": "Barletta",
+        "text": "<p>Nella città in cui Sara lavora e insegna, la pietra della cattedrale racconta il legame dell’atelier con la materia e con i saperi del territorio.</p>",
+        "caption": "",
+        "layout": "territory"
+      }
+    }
+  },
+  "order": [
+    "apertura",
+    "storia",
+    "barletta"
+  ]
+}

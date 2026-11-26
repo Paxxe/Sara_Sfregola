@@ -893,6 +893,174 @@
     }
   }
 
+
+  /* ------------------------------------------------------------------------
+     Pagina Atelier
+     ------------------------------------------------------------------------ */
+  .atelier-opening {
+    padding: 50px 7% 70px;
+  }
+
+  .atelier-opening__title {
+    @apply min-w-0;
+    padding-bottom: 45px;
+  }
+
+  .atelier-opening__heading {
+    font-size: clamp(45px, 5.5vw, 82px);
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+  }
+
+  .atelier-opening__lead {
+    max-width: 25ch;
+    margin-top: 20px;
+    font-size: clamp(19px, 2vw, 28px);
+    line-height: 1.35;
+  }
+
+  .atelier-opening__lead em {
+    @apply font-serif italic;
+    font-size: 1.12em;
+  }
+
+  .atelier-opening__images {
+    @apply relative min-w-0;
+    padding: 0 0 24px 16%;
+  }
+
+  .atelier-opening__main {
+    @apply relative overflow-hidden bg-mist;
+    height: clamp(440px, 46vw, 630px);
+  }
+
+  .atelier-opening__detail {
+    @apply absolute bottom-0 left-0 overflow-hidden bg-oat;
+    width: 37%;
+    aspect-ratio: 2 / 3;
+    border: 8px solid rgb(var(--color-paper));
+  }
+
+  @media (min-width: 721px) {
+    .atelier-opening {
+      @apply grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 5%;
+      padding: clamp(65px, 6vw, 80px) 6% clamp(65px, 7vw, 90px);
+    }
+
+    .atelier-opening__title {
+      padding: 40px 0;
+    }
+
+    .atelier-opening__images {
+      padding-bottom: 48px;
+    }
+
+    .atelier-opening__detail {
+      width: 44%;
+      border-width: 13px;
+    }
+  }
+
+  /* La stilista */
+  .atelier-story {
+    @apply grid grid-cols-1;
+    gap: 50px;
+    padding: 30px 8% 75px;
+  }
+
+  .atelier-story__images {
+    @apply relative min-w-0;
+    padding-bottom: clamp(40px, 6vw, 90px);
+  }
+
+  .atelier-story__portrait {
+    @apply relative m-0 overflow-hidden bg-mist;
+    width: 81%;
+    aspect-ratio: 2 / 3;
+  }
+
+  .atelier-story__detail {
+    @apply absolute bottom-0 right-0 m-0 bg-mist;
+    width: 45%;
+    border: clamp(6px, 0.8vw, 12px) solid rgb(var(--color-paper));
+  }
+
+  .atelier-story__lead {
+    margin-top: 24px;
+    font-size: clamp(20px, 2.2vw, 30px);
+    line-height: 1.4;
+    letter-spacing: -0.3px;
+  }
+
+  .atelier-story__text {
+    margin-top: 22px;
+    max-width: 65ch;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .atelier-story__chapter {
+    margin-top: 38px;
+    padding-top: 25px;
+    @apply border-t border-line;
+  }
+
+  .atelier-story__chapter-title {
+    @apply font-normal;
+    font-size: clamp(26px, 2.6vw, 40px);
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+
+  @media (min-width: 721px) {
+    .atelier-story {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(32px, 7vw, 110px);
+      align-items: start;
+      padding: clamp(55px, 8vw, 120px) 10% 130px;
+    }
+  }
+
+  /* Territorio (editorial-atelier stile "territorio") */
+  .territory {
+    @apply grid grid-cols-1 items-center bg-sand;
+    gap: 24px;
+    padding: clamp(48px, 8vw, 115px) 8%;
+  }
+
+  .territory__title {
+    font-size: clamp(44px, 8vw, 120px);
+    line-height: 1;
+    margin-bottom: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .territory__text {
+    max-width: 34ch;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .territory__figure {
+    @apply m-0;
+  }
+
+  .territory__image {
+    @apply relative overflow-hidden bg-mist;
+    aspect-ratio: 4 / 5;
+    max-height: 670px;
+    width: 100%;
+  }
+
+  @media (min-width: 721px) {
+    .territory {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+      gap: 8%;
+    }
+  }
+
   /* ------------------------------------------------------------------------
      PLP: griglia editoriale sfalsata
      Le card sono <a>, i blocchi editoriali <aside>: :nth-of-type conta solo i prodotti.

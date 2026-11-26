@@ -1,0 +1,87 @@
+<section class="atelier-opening">
+  <div class="atelier-opening__title">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 class="atelier-opening__heading">{{ section.settings.heading }}</h1>
+    {%- if section.settings.lead != blank -%}
+      <p class="atelier-opening__lead">{{ section.settings.lead }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="atelier-opening__images">
+    <figure class="m-0">
+      <div class="atelier-opening__main">
+        {%- render 'media',
+          image: section.settings.image,
+          placeholder: 'lifestyle-2',
+          class: 'h-full w-full object-cover',
+          sizes: '(min-width: 721px) 50vw, 80vw',
+          priority: true
+        -%}
+      </div>
+      {%- if section.settings.caption != blank -%}
+        <figcaption class="mt-4 text-[8px] uppercase tracking-[2px]">{{ section.settings.caption }}</figcaption>
+      {%- endif -%}
+    </figure>
+    {%- if section.settings.detail_image != blank -%}
+      <div class="atelier-opening__detail">
+        {%- render 'media',
+          image: section.settings.detail_image,
+          class: 'h-full w-full object-cover',
+          sizes: '(min-width: 721px) 22vw, 40vw'
+        -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Apertura atelier",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "THE ATELIER / BARLETTA, ITALIA"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "The Atelier"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "lead",
+      "label": "Sottotitolo",
+      "info": "Usa il corsivo per le parole in serif.",
+      "default": "A Barletta, le arti tessili incontrano la <em>modellistica sartoriale.</em>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine principale"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Didascalia",
+      "default": "IL TERRITORIO"
+    },
+    {
+      "type": "image_picker",
+      "id": "detail_image",
+      "label": "Immagine di dettaglio (sovrapposta)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apertura atelier",
+      "category": "Editoriale"
+    }
+  ]
+}
+{% endschema %}

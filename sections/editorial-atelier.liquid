@@ -1,29 +1,38 @@
+{%- assign is_territory = false -%}
+{%- if section.settings.layout == 'territory' -%}{%- assign is_territory = true -%}{%- endif -%}
+
 <section
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="grid grid-cols-1 items-center gap-[15px] px-[8%] py-[85px] md:grid-cols-2 md:gap-[15%] md:px-[9%] md:py-[155px]"
+  {% if is_territory %}
+    class="territory"
+  {% else %}
+    class="grid grid-cols-1 items-center gap-[15px] px-[8%] py-[85px] md:grid-cols-2 md:gap-[15%] md:px-[9%] md:py-[155px]"
+  {% endif %}
 >
-  <div>
-    <p class="eyebrow mb-[27px]">
-      {%- if section.settings.number != blank -%}
-        {{ section.settings.number }} /
-      {% endif -%}
-      {{ section.settings.eyebrow }}
-    </p>
-    <h2 class="mb-[30px] text-[34px] md:text-[42px]">{{ section.settings.heading }}</h2>
+  <div class="min-w-0">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow mb-[27px]">
+        {%- if section.settings.number != blank -%}
+          {{ section.settings.number }} /
+        {% endif -%}
+        {{ section.settings.eyebrow }}
+      </p>
+    {%- endif -%}
+    <h2 class="{% if is_territory %}territory__title{% else %}mb-[30px] text-[34px] md:text-[42px]{% endif %}">{{ section.settings.heading }}</h2>
     {%- if section.settings.text != blank -%}
-      <div class="rte max-w-[420px] leading-[1.9] text-[#6d695f]">{{ section.settings.text }}</div>
+      <div class="rte {% if is_territory %}territory__text{% else %}max-w-[420px] leading-[1.9] text-[#6d695f]{% endif %}">{{ section.settings.text }}</div>
     {%- endif -%}
   </div>
 
-  <figure class="m-0 pt-[25px] md:pt-[75px]">
-    <div class="h-[400px] overflow-hidden md:h-[540px]">
+  <figure class="{% if is_territory %}territory__figure{% else %}m-0 pt-[25px] md:pt-[75px]{% endif %}">
+    <div class="{% if is_territory %}territory__image{% else %}h-[400px] overflow-hidden md:h-[540px]{% endif %}">
       {%- render 'media',
         image: section.settings.image,
         placeholder: 'lifestyle-2',
-        class: 'h-full w-full object-cover',
-        sizes: '(min-width: 721px) 40vw, 100vw'
+        class: 'h-full w-full object-cover object-[center_64%]',
+        sizes: '(min-width: 721px) 50vw, 100vw'
       -%}
     </div>
     {%- if section.settings.caption != blank -%}
@@ -76,6 +85,16 @@
       "id": "caption",
       "label": "Didascalia",
       "default": "IMMAGINE"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Stile",
+      "options": [
+        { "value": "default", "label": "Classico" },
+        { "value": "territory", "label": "Territorio (titolo grande, fondo sabbia)" }
+      ],
+      "default": "default"
     }
   ],
   "presets": [
