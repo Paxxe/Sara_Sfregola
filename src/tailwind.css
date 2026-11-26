@@ -79,11 +79,34 @@
 @layer components {
   /* Header trasparente sopra l'hero in homepage */
   .header-wrapper {
-    @apply relative z-20;
+    @apply sticky top-0 z-40;
   }
 
   .template-index .header-wrapper {
     @apply absolute inset-x-0 top-0;
+  }
+
+  /* Header a comparsa: si nasconde scorrendo in giù, ricompare (beige) scorrendo in su */
+  .header-wrapper.is-scrolled {
+    @apply border-b border-[#ddd7cb] bg-paper;
+  }
+
+  .template-index .header-wrapper.is-scrolled {
+    @apply fixed;
+  }
+
+  .header-wrapper.is-scrolled.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  .header-wrapper.is-animated {
+    transition: transform 0.35s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-wrapper.is-animated {
+      transition: none;
+    }
   }
 
   .eyebrow {

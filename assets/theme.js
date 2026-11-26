@@ -772,6 +772,53 @@
   );
 
   customElements.get('site-header') || customElements.define('site-header', SiteHeader);
+
+  /* ---------- Header a comparsa ----------
+     Scorrendo in giù l'header esce dallo schermo, scorrendo in su ricompare
+     con sfondo beige. In cima alla pagina torna allo stato iniziale.            */
+  (() => {
+    const wrapper = document.querySelector('.header-wrapper');
+    if (!wrapper) return;
+    const header = wrapper.querySelector('site-header');
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const y = Math.max(0, window.scrollY);
+      const height = wrapper.offsetHeight;
+      const menuOpen = header?.hasAttribute('data-mega') || header?.hasAttribute('data-mobile');
+
+      if (y <= height) {
+        // In cima: stato originale (in home trasparente sopra l'hero)
+        wrapper.classList.remove('is-scrolled', 'is-hidden', 'is-animated');
+      } else if (!wrapper.classList.contains('is-scrolled')) {
+        // Primo passaggio oltre l'header: entra già nascosto, senza animazione
+        wrapper.classList.add('is-scrolled', 'is-hidden');
+        requestAnimationFrame(() => wrapper.classList.add('is-animated'));
+      } else if (!menuOpen && y > lastY + 4) {
+        wrapper.classList.add('is-hidden');
+      } else if (y < lastY - 4) {
+        wrapper.classList.remove('is-hidden');
+      }
+
+      if (Math.abs(y - lastY) > 4 || y <= height) lastY = y;
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+    // Il focus da tastiera dentro l'header lo rende sempre visibile
+    wrapper.addEventListener('focusin', () => wrapper.classList.remove('is-hidden'));
+    update();
+  })();
   customElements.get('hero-scroll') || customElements.define('hero-scroll', HeroScroll);
   customElements.get('product-filter') || customElements.define('product-filter', ProductFilter);
 
