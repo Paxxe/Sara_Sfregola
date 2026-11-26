@@ -118,7 +118,7 @@
         "heading_italic": "ti somiglia",
         "text": "<p>Partiamo dall’occasione, da come vorresti sentirti e dai dettagli che ti attirano. Puoi portare un’immagine, un’idea o semplicemente la voglia di capire cosa ti starebbe bene.</p><p>Nel primo incontro, Sara ti ascolta e ti guida nella scelta di forme, tessuti e lavorazioni. Insieme, dai primi spunti alle prove, darete forma a un capo pensato per te.</p>",
         "link_label": "Richiedi una consulenza",
-        "link_url": ""
+        "link_url": "shopify://pages/su-misura"
       }
     },
     "savoir-faire": {
@@ -184,9 +184,9 @@
         "heading_italic": "del tempo",
         "text": "<p>Ci sono ore che restano tra i fili. Nei nodi di un merletto, in un ricamo, nelle prove che danno all’abito la sua forma. Ore di mani, di attenzione, di scelte. È questo tempo a rendere ogni creazione irripetibile.</p>",
         "link_label": "Esplora le creazioni",
-        "link_url": "",
+        "link_url": "shopify://collections/all",
         "button_label": "Richiedi una consulenza privata",
-        "button_url": ""
+        "button_url": "shopify://pages/contact"
       }
     },
     "faq": {
