@@ -231,6 +231,7 @@
               caption_key: section.settings.caption_metafield,
               caption_fallback: section.settings.caption_fallback,
               show_badges: section.settings.show_badges,
+              show_price: section.settings.show_price,
               loading: card_loading
             -%}
 
@@ -368,6 +369,13 @@
       "id": "caption_fallback",
       "label": "Didascalia se vuota",
       "default": "Creazione d’atelier"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Mostra prezzo",
+      "info": "Su una riga sotto la didascalia. Non compare per i prodotti a 0 € (su richiesta).",
+      "default": true
     },
     {
       "type": "checkbox",

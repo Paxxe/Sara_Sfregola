@@ -7,6 +7,7 @@
   - caption_key: metafield didascalia (es. custom.didascalia)
   - caption_fallback: testo se il metafield è vuoto
   - show_badges: etichetta esaurito / pezzo unico
+  - show_price: prezzo su una riga dedicata (prezzo barrato se in saldo; nascosto se 0)
   - loading: 'eager' per le prime card
 {%- endcomment -%}
 {%- assign card_loading = loading | default: 'lazy' -%}
@@ -58,5 +59,18 @@
         {%- render 'metafield-value', product: product, key: caption_key, fallback: caption_fallback, plain: true -%}
       {%- endif -%}
     </span>
+    {%- if show_price and caption_source != 'price' and product.price > 0 -%}
+      <span class="mx-[2px] mt-[6px] block text-[12px] tracking-[.3px] text-ink md:mx-2 md:text-[13px]">
+        {%- if product.price_varies -%}
+          {%- assign price_min = product.price_min | money -%}
+          {{ 'products.from_price' | t: price: price_min }}
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+        {%- if product.compare_at_price > product.price -%}
+          <s class="ml-2 text-[#9a9487]">{{ product.compare_at_price | money }}</s>
+        {%- endif -%}
+      </span>
+    {%- endif -%}
   </a>
 </article>

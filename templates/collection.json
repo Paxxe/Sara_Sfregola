@@ -20,6 +20,7 @@
         "all_label": "Tutte le creazioni",
         "products_per_page": 24,
         "caption_source": "metafield",
+        "show_price": true,
         "caption_metafield": "custom.didascalia",
         "caption_fallback": "Creazione d’atelier",
         "show_badges": false,
