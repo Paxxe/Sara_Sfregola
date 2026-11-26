@@ -529,6 +529,200 @@
     }
   }
 
+
+  /* ------------------------------------------------------------------------
+     Pagina Su misura
+     ------------------------------------------------------------------------ */
+  .editorial-title--xl {
+    font-size: clamp(44px, 5.4vw, 84px);
+  }
+
+  .bespoke--paper {
+    @apply bg-paper;
+  }
+
+  .bespoke__subheading {
+    margin-top: clamp(24px, 3vw, 44px);
+    font-size: clamp(22px, 2.1vw, 32px);
+    line-height: 1.35;
+    letter-spacing: -0.5px;
+  }
+
+  .bespoke__subheading em {
+    @apply font-serif italic;
+    font-size: 1.1em;
+  }
+
+  /* Percorso: step numerati a scalare */
+  .steps {
+    @apply relative bg-[#e9e6dc];
+    padding: 70px 8% 80px;
+  }
+
+  .steps__title {
+    font-size: clamp(40px, 4.4vw, 68px);
+    line-height: 1.1;
+  }
+
+  .steps__image {
+    @apply relative overflow-hidden bg-mist;
+    aspect-ratio: 15 / 8;
+    margin: 30px -8% 50px;
+  }
+
+  .steps__image img {
+    @apply absolute inset-0;
+  }
+
+  .steps__list {
+    @apply grid gap-[50px];
+  }
+
+  .steps__item {
+    @apply grid items-center;
+    grid-template-columns: 64px minmax(0, 1fr);
+    column-gap: 20px;
+  }
+
+  .steps__number {
+    @apply font-serif italic text-ink;
+    font-size: 84px;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .steps__item-title {
+    @apply mb-4 font-normal;
+    font-size: clamp(24px, 2vw, 32px);
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+
+  .steps__text {
+    @apply text-ink-soft;
+    max-width: 380px;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  @media (min-width: 721px) {
+    .steps {
+      padding: clamp(70px, 6vw, 110px) 4% clamp(110px, 12vw, 200px) 0;
+    }
+
+    .steps__aside {
+      @apply absolute left-0;
+      top: clamp(70px, 6vw, 110px);
+      width: 31%;
+    }
+
+    .steps__title {
+      padding-left: 19%;
+    }
+
+    .steps__image {
+      margin: clamp(24px, 3vw, 44px) 0 0;
+    }
+
+    .steps__list {
+      gap: clamp(60px, 6vw, 100px);
+    }
+
+    .steps__item {
+      margin-left: var(--step-offset, 0%);
+      grid-template-columns: clamp(90px, 9vw, 150px) minmax(0, 1fr);
+      column-gap: clamp(20px, 2vw, 36px);
+      max-width: 640px;
+    }
+
+    .steps__number {
+      font-size: clamp(90px, 8vw, 135px);
+    }
+  }
+
+  /* Immagine larga sfalsata */
+  .wide-image {
+    @apply bg-paper;
+  }
+
+  .wide-image__frame {
+    @apply relative overflow-hidden bg-mist;
+  }
+
+  .wide-image__frame img,
+  .wide-image__frame svg {
+    @apply absolute inset-0;
+  }
+
+  @media (min-width: 721px) {
+    .wide-image--right .wide-image__frame {
+      margin-left: 37%;
+    }
+
+    .wide-image--left .wide-image__frame {
+      margin-right: 37%;
+    }
+  }
+
+  .work-hours--spacious {
+    padding-top: clamp(80px, 11vw, 170px);
+  }
+
+  /* Modulo consulenza */
+  .consult {
+    @apply grid grid-cols-1 bg-[#ece8e0];
+    gap: 50px;
+    padding: 70px 8% 90px;
+  }
+
+  .consult__wa {
+    @apply inline-flex items-center gap-3 rounded-full bg-paper text-[15px];
+    padding: 15px 32px;
+    box-shadow: 0 1px 0 #d8d2c5;
+  }
+
+  .consult__wa[aria-disabled='true'] {
+    cursor: default;
+  }
+
+  .consult__field {
+    @apply block;
+    margin-top: 30px;
+  }
+
+  .consult__field > span {
+    @apply block text-[14px];
+  }
+
+  .field-line {
+    @apply w-full rounded-none border-0 border-b border-[#bdb6a8] bg-transparent text-[17px] text-ink;
+    padding: 14px 4px;
+  }
+
+  .field-line:focus {
+    @apply border-ink outline-none;
+  }
+
+  .field-line::placeholder {
+    @apply text-muted;
+  }
+
+  textarea.field-line {
+    resize: vertical;
+  }
+
+  @media (min-width: 721px) {
+    .consult {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8%;
+      padding: clamp(80px, 7vw, 120px) 6% clamp(100px, 10vw, 170px);
+    }
+
+    .consult__form {
+      margin-top: -30px;
+    }
+  }
+
   /* ------------------------------------------------------------------------
      PLP: griglia editoriale sfalsata
      Le card sono <a>, i blocchi editoriali <aside>: :nth-of-type conta solo i prodotti.

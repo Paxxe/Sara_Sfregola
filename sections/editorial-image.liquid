@@ -1,0 +1,53 @@
+<div class="wide-image wide-image--{{ section.settings.position }}">
+  <div class="wide-image__frame" style="aspect-ratio: {{ section.settings.ratio }};">
+    {%- render 'media',
+      image: section.settings.image,
+      placeholder: 'lifestyle-2',
+      class: 'h-full w-full object-cover',
+      sizes: '(min-width: 721px) 70vw, 100vw'
+    -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Immagine editoriale",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Posizione",
+      "options": [
+        { "value": "right", "label": "Spostata a destra" },
+        { "value": "left", "label": "Spostata a sinistra" },
+        { "value": "full", "label": "A tutta larghezza" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Proporzioni",
+      "options": [
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "21 / 9", "label": "Panoramica" }
+      ],
+      "default": "16 / 9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Immagine editoriale",
+      "category": "Editoriale"
+    }
+  ]
+}
+{% endschema %}

@@ -1,14 +1,24 @@
 {%- comment -%}
-  Logo del brand: immagine dalle impostazioni tema o fallback testuale.
+  Logo del brand. Priorità:
+  1. immagine passata (image) o settings.logo (PNG/JPG dal selettore immagini)
+  2. URL SVG passato (svg_url) o settings.logo_svg_url (file SVG da Contenuti › File)
+  3. asset del tema logo-sara.svg
+  4. fallback testuale
 
   Parametri:
   - image: immagine alternativa (opzionale)
+  - svg_url: URL SVG alternativo (opzionale)
   - class: classi per l'immagine
+  - svg_class: classi aggiuntive solo per la versione SVG (es. inversione colori nel footer)
   - text_class: classi per il fallback testuale (allineamento e dimensione)
   - sizes: attributo sizes (opzionale)
 {%- endcomment -%}
 {%- liquid
   assign logo_image = image | default: settings.logo
+  assign logo_svg = svg_url | default: settings.logo_svg_url | strip
+  if logo_svg == blank
+    assign logo_svg = 'logo-sara.svg' | asset_url
+  endif
   assign logo_sizes = sizes | default: '200px'
 -%}
 {%- if logo_image != blank -%}
@@ -17,6 +27,8 @@
     | image_url: width: 600
     | image_tag: class: class, widths: '150,300,450,600', sizes: logo_sizes, alt: shop.name
   -}}
+{%- elsif logo_svg != blank -%}
+  <img src="{{ logo_svg }}" alt="{{ shop.name | escape }}" class="{{ class }} {{ svg_class }}" width="285" height="249">
 {%- else -%}
   <span class="flex flex-col leading-none {{ text_class | default: 'items-center text-center' }}">
     <span class="tracking-[3px]">{{ shop.name }}</span>

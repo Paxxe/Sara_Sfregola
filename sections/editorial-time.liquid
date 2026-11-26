@@ -1,6 +1,9 @@
-<section class="work-hours" aria-labelledby="Heading-{{ section.id }}">
+<section class="work-hours{% if section.settings.spacious %} work-hours--spacious{% endif %}" aria-labelledby="Heading-{{ section.id }}">
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
+  {%- endif -%}
   <h2 id="Heading-{{ section.id }}" class="editorial-title">
-    {{- section.settings.heading -}}
+    {{- section.settings.heading | replace: '||', '<br>' -}}
     {%- if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{%- endif -%}
   </h2>
 
@@ -31,9 +34,15 @@
   "settings": [
     {
       "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo"
+    },
+    {
+      "type": "inline_richtext",
       "id": "heading",
       "label": "Titolo",
-      "default": "Il valore"
+      "default": "Il valore",
+      "info": "Usa il corsivo per le parole in serif. Scrivi || per andare a capo."
     },
     {
       "type": "text",
@@ -68,6 +77,12 @@
       "type": "url",
       "id": "button_url",
       "label": "Link pulsante principale"
+    },
+    {
+      "type": "checkbox",
+      "id": "spacious",
+      "label": "Spaziatura ampia sopra",
+      "default": false
     }
   ],
   "presets": [

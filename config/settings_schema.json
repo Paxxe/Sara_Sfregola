@@ -14,13 +14,25 @@
         "type": "image_picker",
         "id": "logo",
         "label": "Logo",
-        "info": "SVG o PNG. Nell'header e nell'hero viene reso nero."
+        "info": "PNG o JPG. Se vuoto usa il logo SVG qui sotto. Nell'header e nell'hero viene reso nero."
+      },
+      {
+        "type": "text",
+        "id": "logo_svg_url",
+        "label": "Logo SVG (URL)",
+        "info": "Carica l'SVG in Contenuti › File, copia il link e incollalo qui. Se vuoto usa logo-sara.svg incluso nel tema."
       },
       {
         "type": "image_picker",
         "id": "logo_footer",
         "label": "Logo footer",
-        "info": "Versione chiara per lo sfondo scuro. Se vuoto usa il logo principale."
+        "info": "PNG o JPG, versione chiara per lo sfondo scuro. Se vuoto usa il logo SVG."
+      },
+      {
+        "type": "text",
+        "id": "logo_footer_svg_url",
+        "label": "Logo footer SVG (URL)",
+        "info": "Facoltativo: SVG già chiaro da Contenuti › File. Se vuoto usa il logo SVG principale, reso chiaro automaticamente."
       },
       {
         "type": "text",

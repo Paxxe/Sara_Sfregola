@@ -1,0 +1,201 @@
+{%- assign form_id = 'ConsultationForm-' | append: section.id -%}
+
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="consult"
+  aria-labelledby="Heading-{{ section.id }}"
+>
+  <div class="consult__copy">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 id="Heading-{{ section.id }}" class="editorial-title">
+      {{- section.settings.heading | replace: '||', '<br>' -}}
+    </h2>
+    {%- if section.settings.text != blank -%}
+      <div class="rte editorial-text mt-[30px] max-w-[440px] text-ink-soft">{{ section.settings.text }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.whatsapp_label != blank -%}
+      <div class="mt-[40px]">
+        {%- if section.settings.whatsapp_intro != blank -%}
+          <p class="mb-3 text-[15px]">{{ section.settings.whatsapp_intro }}</p>
+        {%- endif -%}
+        {%- assign wa_number = section.settings.whatsapp | remove: '+' | remove: ' ' -%}
+        {%- capture wa_icon -%}
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 19.5l1.1-3.6A8 8 0 1 1 8.3 18.6z" stroke-linejoin="round"/><path d="M9.2 8.6c.2 2.6 2.4 4.9 5.2 5.3l.9-1.2-1.6-.8-.6.6c-.9-.4-1.7-1.2-2.1-2.1l.6-.6-.8-1.6z" stroke-linejoin="round"/></svg>
+        {%- endcapture -%}
+        {%- if wa_number != blank -%}
+          <a class="consult__wa" href="https://wa.me/{{ wa_number }}" target="_blank" rel="noopener">
+            {{- wa_icon }}<span>{{ section.settings.whatsapp_label }}</span>
+          </a>
+        {%- else -%}
+          <span class="consult__wa" aria-disabled="true">{{- wa_icon }}<span>{{ section.settings.whatsapp_label }}</span></span>
+          {%- if section.settings.whatsapp_note != blank -%}
+            <p class="mt-3 text-[12px] text-muted">{{ section.settings.whatsapp_note }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="consult__form">
+    {%- form 'contact', id: form_id -%}
+      {%- if form.posted_successfully? -%}
+        <p class="mb-6 bg-sand p-5" role="status">{{ section.settings.success_message }}</p>
+      {%- elsif form.errors -%}
+        <div class="mb-6 bg-sand p-5 text-[#8a2a1a]" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+
+      <input type="hidden" name="contact[Origine]" value="{{ page.title | default: 'Su misura' | escape }}">
+
+      <div class="grid grid-cols-1 gap-x-7 md:grid-cols-2">
+        <label class="consult__field">
+          <span>{{ section.settings.label_name }}</span>
+          <input class="field-line" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}" required>
+        </label>
+        <label class="consult__field">
+          <span>{{ section.settings.label_email }}</span>
+          <input class="field-line" type="email" name="contact[email]" autocomplete="email" spellcheck="false" autocapitalize="off" value="{{ form.email }}" required>
+        </label>
+
+        {%- assign projects = section.settings.projects | split: ',' -%}
+        <label class="consult__field">
+          <span>{{ section.settings.label_project }}</span>
+          <select class="field-line" name="contact[Progetto]">
+            <option value="">{{ section.settings.project_placeholder }}</option>
+            {%- for item in projects -%}
+              <option value="{{ item | strip | escape }}">{{ item | strip }}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+
+        {%- assign meetings = section.settings.meetings | split: ',' -%}
+        <label class="consult__field">
+          <span>{{ section.settings.label_meeting }}</span>
+          <select class="field-line" name="contact[Incontro]">
+            {%- for item in meetings -%}
+              <option value="{{ item | strip | escape }}">{{ item | strip }}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+      </div>
+
+      <label class="consult__field">
+        <span>{{ section.settings.label_date }} <small class="text-[11px] text-muted">(facoltativo)</small></span>
+        <input class="field-line" type="date" name="contact[Data]">
+      </label>
+
+      <label class="consult__field">
+        <span>{{ section.settings.label_message }}</span>
+        <textarea class="field-line min-h-[110px]" name="contact[body]" rows="4" placeholder="{{ section.settings.message_placeholder | escape }}">{{ form.body }}</textarea>
+      </label>
+
+      <button type="submit" class="btn-solid mt-[34px] !rounded-full !px-8 !py-[18px] !text-[14px]">
+        {{- section.settings.submit_label -}}
+      </button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Modulo consulenza",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "richiesta"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "UN TEMPO DEDICATO A TE"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Ogni creazione inizia||da una <em>conversazione</em>.",
+      "info": "Usa il corsivo per le parole in serif. Scrivi || per andare a capo."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo"
+    },
+    {
+      "type": "header",
+      "content": "WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_intro",
+      "label": "Testo sopra il pulsante",
+      "default": "Preferisci un primo messaggio?"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_label",
+      "label": "Testo pulsante",
+      "default": "Scrivici su WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "Numero WhatsApp",
+      "info": "Con prefisso internazionale, es. +39 333 1234567."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_note",
+      "label": "Nota se il numero manca",
+      "default": "Collegamento in preparazione"
+    },
+    {
+      "type": "header",
+      "content": "Modulo"
+    },
+    { "type": "text", "id": "label_name", "label": "Etichetta nome", "default": "Il tuo nome" },
+    { "type": "text", "id": "label_email", "label": "Etichetta email", "default": "La tua email" },
+    { "type": "text", "id": "label_project", "label": "Etichetta progetto", "default": "Cosa stai immaginando?" },
+    { "type": "text", "id": "project_placeholder", "label": "Prima voce progetto", "default": "Scegli il tuo progetto" },
+    {
+      "type": "text",
+      "id": "projects",
+      "label": "Progetti",
+      "default": "Abito da sposa, Abito da cerimonia, Capo su misura, Accessori, Altro",
+      "info": "Separati da virgola"
+    },
+    { "type": "text", "id": "label_meeting", "label": "Etichetta incontro", "default": "Come vorresti incontrarci?" },
+    {
+      "type": "text",
+      "id": "meetings",
+      "label": "Modalità di incontro",
+      "default": "In atelier, In videochiamata",
+      "info": "Separate da virgola"
+    },
+    { "type": "text", "id": "label_date", "label": "Etichetta data", "default": "Hai già una data in mente?" },
+    { "type": "text", "id": "label_message", "label": "Etichetta messaggio", "default": "Raccontaci il tuo desiderio" },
+    { "type": "text", "id": "message_placeholder", "label": "Suggerimento messaggio", "default": "Un’idea, un’occasione, un dettaglio che ami…" },
+    { "type": "text", "id": "submit_label", "label": "Testo invio", "default": "Iniziamo a immaginare" },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Messaggio di conferma",
+      "default": "Grazie, abbiamo ricevuto il tuo messaggio. Ti ricontatteremo al più presto."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modulo consulenza",
+      "category": "Contatti e assistenza"
+    }
+  ]
+}
+{% endschema %}

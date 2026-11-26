@@ -1,0 +1,111 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "apertura": {
+      "type": "editorial-bridal",
+      "settings": {
+        "anchor": "su-misura",
+        "eyebrow": "CREAZIONI SU COMMISSIONE",
+        "number": "",
+        "heading": "Su",
+        "heading_italic": "misura",
+        "subheading": "Prima di un abito,||un incontro con <em>te</em>.",
+        "text": "<p>Per il giorno del sì, un’occasione speciale o un capo da vivere ogni giorno. Partiamo dai tuoi desideri, da ciò che ami e da come vorresti sentirti. Insieme immaginiamo forme, scegliamo tessuti e lavorazioni; con i nostri artigiani diamo vita a ogni dettaglio. Ti accompagniamo, dai primi spunti alle prove, nella creazione di un abito che racconti il tuo modo di essere, nei dettagli e nel modo in cui lo indossi.</p>",
+        "link_label": "Parliamone insieme",
+        "link_url": "#richiesta",
+        "button_style": "outline",
+        "background": "paper",
+        "page_heading": true
+      }
+    },
+    "percorso": {
+      "type": "editorial-steps",
+      "blocks": {
+        "ascolto": {
+          "type": "step",
+          "settings": {
+            "title": "L’ascolto",
+            "text": "<p>Il primo incontro è uno spazio per te: l’occasione, i tuoi desideri, ciò che ami indossare. Puoi partire da un’immagine, da un’idea o da una sensazione.</p>"
+          }
+        },
+        "progetto": {
+          "type": "step",
+          "settings": {
+            "title": "Il progetto",
+            "text": "<p>Insieme a Sara prendono forma la silhouette, i tessuti, i colori e le lavorazioni. Ogni scelta costruisce un equilibrio che ti appartiene.</p>"
+          }
+        },
+        "prove": {
+          "type": "step",
+          "settings": {
+            "title": "Le prove",
+            "text": "<p>Le misure diventano volume, proporzione e movimento. Attraverso le prove, il capo si affina sul tuo corpo, con attenzione alla vestibilità e ai dettagli.</p>"
+          }
+        },
+        "creazione": {
+          "type": "step",
+          "settings": {
+            "title": "La tua creazione",
+            "text": "<p>Le finiture completano il lavoro delle mani. Modalità, prove e tempi di consegna vengono concordati con l’atelier, secondo il progetto.</p><p>Ogni creazione su misura richiede indicativamente dai 3 ai 5 mesi di lavorazione artigianale, in base alla complessità del progetto.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "ascolto",
+        "progetto",
+        "prove",
+        "creazione"
+      ],
+      "settings": {
+        "anchor": "percorso",
+        "heading": "Il",
+        "heading_italic": "percorso"
+      }
+    },
+    "pensato-per-te": {
+      "type": "editorial-time",
+      "settings": {
+        "eyebrow": "PENSATO PER TE",
+        "heading": "Ci sono abiti che scegli.||Altri prendono forma <em>con te</em>.",
+        "heading_italic": "",
+        "text": "<p>Nascono nelle parole del primo incontro, in un tessuto sfiorato, in un dettaglio che senti tuo. Poi arrivano le mani, le prove, il tempo dedicato a trovare la forma giusta. Fino a quel momento in cui lo indossi e ti riconosci.</p>",
+        "link_label": "Iniziamo dal tuo desiderio",
+        "link_url": "#richiesta",
+        "button_label": "",
+        "button_url": "",
+        "spacious": true
+      }
+    },
+    "immagine": {
+      "type": "editorial-image",
+      "settings": {
+        "position": "right",
+        "ratio": "16 / 9"
+      }
+    },
+    "richiesta": {
+      "type": "consultation-form",
+      "settings": {
+        "anchor": "richiesta",
+        "eyebrow": "UN TEMPO DEDICATO A TE",
+        "heading": "Ogni creazione inizia||da una <em>conversazione</em>.",
+        "text": "<p>Non serve avere già tutte le risposte. Raccontaci cosa immagini, l’occasione che hai in mente o semplicemente come vorresti sentirti. Il primo passo lo facciamo insieme.</p><p>Lasciaci un messaggio per una consulenza privata, in atelier o in videochiamata.</p>"
+      }
+    }
+  },
+  "order": [
+    "apertura",
+    "percorso",
+    "pensato-per-te",
+    "immagine",
+    "richiesta"
+  ]
+}

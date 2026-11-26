@@ -1,9 +1,18 @@
+{%- liquid
+  assign footer_svg = settings.logo_footer_svg_url | strip
+  assign footer_svg_class = ''
+  if footer_svg == blank
+    assign footer_svg_class = 'brightness-0 invert'
+  endif
+-%}
 <footer class="bg-forest px-[5%] pb-6 pt-[75px] text-cloud">
   <div>
     <div class="w-[135px] md:w-[165px]">
       {%- render 'logo',
         image: settings.logo_footer,
-        class: 'block w-full',
+        svg_url: footer_svg,
+        class: 'block w-full h-auto',
+        svg_class: footer_svg_class,
         text_class: 'items-start text-left text-[27px] tracking-[3px]',
         sizes: '165px'
       -%}

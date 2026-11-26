@@ -2,7 +2,7 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="bespoke"
+  class="bespoke{% if section.settings.background == 'paper' %} bespoke--paper{% endif %}"
   aria-labelledby="Heading-{{ section.id }}"
 >
   <figure class="bespoke__photo">
@@ -23,15 +23,20 @@
         {{ section.settings.eyebrow }}
       </p>
     {%- endif -%}
-    <h2 id="Heading-{{ section.id }}" class="editorial-title">
+    {%- assign heading_tag = 'h2' -%}
+    {%- if section.settings.page_heading -%}{%- assign heading_tag = 'h1' -%}{%- endif -%}
+    <{{ heading_tag }} id="Heading-{{ section.id }}" class="editorial-title{% if section.settings.page_heading %} editorial-title--xl{% endif %}">
       {{- section.settings.heading -}}
       {%- if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{%- endif -%}
-    </h2>
+    </{{ heading_tag }}>
+    {%- if section.settings.subheading != blank -%}
+      <p class="bespoke__subheading">{{ section.settings.subheading | replace: '||', '<br>' }}</p>
+    {%- endif -%}
     {%- if section.settings.text != blank -%}
       <div class="rte editorial-text my-[30px]">{{ section.settings.text }}</div>
     {%- endif -%}
     {%- if section.settings.link_label != blank -%}
-      <a class="btn-solid" href="{{ section.settings.link_url | default: routes.root_url }}">
+      <a class="{% if section.settings.button_style == 'outline' %}line-link{% else %}btn-solid{% endif %} mt-[20px]" href="{{ section.settings.link_url | default: routes.root_url }}">
         {{- section.settings.link_label }} ↗
       </a>
     {%- endif -%}
@@ -78,6 +83,12 @@
       "default": "ti somiglia"
     },
     {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Sottotitolo",
+      "info": "Usa il corsivo per le parole in serif. Scrivi || per andare a capo."
+    },
+    {
       "type": "richtext",
       "id": "text",
       "label": "Testo"
@@ -92,6 +103,32 @@
       "type": "url",
       "id": "link_url",
       "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Stile pulsante",
+      "options": [
+        { "value": "solid", "label": "Pieno" },
+        { "value": "outline", "label": "Contorno" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Sfondo testo",
+      "options": [
+        { "value": "sand", "label": "Sabbia" },
+        { "value": "paper", "label": "Carta" }
+      ],
+      "default": "sand"
+    },
+    {
+      "type": "checkbox",
+      "id": "page_heading",
+      "label": "Titolo principale della pagina (H1, più grande)",
+      "default": false
     }
   ],
   "presets": [

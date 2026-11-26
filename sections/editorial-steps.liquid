@@ -1,0 +1,108 @@
+{%- assign steps_total = section.blocks.size -%}
+{%- assign steps_last = steps_total | minus: 1 | at_least: 1 -%}
+
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="steps"
+  aria-labelledby="Heading-{{ section.id }}"
+>
+  <div class="steps__aside">
+    <h2 id="Heading-{{ section.id }}" class="steps__title">
+      {{- section.settings.heading -}}
+      {%- if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic }}</em>{%- endif -%}
+    </h2>
+    {%- if section.settings.image != blank -%}
+      <div class="steps__image">
+        {%- render 'media',
+          image: section.settings.image,
+          class: 'h-full w-full object-cover',
+          sizes: '(min-width: 721px) 32vw, 100vw'
+        -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <ol class="steps__list">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign remaining = steps_last | minus: forloop.index0
+        assign offset = remaining | times: 62 | divided_by: steps_last
+      -%}
+      <li class="steps__item" style="--step-offset: {{ offset }}%;" {{ block.shopify_attributes }}>
+        <span class="steps__number" aria-hidden="true">{{ forloop.index }}</span>
+        <div>
+          <h3 class="steps__item-title">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}
+            <div class="rte steps__text">{{ block.settings.text }}</div>
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  </ol>
+</section>
+
+{% schema %}
+{
+  "name": "Percorso a step",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "percorso"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Il"
+    },
+    {
+      "type": "text",
+      "id": "heading_italic",
+      "label": "Titolo (parte in corsivo)",
+      "default": "percorso"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "L’ascolto"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Testo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Percorso a step",
+      "category": "Editoriale",
+      "blocks": [
+        { "type": "step", "settings": { "title": "L’ascolto" } },
+        { "type": "step", "settings": { "title": "Il progetto" } },
+        { "type": "step", "settings": { "title": "Le prove" } },
+        { "type": "step", "settings": { "title": "La tua creazione" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
