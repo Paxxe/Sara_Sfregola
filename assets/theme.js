@@ -771,7 +771,40 @@
     true
   );
 
+  /* ---------- PLP: mini slider foto nella card ---------- */
+  class CardSwiper extends HTMLElement {
+    connectedCallback() {
+      this.track = this.querySelector('[data-swiper-track]');
+      this.prev = this.querySelector('[data-swiper-prev]');
+      this.next = this.querySelector('[data-swiper-next]');
+      this.dots = this.querySelectorAll('[data-swiper-dot]');
+      if (!this.track) return;
+      this.prev?.addEventListener('click', () => this.go(-1));
+      this.next?.addEventListener('click', () => this.go(1));
+      this.track.addEventListener('scroll', () => this.update(), { passive: true });
+      this.update();
+    }
+
+    get index() {
+      return Math.round(this.track.scrollLeft / Math.max(1, this.track.clientWidth));
+    }
+
+    go(dir) {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.track.scrollTo({ left: (this.index + dir) * this.track.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
+    }
+
+    update() {
+      const i = this.index;
+      const last = this.track.children.length - 1;
+      this.dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
+      if (this.prev) this.prev.disabled = i <= 0;
+      if (this.next) this.next.disabled = i >= last;
+    }
+  }
+
   customElements.get('site-header') || customElements.define('site-header', SiteHeader);
+  customElements.get('card-swiper') || customElements.define('card-swiper', CardSwiper);
 
   /* ---------- Header a comparsa ----------
      Scorrendo in giù l'header esce dallo schermo, scorrendo in su ricompare

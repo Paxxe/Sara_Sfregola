@@ -220,7 +220,7 @@
       "settings": {
         "breadcrumb_label": "Creazioni",
         "breadcrumb_url": "",
-        "crop_details": true,
+        "crop_details": false,
         "show_captions": true,
         "enable_zoom": true,
         "show_craft": true,

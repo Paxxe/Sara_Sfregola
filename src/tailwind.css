@@ -1176,6 +1176,61 @@
     @apply bg-paper;
   }
 
+
+  /* PLP: mini slider prima/seconda foto nella card */
+  .card-swiper__track {
+    @apply flex h-full w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain;
+    scrollbar-width: none;
+  }
+
+  .card-swiper__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-swiper__slide {
+    @apply block h-full w-full shrink-0 snap-start;
+  }
+
+  .card-swiper__arrow {
+    @apply absolute top-1/2 z-[2] hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-paper/90 text-[14px] text-ink opacity-0 transition-opacity duration-300;
+  }
+
+  .card-swiper__arrow--prev {
+    left: 10px;
+  }
+
+  .card-swiper__arrow--next {
+    right: 10px;
+  }
+
+  .card-swiper__arrow:disabled {
+    @apply pointer-events-none;
+    opacity: 0 !important;
+  }
+
+  @media (hover: hover) {
+    .card-swiper__arrow {
+      @apply flex;
+    }
+
+    .group:hover .card-swiper__arrow,
+    .card-swiper__arrow:focus-visible {
+      @apply opacity-100;
+    }
+  }
+
+  .card-swiper__dots {
+    @apply pointer-events-none absolute bottom-[10px] left-1/2 z-[2] flex -translate-x-1/2 gap-[6px];
+  }
+
+  .card-swiper__dots > span {
+    @apply block h-[5px] w-[5px] rounded-full bg-paper/60 transition-colors;
+  }
+
+  .card-swiper__dots > span.is-active {
+    @apply bg-paper;
+  }
+
   /* ------------------------------------------------------------------------
      PLP: griglia editoriale sfalsata
      Le card sono <a>, i blocchi editoriali <aside>: :nth-of-type conta solo i prodotti.

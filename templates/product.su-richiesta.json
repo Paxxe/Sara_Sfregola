@@ -211,7 +211,7 @@
       ],
       "settings": {
         "breadcrumb_label": "Creazioni",
-        "crop_details": true,
+        "crop_details": false,
         "show_captions": false,
         "enable_zoom": true,
         "show_craft": true,

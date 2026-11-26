@@ -11,39 +11,85 @@
   - loading: 'eager' per le prime card
 {%- endcomment -%}
 {%- assign card_loading = loading | default: 'lazy' -%}
+{%- liquid
+  assign card_images = product.media | where: 'media_type', 'image'
+  assign has_swiper = false
+  if card_images.size > 1
+    assign has_swiper = true
+  endif
+  capture card_label
+    echo 'collections.discover' | t: title: product.title | escape
+  endcapture
+-%}
 <article class="min-w-0">
-  <a href="{{ product.url }}" class="group block w-full text-left hover:opacity-100" aria-label="{{ 'collections.discover' | t: title: product.title | escape }}">
-    <span class="relative block aspect-[3/4] overflow-hidden bg-[#e9e4dc]">
-      {%- if product.featured_media -%}
-        {{
-          product.featured_media
-          | image_url: width: 1000
-          | image_tag:
-            class: 'h-full w-full object-cover object-center transition-transform duration-[600ms] group-hover:scale-[1.025]',
-            widths: '300,450,600,800,1000',
-            sizes: '(min-width: 721px) 25vw, 50vw',
-            loading: card_loading,
-            alt: product.title
-        }}
-      {%- else -%}
-        {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
-      {%- endif -%}
+  <div class="group relative">
+    {%- if has_swiper -%}
+      <card-swiper class="relative block aspect-[3/4] overflow-hidden bg-[#e9e4dc]">
+        <div class="card-swiper__track" data-swiper-track>
+          {%- for media in card_images limit: 2 -%}
+            <a
+              href="{{ product.url }}"
+              class="card-swiper__slide hover:opacity-100"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              {{
+                media
+                | image_url: width: 1000
+                | image_tag:
+                  class: 'h-full w-full object-cover object-center',
+                  widths: '300,450,600,800,1000',
+                  sizes: '(min-width: 721px) 25vw, 50vw',
+                  loading: card_loading,
+                  alt: product.title
+              }}
+            </a>
+          {%- endfor -%}
+        </div>
 
-      {%- if show_badges -%}
-        {%- liquid
-          assign badge = ''
-          if product.available == false
-            assign badge = 'products.sold_out' | t
-          elsif product.tags contains 'pezzo-unico'
-            assign badge = 'products.unique_piece' | t
-          endif
-        -%}
-        {%- if badge != blank -%}
-          <span class="absolute left-2 top-[9px] bg-paper/90 px-[6px] py-[6px] text-[8px] uppercase tracking-[1px] md:left-[17px] md:top-[18px] md:px-[9px] md:py-[7px]">{{ badge }}</span>
+        <button type="button" class="card-swiper__arrow card-swiper__arrow--prev" data-swiper-prev aria-label="{{ 'products.zoom_previous' | t }}" disabled>←</button>
+        <button type="button" class="card-swiper__arrow card-swiper__arrow--next" data-swiper-next aria-label="{{ 'products.zoom_next' | t }}">→</button>
+
+        <span class="card-swiper__dots" aria-hidden="true">
+          <span class="is-active" data-swiper-dot></span>
+          <span data-swiper-dot></span>
+        </span>
+      </card-swiper>
+    {%- else -%}
+      <a href="{{ product.url }}" class="relative block aspect-[3/4] overflow-hidden bg-[#e9e4dc] hover:opacity-100" tabindex="-1" aria-hidden="true">
+        {%- if product.featured_media -%}
+          {{
+            product.featured_media
+            | image_url: width: 1000
+            | image_tag:
+              class: 'h-full w-full object-cover object-center transition-transform duration-[600ms] group-hover:scale-[1.025]',
+              widths: '300,450,600,800,1000',
+              sizes: '(min-width: 721px) 25vw, 50vw',
+              loading: card_loading,
+              alt: product.title
+          }}
+        {%- else -%}
+          {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
         {%- endif -%}
-      {%- endif -%}
-    </span>
+      </a>
+    {%- endif -%}
 
+    {%- if show_badges -%}
+      {%- liquid
+        assign badge = ''
+        if product.available == false
+          assign badge = 'products.sold_out' | t
+        elsif product.tags contains 'pezzo-unico'
+          assign badge = 'products.unique_piece' | t
+        endif
+      -%}
+      {%- if badge != blank -%}
+        <span class="pointer-events-none absolute left-2 top-[9px] z-[2] bg-paper/90 px-[6px] py-[6px] text-[8px] uppercase tracking-[1px] md:left-[17px] md:top-[18px] md:px-[9px] md:py-[7px]">{{ badge }}</span>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+  <a href="{{ product.url }}" class="block w-full text-left hover:opacity-100" aria-label="{{ card_label }}">
     <span class="mx-[2px] mb-1 mt-[10px] block text-[13px] uppercase leading-[1.5] tracking-[.4px] md:mx-2 md:mt-3 md:text-[14px]">
       {{- product.title -}}
     </span>

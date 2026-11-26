@@ -141,7 +141,7 @@
 
       {%- comment -%} Dettagli {%- endcomment -%}
       {%- if image_count > 1 -%}
-        <div class="mt-[10px] grid grid-cols-1 gap-3 lg:grid-cols-2">{{ detail_figures }}</div>
+        <div class="mt-[10px] grid grid-cols-1 items-start gap-3 lg:grid-cols-2">{{ detail_figures }}</div>
       {%- endif -%}
 
       {%- comment -%} Il tempo delle mani: film di lavorazione {%- endcomment -%}
@@ -882,7 +882,7 @@
       "type": "checkbox",
       "id": "crop_details",
       "label": "Dettagli in riquadri ritagliati",
-      "default": true,
+      "default": false,
       "info": "Dalla seconda immagine: riquadri alti 430px come nella bozza (usa il punto focale). Disattiva per mostrarle intere."
     },
     {
