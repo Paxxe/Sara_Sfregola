@@ -69,6 +69,7 @@
         "abiti": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/home-abiti.webp",
             "title": "Abiti",
             "link_url": "",
             "title_style": "sans",
@@ -78,6 +79,7 @@
         "accessori": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/home-accessori.webp",
             "title": "Accessori",
             "link_url": "",
             "title_style": "sans",
@@ -87,6 +89,7 @@
         "sposa": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/home-sposa.webp",
             "title": "Sposa",
             "link_url": "",
             "title_style": "serif",
@@ -104,16 +107,18 @@
         "aria_label": "Le creazioni"
       }
     },
-    "tempo": {
-      "type": "editorial-time",
+    "su-misura": {
+      "type": "editorial-bridal",
       "settings": {
-        "heading": "Il valore",
-        "heading_italic": "del tempo",
-        "text": "<p>Ci sono ore che restano tra i fili. Nei nodi di un merletto, in un ricamo, nelle prove che danno all’abito la sua forma. Ore di mani, di attenzione, di scelte. È questo tempo a rendere ogni creazione irripetibile.</p>",
-        "link_label": "Esplora le creazioni",
-        "link_url": "",
-        "button_label": "Richiedi una consulenza privata",
-        "button_url": ""
+        "anchor": "su-misura",
+        "image": "shopify://shop_images/10_copia.jpg",
+        "number": "",
+        "eyebrow": "SU MISURA",
+        "heading": "Un abito che",
+        "heading_italic": "ti somiglia",
+        "text": "<p>Partiamo dall’occasione, da come vorresti sentirti e dai dettagli che ti attirano. Puoi portare un’immagine, un’idea o semplicemente la voglia di capire cosa ti starebbe bene.</p><p>Nel primo incontro, Sara ti ascolta e ti guida nella scelta di forme, tessuti e lavorazioni. Insieme, dai primi spunti alle prove, darete forma a un capo pensato per te.</p>",
+        "link_label": "Richiedi una consulenza",
+        "link_url": ""
       }
     },
     "savoir-faire": {
@@ -164,11 +169,24 @@
       ],
       "settings": {
         "anchor": "savoir-faire",
+        "video": "shopify://files/videos/qeqwe.mov",
         "image": "shopify://shop_images/11_copia.jpg",
         "number": "",
         "eyebrow": "SAVOIR-FAIRE",
         "heading": "Le tecniche artigianali",
         "text": "<p>Riscoprire il piacere di un <em>pezzo unico</em> comincia dai dettagli. Nel tombolo i fili si incrociano seguendo il disegno. Nel chiacchierino, piccoli nodi diventano anelli e archetti. Quando queste lavorazioni entrano in un abito, il disegno prende forma sul tessuto e segue la linea del capo. È lì che si riconosce il gesto di chi l’ha fatto.</p>"
+      }
+    },
+    "tempo": {
+      "type": "editorial-time",
+      "settings": {
+        "heading": "Il valore",
+        "heading_italic": "del tempo",
+        "text": "<p>Ci sono ore che restano tra i fili. Nei nodi di un merletto, in un ricamo, nelle prove che danno all’abito la sua forma. Ore di mani, di attenzione, di scelte. È questo tempo a rendere ogni creazione irripetibile.</p>",
+        "link_label": "Esplora le creazioni",
+        "link_url": "",
+        "button_label": "Richiedi una consulenza privata",
+        "button_url": ""
       }
     },
     "faq": {
@@ -219,22 +237,9 @@
       ],
       "settings": {
         "anchor": "faq",
+        "image": "shopify://shop_images/home-disegno-sartoriale.webp",
         "eyebrow": "CUSTOMER CARE",
         "heading": "FAQ"
-      }
-    },
-    "su-misura": {
-      "type": "editorial-bridal",
-      "settings": {
-        "anchor": "su-misura",
-        "image": "shopify://shop_images/10_copia.jpg",
-        "number": "",
-        "eyebrow": "SU MISURA",
-        "heading": "Un abito che",
-        "heading_italic": "ti somiglia",
-        "text": "<p>Partiamo dall’occasione, da come vorresti sentirti e dai dettagli che ti attirano. Puoi portare un’immagine, un’idea o semplicemente la voglia di capire cosa ti starebbe bene.</p><p>Nel primo incontro, Sara ti ascolta e ti guida nella scelta di forme, tessuti e lavorazioni. Insieme, dai primi spunti alle prove, darete forma a un capo pensato per te.</p>",
-        "link_label": "Richiedi una consulenza",
-        "link_url": ""
       }
     }
   },
