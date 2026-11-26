@@ -7,16 +7,16 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "sections": {
     "hero": {
       "type": "media-hero",
       "settings": {
+        "video": "shopify://files/videos/qeqwe.mov",
         "overlay": 40,
         "heading": "Le arti tessili",
-        "page_heading": true,
-        "text": "<p>Custodiamo gesti antichi per dare forma a creazioni contemporanee. Tra intrecci, nodi e ricami, ogni filo porta con sé il sapere delle mani e il tempo dedicato a trasformarlo.</p>"
+        "text": "<p>Custodiamo gesti antichi per dare forma a creazioni contemporanee. Tra intrecci, nodi e ricami, ogni filo porta con sé il sapere delle mani e il tempo dedicato a trasformarlo.</p>",
+        "page_heading": true
       }
     },
     "intro": {
@@ -27,7 +27,9 @@
         "heading_italic": "",
         "text": "<p>Dalle tecniche più conosciute alle lavorazioni più rare, riscopriamo saperi tramandati nel tempo e li intrecciamo alla ricerca contemporanea. Gesti antichi tornano a vivere tra le mani, aprendosi a nuove forme ed espressioni.</p>",
         "link_label": "",
+        "link_url": "",
         "button_label": "",
+        "button_url": "",
         "spacious": true
       }
     },
@@ -39,7 +41,11 @@
           "settings": {
             "title": "Tombolo",
             "anchor": "tombolo",
-            "text": "<p>Nato tra le mani esperte delle merlettaie del Rinascimento, il tombolo è una delle massime espressioni dell'artigianato tessile d'eccellenza. Lavorato fissando il disegno su un cuscino rigido e intrecciando con precisione millimetrica decine di fuselli in legno, questo pizzo richiede ore di dedizione, calcolo e pazienza infinita. Ogni creazione a tombolo porta con sé un'aria eterea e aristocratica, trasformando un filo sottile in una vera e propria scultura da indossare o collezionare.</p>"
+            "text": "<p>Nato tra le mani esperte delle merlettaie del Rinascimento, il tombolo è una delle massime espressioni dell'artigianato tessile d'eccellenza. Lavorato fissando il disegno su un cuscino rigido e intrecciando con precisione millimetrica decine di fuselli in legno, questo pizzo richiede ore di dedizione, calcolo e pazienza infinita. Ogni creazione a tombolo porta con sé un'aria eterea e aristocratica, trasformando un filo sottile in una vera e propria scultura da indossare o collezionare.</p>",
+            "image": "shopify://shop_images/5_0dfb2378-bfb7-4d29-b4bd-7637aad306dc.jpg",
+            "link_label": "",
+            "link_url": "",
+            "reverse": false
           }
         },
         "chiacchierino": {
@@ -47,7 +53,11 @@
           "settings": {
             "title": "Chiacchierino",
             "anchor": "chiacchierino",
-            "text": "<p>Conosciuto a livello internazionale come frivolité, il chiacchierino è l'arte di creare pizzi preziosi attraverso una successione ritmica di nodi e picot realizzati con la caratteristica navetta (o con l'ago). Il risultato è una trama resistente ma visivamente impalpabile, ricca di archi concentrici e motivi floreali. Una tecnica antica, nata per impreziosire colletti e gioielli delle dame di corte, oggi rivisitata per dare vita a pezzi raffinati, leggeri e dall'eleganza senza tempo.</p>"
+            "text": "<p>Conosciuto a livello internazionale come frivolité, il chiacchierino è l'arte di creare pizzi preziosi attraverso una successione ritmica di nodi e picot realizzati con la caratteristica navetta (o con l'ago). Il risultato è una trama resistente ma visivamente impalpabile, ricca di archi concentrici e motivi floreali. Una tecnica antica, nata per impreziosire colletti e gioielli delle dame di corte, oggi rivisitata per dare vita a pezzi raffinati, leggeri e dall'eleganza senza tempo.</p>",
+            "image": "shopify://shop_images/3_chiacchierino.png",
+            "link_label": "",
+            "link_url": "",
+            "reverse": false
           }
         },
         "macrame": {
@@ -55,7 +65,11 @@
           "settings": {
             "title": "Macramè",
             "anchor": "macrame",
-            "text": "<p>Di origine araba e diffuso nel Mediterraneo dai marinai, il macramè è un'arte pura: non richiede aghi né telai, ma solo la sensibilità delle dita nell'annodare filati robusti. Caratterizzato da motivi geometrici, frange e texture ricche al tatto, il macramè unisce un'anima ancestrale a un gusto contemporaneo, perfetto sia per complementi d'arredo materici che per accessori di carattere dal sapore boho-chic.</p>"
+            "text": "<p>Di origine araba e diffuso nel Mediterraneo dai marinai, il macramè è un'arte pura: non richiede aghi né telai, ma solo la sensibilità delle dita nell'annodare filati robusti. Caratterizzato da motivi geometrici, frange e texture ricche al tatto, il macramè unisce un'anima ancestrale a un gusto contemporaneo, perfetto sia per complementi d'arredo materici che per accessori di carattere dal sapore boho-chic.</p>",
+            "image": "shopify://shop_images/6.png",
+            "link_label": "",
+            "link_url": "",
+            "reverse": false
           }
         }
       },
@@ -92,19 +106,27 @@
         },
         "foto-1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/5_c17da686-fc0d-4442-8a2f-acde76a7b04a.jpg"
+          }
         },
         "foto-2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/6_fb2df78f-377b-4ded-aff1-6f492dc5dc8e.png"
+          }
         },
         "foto-3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/7.png"
+          }
         },
         "foto-4": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/8.png"
+          }
         }
       },
       "block_order": [
@@ -131,6 +153,7 @@
         "link_label": "Esplora le creazioni",
         "link_url": "",
         "button_label": "",
+        "button_url": "",
         "spacious": true
       }
     }
