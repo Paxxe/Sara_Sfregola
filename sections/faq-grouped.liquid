@@ -1,0 +1,130 @@
+{%- comment -%}
+  FAQ raggruppate: un blocco "Gruppo" apre un nuovo gruppo,
+  i blocchi "Domanda" che seguono vi appartengono.
+{%- endcomment -%}
+<section
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handleize }}"
+  {% endif %}
+  class="faq-grouped"
+>
+  <div>
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow mb-[27px]">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="editorial-title">{{ section.settings.heading }}</h2>
+
+    <nav class="faq-grouped__index" aria-label="{{ section.settings.heading | escape }}">
+      {%- assign group_index = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'group' -%}
+          <a href="#faq-{{ section.id }}-{{ group_index }}">{{ block.settings.index_label | default: block.settings.title }} ↓</a>
+          {%- assign group_index = group_index | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+  </div>
+
+  <div class="min-w-0">
+    {%- assign group_index = 0 -%}
+    {%- for group in section.blocks -%}
+      {%- if group.type == 'group' -%}
+        {%- assign start = forloop.index -%}
+        <div class="faq-grouped__group" id="faq-{{ section.id }}-{{ group_index }}" {{ group.shopify_attributes }}>
+          <h3 class="faq-grouped__group-title">{{ group.settings.title }}</h3>
+          {%- for block in section.blocks offset: start -%}
+            {%- if block.type == 'group' -%}{%- break -%}{%- endif -%}
+            <details class="accordion" {{ block.shopify_attributes }}>
+              <summary class="gap-5 !text-[13px] leading-[1.7]">{{ block.settings.question }}</summary>
+              {%- if block.settings.answer != blank -%}
+                <div class="accordion-body">
+                  <div class="rte">{{ block.settings.answer }}</div>
+                </div>
+              {%- endif -%}
+            </details>
+          {%- endfor -%}
+        </div>
+        {%- assign group_index = group_index | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ raggruppate",
+  "tag": "div",
+  "max_blocks": 40,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancora (id)",
+      "default": "faq"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sopratitolo",
+      "default": "DOMANDE FREQUENTI"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "FAQ"
+    },
+    {
+      "type": "paragraph",
+      "content": "Aggiungi un blocco Gruppo e sotto le sue Domande. Ogni gruppo compare anche nell’indice a sinistra."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "group",
+      "name": "Gruppo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo gruppo",
+          "default": "Ordini e creazioni"
+        },
+        {
+          "type": "text",
+          "id": "index_label",
+          "label": "Voce nell’indice",
+          "info": "Se vuoto usa il titolo del gruppo."
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Domanda",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Domanda",
+          "default": "Domanda"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Risposta"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ raggruppate",
+      "category": "Contatti e assistenza",
+      "blocks": [
+        { "type": "group", "settings": { "title": "Ordini e creazioni" } },
+        { "type": "question", "settings": { "question": "Posso personalizzare una creazione?" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1061,6 +1061,98 @@
     }
   }
 
+
+  /* ------------------------------------------------------------------------
+     Pagina Contatti & Customer Care
+     ------------------------------------------------------------------------ */
+  .care__heading {
+    padding: 65px 8% 50px;
+  }
+
+  .care__title {
+    font-size: clamp(43px, 5.5vw, 82px);
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+  }
+
+  .care__options {
+    @apply grid grid-cols-1;
+    gap: 35px;
+    padding: 0 8% 70px;
+  }
+
+  .care__option {
+    @apply border-t border-[#d6cebf];
+    padding-top: 30px;
+  }
+
+  .care__option-title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  @media (min-width: 721px) {
+    .care__heading {
+      padding: 100px 8% 80px;
+    }
+
+    .care__options {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(30px, 4.5vw, 65px);
+      padding-bottom: 110px;
+    }
+  }
+
+  .faq-grouped {
+    @apply grid grid-cols-1 bg-[#eee8dd];
+    gap: 40px;
+    padding: 65px 8%;
+  }
+
+  .faq-grouped__index {
+    @apply mt-[30px] flex flex-col gap-[15px] text-[11px];
+  }
+
+  .faq-grouped__group {
+    margin-bottom: 40px;
+    scroll-margin-top: 110px;
+  }
+
+  .faq-grouped__group:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq-grouped__group-title {
+    @apply font-normal;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+
+  @media (min-width: 721px) {
+    .faq-grouped {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+      gap: 12%;
+      padding: 100px 9%;
+    }
+
+    .faq-grouped > div:first-child {
+      @apply sticky self-start;
+      top: 130px;
+    }
+
+    .faq-grouped__index {
+      @apply mt-10 gap-[18px];
+    }
+
+    .faq-grouped__group {
+      margin-bottom: 55px;
+    }
+  }
+
+  .consult--paper {
+    @apply bg-paper;
+  }
+
   /* ------------------------------------------------------------------------
      PLP: griglia editoriale sfalsata
      Le card sono <a>, i blocchi editoriali <aside>: :nth-of-type conta solo i prodotti.

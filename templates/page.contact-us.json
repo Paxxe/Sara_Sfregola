@@ -1,0 +1,197 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+
+{
+  "sections": {
+    "contatti": {
+      "type": "contact-options",
+      "blocks": {
+        "atelier": {
+          "type": "option",
+          "settings": {
+            "eyebrow": "L’ATELIER",
+            "title": "L’Atelier",
+            "text": "",
+            "link_label": "Prepara un appuntamento",
+            "link_url": "/pages/su-misura#richiesta"
+          }
+        },
+        "assistenza": {
+          "type": "option",
+          "settings": {
+            "eyebrow": "ASSISTENZA PERSONALE",
+            "title": "Assistenza clienti",
+            "text": "",
+            "link_label": "Prepara un messaggio",
+            "link_url": "#messaggio"
+          }
+        },
+        "press": {
+          "type": "option",
+          "settings": {
+            "eyebrow": "PRESS & COLLABORATIONS",
+            "title": "Press e collaborazioni",
+            "text": "",
+            "link_label": "Raccontaci il progetto",
+            "link_url": "#messaggio-press"
+          }
+        }
+      },
+      "block_order": [
+        "atelier",
+        "assistenza",
+        "press"
+      ],
+      "settings": {
+        "eyebrow": "CONTATTI / CUSTOMER CARE",
+        "heading": "Contatti & Customer Care",
+        "text": ""
+      }
+    },
+    "faq": {
+      "type": "faq-grouped",
+      "blocks": {
+        "gruppo-1": {
+          "type": "group",
+          "settings": {
+            "title": "Ordini e creazioni",
+            "index_label": ""
+          }
+        },
+        "domanda-1-1": {
+          "type": "question",
+          "settings": {
+            "question": "Come scelgo tra un pezzo unico e un capo su ordinazione?",
+            "answer": ""
+          }
+        },
+        "domanda-1-2": {
+          "type": "question",
+          "settings": {
+            "question": "Posso personalizzare una creazione?",
+            "answer": ""
+          }
+        },
+        "domanda-1-3": {
+          "type": "question",
+          "settings": {
+            "question": "Come funziona il preordine?",
+            "answer": ""
+          }
+        },
+        "gruppo-2": {
+          "type": "group",
+          "settings": {
+            "title": "Taglie e tempistiche",
+            "index_label": ""
+          }
+        },
+        "domanda-2-1": {
+          "type": "question",
+          "settings": {
+            "question": "Come scelgo la taglia?",
+            "answer": ""
+          }
+        },
+        "domanda-2-2": {
+          "type": "question",
+          "settings": {
+            "question": "Ore di manifattura e tempi di realizzazione sono la stessa cosa?",
+            "answer": ""
+          }
+        },
+        "domanda-2-3": {
+          "type": "question",
+          "settings": {
+            "question": "Posso ordinare per una data precisa?",
+            "answer": ""
+          }
+        },
+        "gruppo-3": {
+          "type": "group",
+          "settings": {
+            "title": "Spedizioni e cura",
+            "index_label": ""
+          }
+        },
+        "domanda-3-1": {
+          "type": "question",
+          "settings": {
+            "question": "In quali Paesi spedite?",
+            "answer": ""
+          }
+        },
+        "domanda-3-2": {
+          "type": "question",
+          "settings": {
+            "question": "Come posso custodire il capo?",
+            "answer": ""
+          }
+        },
+        "domanda-3-3": {
+          "type": "question",
+          "settings": {
+            "question": "Quali sono le condizioni di reso?",
+            "answer": ""
+          }
+        }
+      },
+      "block_order": [
+        "gruppo-1",
+        "domanda-1-1",
+        "domanda-1-2",
+        "domanda-1-3",
+        "gruppo-2",
+        "domanda-2-1",
+        "domanda-2-2",
+        "domanda-2-3",
+        "gruppo-3",
+        "domanda-3-1",
+        "domanda-3-2",
+        "domanda-3-3"
+      ],
+      "settings": {
+        "anchor": "faq",
+        "eyebrow": "DOMANDE FREQUENTI",
+        "heading": "FAQ"
+      }
+    },
+    "messaggio": {
+      "type": "consultation-form",
+      "settings": {
+        "anchor": "messaggio",
+        "background": "paper",
+        "eyebrow": "CONTATTI",
+        "heading": "Ogni domanda||merita <em>ascolto.</em>",
+        "text": "",
+        "whatsapp_intro": "",
+        "whatsapp_label": "",
+        "whatsapp": "",
+        "whatsapp_note": "",
+        "label_name": "Nome",
+        "label_email": "Email",
+        "label_project": "Argomento",
+        "project_placeholder": "",
+        "projects": "Informazioni su una creazione, Ordini e assistenza, Su misura, Press e collaborazioni",
+        "show_meeting": false,
+        "show_date": false,
+        "label_message": "Messaggio",
+        "message_placeholder": "",
+        "submit_label": "Richiedi informazioni ↗",
+        "success_message": "Grazie, abbiamo ricevuto il tuo messaggio. Ti risponderemo al più presto."
+      }
+    }
+  },
+  "order": [
+    "contatti",
+    "faq",
+    "messaggio"
+  ]
+}

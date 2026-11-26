@@ -4,7 +4,7 @@
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handleize }}"
   {% endif %}
-  class="consult"
+  class="consult{% if section.settings.background == 'paper' %} consult--paper{% endif %}"
   aria-labelledby="Heading-{{ section.id }}"
 >
   <div class="consult__copy">
@@ -62,16 +62,19 @@
         </label>
 
         {%- assign projects = section.settings.projects | split: ',' -%}
-        <label class="consult__field">
+        <label class="consult__field{% unless section.settings.show_meeting %} md:col-span-2{% endunless %}">
           <span>{{ section.settings.label_project }}</span>
-          <select class="field-line" name="contact[Progetto]">
-            <option value="">{{ section.settings.project_placeholder }}</option>
+          <select class="field-line" name="contact[{{ section.settings.label_project | escape }}]" data-subject-select>
+            {%- if section.settings.project_placeholder != blank -%}
+              <option value="">{{ section.settings.project_placeholder }}</option>
+            {%- endif -%}
             {%- for item in projects -%}
               <option value="{{ item | strip | escape }}">{{ item | strip }}</option>
             {%- endfor -%}
           </select>
         </label>
 
+        {%- if section.settings.show_meeting -%}
         {%- assign meetings = section.settings.meetings | split: ',' -%}
         <label class="consult__field">
           <span>{{ section.settings.label_meeting }}</span>
@@ -81,16 +84,19 @@
             {%- endfor -%}
           </select>
         </label>
+        {%- endif -%}
       </div>
 
+      {%- if section.settings.show_date -%}
       <label class="consult__field">
         <span>{{ section.settings.label_date }} <small class="text-[11px] text-muted">(facoltativo)</small></span>
         <input class="field-line" type="date" name="contact[Data]">
       </label>
+      {%- endif -%}
 
       <label class="consult__field">
         <span>{{ section.settings.label_message }}</span>
-        <textarea class="field-line min-h-[110px]" name="contact[body]" rows="4" placeholder="{{ section.settings.message_placeholder | escape }}">{{ form.body }}</textarea>
+        <textarea class="field-line min-h-[110px]" name="contact[body]" rows="4" required placeholder="{{ section.settings.message_placeholder | escape }}">{{ form.body }}</textarea>
       </label>
 
       <button type="submit" class="btn-solid mt-[34px] !rounded-full !px-8 !py-[18px] !text-[14px]">
@@ -99,6 +105,31 @@
     {%- endform -%}
   </div>
 </section>
+
+<script>
+  (() => {
+    const form = document.getElementById('{{ form_id }}');
+    const select = form && form.querySelector('[data-subject-select]');
+    const anchor = {{ section.settings.anchor | handleize | json }};
+    const pick = (wanted) => {
+      if (!select || !wanted) return false;
+      wanted = decodeURIComponent(wanted).toLowerCase();
+      const match = Array.from(select.options).find((o) => o.value.toLowerCase().includes(wanted));
+      if (match) select.value = match.value;
+      return Boolean(match);
+    };
+    const fromHash = () => {
+      const prefix = '#' + anchor + '-';
+      if (!anchor || !location.hash.startsWith(prefix)) return;
+      pick(location.hash.slice(prefix.length));
+      document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
+    };
+    const params = new URLSearchParams(location.search);
+    pick(params.get('argomento') || params.get('subject'));
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+  })();
+</script>
 
 {% schema %}
 {
@@ -110,6 +141,16 @@
       "id": "anchor",
       "label": "Ancora (id)",
       "default": "richiesta"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Sfondo",
+      "options": [
+        { "value": "oat", "label": "Sabbia chiaro" },
+        { "value": "paper", "label": "Carta" }
+      ],
+      "default": "oat"
     },
     {
       "type": "text",
@@ -163,14 +204,20 @@
     },
     { "type": "text", "id": "label_name", "label": "Etichetta nome", "default": "Il tuo nome" },
     { "type": "text", "id": "label_email", "label": "Etichetta email", "default": "La tua email" },
-    { "type": "text", "id": "label_project", "label": "Etichetta progetto", "default": "Cosa stai immaginando?" },
-    { "type": "text", "id": "project_placeholder", "label": "Prima voce progetto", "default": "Scegli il tuo progetto" },
+    { "type": "text", "id": "label_project", "label": "Etichetta progetto / argomento", "default": "Cosa stai immaginando?" },
+    { "type": "text", "id": "project_placeholder", "label": "Prima voce progetto", "info": "Lascia vuoto per non avere una voce vuota.", "default": "Scegli il tuo progetto" },
     {
       "type": "text",
       "id": "projects",
-      "label": "Progetti",
+      "label": "Voci della tendina",
       "default": "Abito da sposa, Abito da cerimonia, Capo su misura, Accessori, Altro",
       "info": "Separati da virgola"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meeting",
+      "label": "Mostra \"Come vorresti incontrarci?\"",
+      "default": true
     },
     { "type": "text", "id": "label_meeting", "label": "Etichetta incontro", "default": "Come vorresti incontrarci?" },
     {
@@ -179,6 +226,12 @@
       "label": "Modalità di incontro",
       "default": "In atelier, In videochiamata",
       "info": "Separate da virgola"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Mostra campo data",
+      "default": true
     },
     { "type": "text", "id": "label_date", "label": "Etichetta data", "default": "Hai già una data in mente?" },
     { "type": "text", "id": "label_message", "label": "Etichetta messaggio", "default": "Raccontaci il tuo desiderio" },
